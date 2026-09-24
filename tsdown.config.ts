@@ -2,6 +2,7 @@ import { isBuiltin } from "node:module";
 import { defineConfig } from "tsdown";
 
 const optionalNestDependencies = [
+  /^@fastify\/static(?:\/|$)/,
   /^@nestjs\/microservices(?:\/|$)/,
   /^@nestjs\/platform-socket\.io(?:\/|$)/,
   /^@nestjs\/websockets(?:\/|$)/,
@@ -22,8 +23,7 @@ export default defineConfig({
   deps: {
     onlyBundle: false,
     alwaysBundle: (id) =>
-      !isBuiltin(id) &&
-      !optionalNestDependencies.some((pattern) => pattern.test(id)),
+      !isBuiltin(id) && !optionalNestDependencies.some((pattern) => pattern.test(id)),
     neverBundle: optionalNestDependencies,
   },
 });
