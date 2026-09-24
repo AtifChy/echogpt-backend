@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+
 import { seed } from "./prisma/seed";
 import { db } from "./prisma/users";
 

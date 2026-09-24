@@ -21,7 +21,9 @@
     "migration:status": "prisma migration status",
     "skills:sync": "prisma skills sync || exit 0",
     "start": "node dist/server.mjs",
-    "postinstall": "prisma skills sync || exit 0"
+    "postinstall": "prisma skills sync || exit 0",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.4",
@@ -48,6 +50,7 @@
   "devDependencies": {
     "@prisma/dev": "0.25.2",
     "@types/node": "^25.6.2",
+    "oxfmt": "^0.70.0",
     "prisma": "8.0.0-rc.15",
     "tsdown": "^0.22.14",
     "tsx": "^4.21.0",
