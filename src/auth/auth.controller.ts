@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, Post, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
+
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { AuthGuard } from "./auth.guard";

@@ -1,8 +1,9 @@
+import { createHash, randomBytes } from "node:crypto";
+
 import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { argon2id, hash, verify } from "argon2";
-import { createHash, randomBytes } from "node:crypto";
 
 import type { UserRole } from "../common/user-role";
 import { PrismaService } from "../prisma.service";
