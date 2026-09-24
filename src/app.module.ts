@@ -9,6 +9,7 @@ import { envValidationSchmea } from "./config/env.validation";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma.module";
 import { PrismaService } from "./prisma.service";
+import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
 import { UserModule } from "./users/users.module";
 
 @Module({
@@ -24,6 +25,7 @@ import { UserModule } from "./users/users.module";
     PrismaModule,
     AuthModule,
     UserModule,
+    SubscriptionsModule,
     HealthModule,
   ],
   controllers: [AppController],
