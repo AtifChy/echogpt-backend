@@ -1,21 +1,16 @@
 import { connectDatabase, db } from "./db.ts";
 
-const users = [
-  { email: "alice@prisma.io", username: "alice", name: "Alice" },
-  { email: "bob@prisma.io", username: "bob", name: "Bob" },
-  { email: "carol@prisma.io", username: "carol", name: "Carol" },
-];
-
+const roles = ["USER", "ADMIN"] as const;
 let pendingSeed: Promise<void> | undefined;
 
 async function runSeed(): Promise<void> {
   await connectDatabase();
 
-  for (const user of users) {
-    await db.orm.public.User.upsert({
-      create: user,
+  for (const role of roles) {
+    await db.orm.public.Role.upsert({
+      create: { name: role },
       update: {},
-      conflictOn: { email: user.email },
+      conflictOn: { name: role },
     });
   }
 }

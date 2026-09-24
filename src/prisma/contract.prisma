@@ -1,21 +1,142 @@
 // use prisma-8
-
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+model User {
+  id            Int                        @id @default(autoincrement())
+  email         String                     @unique
+  passwordHash  String
+  displayName   String?
+  status        String
+  roleId        Int
+  role          Role                       @relation(fields:[roleId], references:[id])
+  sessions      Session[]
+  subscriptions Subscription?
+  conversations Conversation[]
+  searches      WebSearch[]
+  usageLogs     ApiUsageLog[]
+  createdAt     TimestamptzString          @default(now())
+  updatedAt     temporal.updatedAtString()
+
+  @@index([roleId])
+  @@index([status])
+}
+
+model Session {
+  id        Int                @id @default(autoincrement())
+  userId    Int
+  user      User               @relation(fields:[userId], references:[id], onDelete: Cascade)
+  tokenHash String             @unique
+  expiresAt TimestamptzString
+  revokedAt TimestamptzString?
+  createdAt TimestamptzString  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Subscription {
+  id                 Int                        @id @default(autoincrement())
+  userId             Int                        @unique
+  user               User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
+  plan               String
+  status             String
+  currentPeriodStart TimestamptzString
+  currentPeriodEnd   TimestamptzString
+  createdAt          TimestamptzString          @default(now())
+  updatedAt          temporal.updatedAtString()
+
+  @@index([plan, status])
+}
+
+model AiProvider {
+  id              Int                        @id @default(autoincrement())
+  name            String
+  type            String
+  model           String
+  encryptedApiKey String
+  apiKeyIv        String
+  apiKeyAuthTag   String
+  enabled         Boolean                    @default(false)
+  isDefault       Boolean                    @default(false)
+  conversations   Conversation[]
+  usageLogs       ApiUsageLog[]
+  createdAt       TimestamptzString          @default(now())
+  updatedAt       temporal.updatedAtString()
+
+  @@index([type])
+  @@index([enabled, isDefault])
+}
+
+model Conversation {
+  id         Int                        @id @default(autoincrement())
+  userId     Int
+  user       User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
+  providerId Int
+  provider   AiProvider                 @relation(fields:[providerId], references:[id])
+  messages   Message[]
+  createdAt  TimestamptzString          @default(now())
+  updatedAt  temporal.updatedAtString()
+
+  @@index([userId, updatedAt])
+  @@index([providerId])
+}
+
+model Message {
+  id             Int               @id @default(autoincrement())
+  conversationId Int
+  conversation   Conversation      @relation(fields:[conversationId], references:[id], onDelete: Cascade)
+  role           String
+  content        String
+  inputTokens    Int               @default(0)
+  outputTokens   Int               @default(0)
+  createdAt      TimestamptzString @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+model WebSearch {
+  id              Int               @id @default(autoincrement())
+  userId          Int
+  user            User              @relation(fields:[userId], references:[id], onDelete: Cascade)
+  query           String
+  normalizedQuery String
+  results         SearchResult[]
+  createdAt       TimestamptzString @default(now())
+
+  @@index([userId, createdAt])
+  @@index([normalizedQuery, createdAt])
+}
+
+model SearchResult {
+  id       Int       @id @default(autoincrement())
+  searchId Int
+  search   WebSearch @relation(fields:[searchId], references:[id], onDelete: Cascade)
+  title    String
+  url      String
+  snippet  String
+
+  @@unique([searchId, url])
+  @@index([searchId])
+}
+
+model ApiUsageLog {
+  id           Int               @id @default(autoincrement())
+  userId       Int
+  user         User              @relation(fields:[userId], references:[id], onDelete: Cascade)
+  providerId   Int
+  provider     AiProvider        @relation(fields:[providerId], references:[id])
+  operation    String
+  status       String
+  inputTokens  Int               @default(0)
+  outputTokens Int               @default(0)
+  latencyMs    Int               @default(0)
+  createdAt    TimestamptzString @default(now())
+
+  @@index([userId, createdAt])
+  @@index([providerId, createdAt])
+  @@index([operation, status, createdAt])
 }
