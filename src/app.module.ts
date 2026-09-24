@@ -9,8 +9,6 @@ import { envValidationSchmea } from "./config/env.validation";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma.module";
 import { PrismaService } from "./prisma.service";
-import { UsersController } from "./users.controller";
-import { UsersService } from "./users.service";
 import { UserModule } from "./users/users.module";
 
 @Module({
@@ -28,7 +26,7 @@ import { UserModule } from "./users/users.module";
     UserModule,
     HealthModule,
   ],
-  controllers: [AppController, UsersController],
-  providers: [PrismaService, UsersService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
+  controllers: [AppController],
+  providers: [PrismaService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}
