@@ -1,17 +1,15 @@
 {
   "name": "echogpt-backend",
   "private": true,
-  "packageManager": "bun@1.4.1",
   "type": "module",
-  "engines": {
-    "node": "^22.18.0 || >=24.11.0"
-  },
   "scripts": {
     "build": "tsdown",
     "composer:deploy": "prisma deploy module.ts",
     "composer:dev": "prisma dev module.ts",
     "contract:emit": "prisma contract emit",
+    "db:down": "docker compose down",
     "db:init": "prisma db init",
+    "db:up": "docker compose up -d --wait postgres",
     "db:update": "prisma db update",
     "db:verify": "prisma db verify",
     "deploy": "bun run build && bun run composer:deploy",
@@ -26,13 +24,14 @@
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.17",
-    "@nestjs/core": "^11.1.17",
-    "@nestjs/platform-express": "^11.1.17",
+    "@nestjs/common": "^12.0.4",
+    "@nestjs/core": "^12.0.4",
+    "@nestjs/platform-express": "^12.0.4",
     "@prisma/composer": "0.20.0",
     "@prisma/composer-prisma-cloud": "0.20.0",
     "@prisma/orm-postgres": "8.0.0-rc.11",
     "alchemy": "2.0.0-beta.74",
+    "dotenv": "^18.0.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "temporal-polyfill": "^1.0.4"
@@ -43,9 +42,13 @@
     "prisma": "8.0.0-rc.15",
     "tsdown": "^0.22.14",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "overrides": {
     "effect": "4.0.0-rc.112"
-  }
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.11.0"
+  },
+  "packageManager": "bun@1.4.1"
 }
