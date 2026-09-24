@@ -5,12 +5,14 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { argon2id, hash, verify } from "argon2";
 
-import type { UserRole } from "../common/user-role";
+import type { AuthUser } from "../common/auth-user";
 import { PrismaService } from "../prisma.service";
 import type { AuthResponse, AuthResponseUser } from "./auth.type";
 import type { LoginDto } from "./dto/login.dto";
 import type { RefreshDto } from "./dto/refresh.dto";
 import type { RegisterDto } from "./dto/register.dto";
+
+type UserRole = AuthUser["role"];
 
 @Injectable()
 export class AuthService {
