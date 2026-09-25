@@ -12,7 +12,7 @@ import type { SetEnabledProviderDto } from "./dto/set-enabled-provider.dto";
 import type { UpdateProviderDto } from "./dto/update-provider.dto";
 import { GeminiProvider } from "./gemini.provider";
 import { OpenAiProvider } from "./openai.provider";
-import type { ProviderAdapter, ProviderPrompt } from "./provider.interface";
+import type { ProviderAdapter } from "./provider.interface";
 import type { EncryptedSecret } from "./secret-cipher.service";
 import { SecretCipherService } from "./secret-cipher.service";
 

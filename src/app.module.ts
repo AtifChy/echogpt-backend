@@ -11,6 +11,7 @@ import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { PrismaService } from "./prisma/prisma.service";
 import { ProvidersModule } from "./providers/providers.module";
+import { SearchModule } from "./search/search.module";
 import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
 import { UserModule } from "./users/users.module";
 
@@ -30,6 +31,7 @@ import { UserModule } from "./users/users.module";
     ProvidersModule,
     SubscriptionsModule,
     ChatModule,
+    SearchModule,
     HealthModule,
   ],
   controllers: [AppController],

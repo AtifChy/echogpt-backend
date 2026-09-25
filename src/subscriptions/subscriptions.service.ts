@@ -36,9 +36,9 @@ export class SubscriptionsService {
     };
   }
 
-  async assertAvailable(userId: number) {
+  async assertAvailable(userId: number, required = 1) {
     const usage = await this.getUsage(userId);
-    if (usage.status !== "ACTIVE" || usage.remaining <= 0) {
+    if (usage.status !== "ACTIVE" || usage.remaining < required) {
       throw new HttpException("Request limit reached", HttpStatus.TOO_MANY_REQUESTS);
     }
   }
