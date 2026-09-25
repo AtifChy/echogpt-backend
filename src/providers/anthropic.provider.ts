@@ -18,12 +18,12 @@ export class AnthropicProvider implements ProviderAdapter {
     const content = response.content
       .filter((block) => block.type === "text")
       .map((block) => block.text)
-      .join("");
+      .join("\n");
 
     return {
       content,
-      inputTokens: response.usage.input_tokens ?? 0,
-      outputTokens: response.usage.output_tokens ?? 0,
+      inputTokens: response.usage.input_tokens,
+      outputTokens: response.usage.output_tokens,
     };
   }
 }
