@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsString, Length, Min } from "class-validator";
+import { IsBoolean, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
 
 export class SendPromptDto {
   @ApiProperty()
@@ -11,4 +11,9 @@ export class SendPromptDto {
   @IsString()
   @Length(1, 20_000)
   prompt!: string;
+
+  @ApiProperty({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  webSearch?: boolean;
 }

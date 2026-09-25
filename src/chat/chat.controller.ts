@@ -16,8 +16,8 @@ import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { ChatService } from "./chat.service";
-import type { CreateConversationDto } from "./dto/create-conversation.dto";
-import type { SendPromptDto } from "./dto/send-prompt.dto";
+import { CreateConversationDto } from "./dto/create-conversation.dto";
+import { SendPromptDto } from "./dto/send-prompt.dto";
 
 @ApiTags("chat")
 @ApiBearerAuth()
