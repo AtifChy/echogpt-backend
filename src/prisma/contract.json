@@ -48,6 +48,107 @@
   "domain": {
     "namespaces": {
       "public": {
+        "enum": {
+          "ApiUsageOperation": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "CHAT",
+                "value": "CHAT"
+              },
+              {
+                "name": "SEARCH",
+                "value": "SEARCH"
+              }
+            ]
+          },
+          "ApiUsageStatus": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "SUCCESS",
+                "value": "SUCCESS"
+              },
+              {
+                "name": "FAILED",
+                "value": "FAILED"
+              }
+            ]
+          },
+          "MessageRole": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "SYSTEM",
+                "value": "SYSTEM"
+              },
+              {
+                "name": "USER",
+                "value": "USER"
+              },
+              {
+                "name": "ASSISTANT",
+                "value": "ASSISTANT"
+              }
+            ]
+          },
+          "ProviderType": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "OPENAI",
+                "value": "OPENAI"
+              },
+              {
+                "name": "ANTHROPIC",
+                "value": "ANTHROPIC"
+              },
+              {
+                "name": "GEMINI",
+                "value": "GEMINI"
+              }
+            ]
+          },
+          "SubscriptionPlan": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "FREE",
+                "value": "FREE"
+              },
+              {
+                "name": "PREMIUM",
+                "value": "PREMIUM"
+              }
+            ]
+          },
+          "SubscriptionStatus": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "ACTIVE",
+                "value": "ACTIVE"
+              },
+              {
+                "name": "CANCELED",
+                "value": "CANCELED"
+              }
+            ]
+          },
+          "UserStatus": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "ACTIVE",
+                "value": "ACTIVE"
+              },
+              {
+                "name": "SUSPENDED",
+                "value": "SUSPENDED"
+              }
+            ]
+          }
+        },
         "models": {
           "AiProvider": {
             "fields": {
@@ -119,6 +220,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "ProviderType",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "updatedAt": {
@@ -236,6 +343,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "ApiUsageOperation",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "outputTokens": {
@@ -257,6 +370,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "ApiUsageStatus",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "userId": {
@@ -493,6 +612,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "MessageRole",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               }
             },
@@ -790,6 +915,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "SubscriptionPlan",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "status": {
@@ -797,6 +928,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "SubscriptionStatus",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "updatedAt": {
@@ -912,6 +1049,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "UserStatus",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "updatedAt": {
@@ -1150,6 +1293,13 @@
         "entries": {
           "table": {
             "aiProvider": {
+              "checks": [
+                {
+                  "expression": "\"type\" IN ('OPENAI', 'ANTHROPIC', 'GEMINI')",
+                  "name": "aiProvider_type_check_03ab690d",
+                  "prefix": "aiProvider_type_check"
+                }
+              ],
               "columns": {
                 "apiKeyAuthTag": {
                   "codecId": "pg/text@1",
@@ -1215,7 +1365,13 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ProviderType",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1251,6 +1407,18 @@
               "uniques": []
             },
             "apiUsageLog": {
+              "checks": [
+                {
+                  "expression": "\"operation\" IN ('CHAT', 'SEARCH')",
+                  "name": "apiUsageLog_operation_check_f974256c",
+                  "prefix": "apiUsageLog_operation_check"
+                },
+                {
+                  "expression": "\"status\" IN ('SUCCESS', 'FAILED')",
+                  "name": "apiUsageLog_status_check_c68c3ebe",
+                  "prefix": "apiUsageLog_status_check"
+                }
+              ],
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1291,7 +1459,13 @@
                 "operation": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ApiUsageOperation",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "outputTokens": {
                   "codecId": "pg/int4@1",
@@ -1310,7 +1484,13 @@
                 "status": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ApiUsageStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
@@ -1512,6 +1692,13 @@
               "uniques": []
             },
             "message": {
+              "checks": [
+                {
+                  "expression": "\"role\" IN ('SYSTEM', 'USER', 'ASSISTANT')",
+                  "name": "message_role_check_66a272d0",
+                  "prefix": "message_role_check"
+                }
+              ],
               "columns": {
                 "content": {
                   "codecId": "pg/text@1",
@@ -1562,7 +1749,13 @@
                 "role": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "MessageRole",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 }
               },
               "foreignKeys": [
@@ -1809,6 +2002,18 @@
               ]
             },
             "subscription": {
+              "checks": [
+                {
+                  "expression": "\"plan\" IN ('FREE', 'PREMIUM')",
+                  "name": "subscription_plan_check_c89db803",
+                  "prefix": "subscription_plan_check"
+                },
+                {
+                  "expression": "\"status\" IN ('ACTIVE', 'CANCELED')",
+                  "name": "subscription_status_check_8a00ac15",
+                  "prefix": "subscription_status_check"
+                }
+              ],
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1841,12 +2046,24 @@
                 "plan": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "SubscriptionPlan",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "status": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "SubscriptionStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1903,6 +2120,13 @@
               ]
             },
             "user": {
+              "checks": [
+                {
+                  "expression": "\"status\" IN ('ACTIVE', 'SUSPENDED')",
+                  "name": "user_status_check_1527ac15",
+                  "prefix": "user_status_check"
+                }
+              ],
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1945,7 +2169,13 @@
                 "status": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "UserStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -2092,13 +2322,66 @@
               },
               "uniques": []
             }
+          },
+          "valueSet": {
+            "ApiUsageOperation": {
+              "kind": "valueSet",
+              "values": [
+                "CHAT",
+                "SEARCH"
+              ]
+            },
+            "ApiUsageStatus": {
+              "kind": "valueSet",
+              "values": [
+                "SUCCESS",
+                "FAILED"
+              ]
+            },
+            "MessageRole": {
+              "kind": "valueSet",
+              "values": [
+                "SYSTEM",
+                "USER",
+                "ASSISTANT"
+              ]
+            },
+            "ProviderType": {
+              "kind": "valueSet",
+              "values": [
+                "OPENAI",
+                "ANTHROPIC",
+                "GEMINI"
+              ]
+            },
+            "SubscriptionPlan": {
+              "kind": "valueSet",
+              "values": [
+                "FREE",
+                "PREMIUM"
+              ]
+            },
+            "SubscriptionStatus": {
+              "kind": "valueSet",
+              "values": [
+                "ACTIVE",
+                "CANCELED"
+              ]
+            },
+            "UserStatus": {
+              "kind": "valueSet",
+              "values": [
+                "ACTIVE",
+                "SUSPENDED"
+              ]
+            }
           }
         },
         "id": "public",
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "6ecaaa927964fbb0e4311de5f6be6d2bc0cb395e6426a85953b4a1384016d56f"
+    "storageHash": "13bc23f04d83aee0ffaf086d0c3e57b8ce1eccebd66cbd5340a7b475a905115a"
   },
   "execution": {
     "executionHash": "18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7",

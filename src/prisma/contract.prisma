@@ -10,7 +10,7 @@ model User {
   email         String                     @unique
   passwordHash  String
   displayName   String?
-  status        String
+  status        UserStatus
   roleId        Int
   role          Role                       @relation(fields:[roleId], references:[id])
   sessions      Session[]
@@ -23,6 +23,13 @@ model User {
 
   @@index([roleId])
   @@index([status])
+}
+
+enum UserStatus {
+  @@type("pg/text@1")
+
+  ACTIVE = "ACTIVE"
+  SUSPENDED = "SUSPENDED"
 }
 
 model Session {
@@ -42,8 +49,8 @@ model Subscription {
   id                 Int                        @id @default(autoincrement())
   userId             Int                        @unique
   user               User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
-  plan               String
-  status             String
+  plan               SubscriptionPlan
+  status             SubscriptionStatus
   currentPeriodStart TimestamptzString
   currentPeriodEnd   TimestamptzString
   createdAt          TimestamptzString          @default(now())
@@ -52,10 +59,24 @@ model Subscription {
   @@index([plan, status])
 }
 
+enum SubscriptionPlan {
+  @@type("pg/text@1")
+
+  FREE = "FREE"
+  PREMIUM = "PREMIUM"
+}
+
+enum SubscriptionStatus {
+  @@type("pg/text@1")
+
+  ACTIVE = "ACTIVE"
+  CANCELED = "CANCELED"
+}
+
 model AiProvider {
   id              Int                        @id @default(autoincrement())
   name            String
-  type            String
+  type            ProviderType
   model           String
   encryptedApiKey String
   apiKeyIv        String
@@ -69,6 +90,14 @@ model AiProvider {
 
   @@index([type])
   @@index([enabled, isDefault])
+}
+
+enum ProviderType {
+  @@type("pg/text@1")
+
+  OPENAI = "OPENAI"
+  ANTHROPIC = "ANTHROPIC"
+  GEMINI = "GEMINI"
 }
 
 model Conversation {
@@ -89,13 +118,21 @@ model Message {
   id             Int               @id @default(autoincrement())
   conversationId Int
   conversation   Conversation      @relation(fields:[conversationId], references:[id], onDelete: Cascade)
-  role           String
+  role           MessageRole
   content        String
   inputTokens    Int               @default(0)
   outputTokens   Int               @default(0)
   createdAt      TimestamptzString @default(now())
 
   @@index([conversationId, createdAt])
+}
+
+enum MessageRole {
+  @@type("pg/text@1")
+
+  SYSTEM = "SYSTEM"
+  USER = "USER"
+  ASSISTANT = "ASSISTANT"
 }
 
 model WebSearch {
@@ -129,8 +166,8 @@ model ApiUsageLog {
   user         User              @relation(fields:[userId], references:[id], onDelete: Cascade)
   providerId   Int
   provider     AiProvider        @relation(fields:[providerId], references:[id])
-  operation    String
-  status       String
+  operation    ApiUsageOperation
+  status       ApiUsageStatus
   inputTokens  Int               @default(0)
   outputTokens Int               @default(0)
   latencyMs    Int               @default(0)
@@ -139,4 +176,18 @@ model ApiUsageLog {
   @@index([userId, createdAt])
   @@index([providerId, createdAt])
   @@index([operation, status, createdAt])
+}
+
+enum ApiUsageOperation {
+  @@type("pg/text@1")
+
+  CHAT = "CHAT"
+  SEARCH = "SEARCH"
+}
+
+enum ApiUsageStatus {
+  @@type("pg/text@1")
+
+  SUCCESS = "SUCCESS"
+  FAILED = "FAILED"
 }

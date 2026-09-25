@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
-import { PrismaService } from "../prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import type { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
-import { PLAN_LIMITS, type Plan, type SubscriptionUsageResponse } from "./subscriptions.type";
+import { PLAN_LIMITS, type SubscriptionUsageResponse } from "./subscriptions.type";
 
 @Injectable()
 export class SubscriptionsService {
@@ -16,7 +16,7 @@ export class SubscriptionsService {
 
   async getUsage(userId: number): Promise<SubscriptionUsageResponse> {
     const subscription = await this.getSubscription(userId);
-    const plan = subscription.plan as Plan;
+    const plan = subscription.plan;
     const limit = PLAN_LIMITS[plan];
     if (!limit) throw new Error(`Unsupported plan: ${subscription.plan}`);
 

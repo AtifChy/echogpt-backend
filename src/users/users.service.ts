@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { argon2id, hash, verify } from "argon2";
 
-import { PrismaService } from "../prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import type { ChangePasswordDto } from "./dto/change-password.dto";
 import type { UpdateProfileDto } from "./dto/update-profile.dto";
 

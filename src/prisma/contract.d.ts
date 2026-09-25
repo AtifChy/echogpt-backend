@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'6ecaaa927964fbb0e4311de5f6be6d2bc0cb395e6426a85953b4a1384016d56f'>;
+  StorageHashBase<'13bc23f04d83aee0ffaf086d0c3e57b8ce1eccebd66cbd5340a7b475a905115a'>;
 export type ExecutionHash =
   ExecutionHashBase<'18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7'>;
 export type ProfileHash =
@@ -245,7 +245,7 @@ export type FieldOutputTypes = {
     readonly AiProvider: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
-      readonly type: CodecTypes['pg/text@1']['output'];
+      readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly model: CodecTypes['pg/text@1']['output'];
       readonly encryptedApiKey: CodecTypes['pg/text@1']['output'];
       readonly apiKeyIv: CodecTypes['pg/text@1']['output'];
@@ -259,8 +259,8 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
       readonly providerId: CodecTypes['pg/int4@1']['output'];
-      readonly operation: CodecTypes['pg/text@1']['output'];
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly operation: 'CHAT' | 'SEARCH';
+      readonly status: 'SUCCESS' | 'FAILED';
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
       readonly latencyMs: CodecTypes['pg/int4@1']['output'];
@@ -276,7 +276,7 @@ export type FieldOutputTypes = {
     readonly Message: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly conversationId: CodecTypes['pg/int4@1']['output'];
-      readonly role: CodecTypes['pg/text@1']['output'];
+      readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
       readonly content: CodecTypes['pg/text@1']['output'];
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
@@ -304,8 +304,8 @@ export type FieldOutputTypes = {
     readonly Subscription: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
-      readonly plan: CodecTypes['pg/text@1']['output'];
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly plan: 'FREE' | 'PREMIUM';
+      readonly status: 'ACTIVE' | 'CANCELED';
       readonly currentPeriodStart: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly currentPeriodEnd: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -316,7 +316,7 @@ export type FieldOutputTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly passwordHash: CodecTypes['pg/text@1']['output'];
       readonly displayName: CodecTypes['pg/text@1']['output'] | null;
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly roleId: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -335,7 +335,7 @@ export type FieldInputTypes = {
     readonly AiProvider: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
-      readonly type: CodecTypes['pg/text@1']['input'];
+      readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly model: CodecTypes['pg/text@1']['input'];
       readonly encryptedApiKey: CodecTypes['pg/text@1']['input'];
       readonly apiKeyIv: CodecTypes['pg/text@1']['input'];
@@ -349,8 +349,8 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
       readonly providerId: CodecTypes['pg/int4@1']['input'];
-      readonly operation: CodecTypes['pg/text@1']['input'];
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly operation: 'CHAT' | 'SEARCH';
+      readonly status: 'SUCCESS' | 'FAILED';
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
       readonly latencyMs: CodecTypes['pg/int4@1']['input'];
@@ -366,7 +366,7 @@ export type FieldInputTypes = {
     readonly Message: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly conversationId: CodecTypes['pg/int4@1']['input'];
-      readonly role: CodecTypes['pg/text@1']['input'];
+      readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
       readonly content: CodecTypes['pg/text@1']['input'];
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
@@ -394,8 +394,8 @@ export type FieldInputTypes = {
     readonly Subscription: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
-      readonly plan: CodecTypes['pg/text@1']['input'];
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly plan: 'FREE' | 'PREMIUM';
+      readonly status: 'ACTIVE' | 'CANCELED';
       readonly currentPeriodStart: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly currentPeriodEnd: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -406,7 +406,7 @@ export type FieldInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly passwordHash: CodecTypes['pg/text@1']['input'];
       readonly displayName: CodecTypes['pg/text@1']['input'] | null;
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly roleId: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -432,7 +432,7 @@ export type StorageColumnTypes = {
       readonly isDefault: CodecTypes['pg/bool@1']['output'];
       readonly model: CodecTypes['pg/text@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
-      readonly type: CodecTypes['pg/text@1']['output'];
+      readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly apiUsageLog: {
@@ -440,10 +440,10 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly latencyMs: CodecTypes['pg/int4@1']['output'];
-      readonly operation: CodecTypes['pg/text@1']['output'];
+      readonly operation: 'CHAT' | 'SEARCH';
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
       readonly providerId: CodecTypes['pg/int4@1']['output'];
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly status: 'SUCCESS' | 'FAILED';
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
     readonly conversation: {
@@ -460,7 +460,7 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
-      readonly role: CodecTypes['pg/text@1']['output'];
+      readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -486,8 +486,8 @@ export type StorageColumnTypes = {
       readonly currentPeriodEnd: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly currentPeriodStart: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly plan: CodecTypes['pg/text@1']['output'];
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly plan: 'FREE' | 'PREMIUM';
+      readonly status: 'ACTIVE' | 'CANCELED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
@@ -498,7 +498,7 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly passwordHash: CodecTypes['pg/text@1']['output'];
       readonly roleId: CodecTypes['pg/int4@1']['output'];
-      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly webSearch: {
@@ -522,7 +522,7 @@ export type StorageColumnInputTypes = {
       readonly isDefault: CodecTypes['pg/bool@1']['input'];
       readonly model: CodecTypes['pg/text@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
-      readonly type: CodecTypes['pg/text@1']['input'];
+      readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly apiUsageLog: {
@@ -530,10 +530,10 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly latencyMs: CodecTypes['pg/int4@1']['input'];
-      readonly operation: CodecTypes['pg/text@1']['input'];
+      readonly operation: 'CHAT' | 'SEARCH';
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
       readonly providerId: CodecTypes['pg/int4@1']['input'];
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly status: 'SUCCESS' | 'FAILED';
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
     readonly conversation: {
@@ -550,7 +550,7 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
-      readonly role: CodecTypes['pg/text@1']['input'];
+      readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -576,8 +576,8 @@ export type StorageColumnInputTypes = {
       readonly currentPeriodEnd: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly currentPeriodStart: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly plan: CodecTypes['pg/text@1']['input'];
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly plan: 'FREE' | 'PREMIUM';
+      readonly status: 'ACTIVE' | 'CANCELED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
@@ -588,7 +588,7 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly passwordHash: CodecTypes['pg/text@1']['input'];
       readonly roleId: CodecTypes['pg/int4@1']['input'];
-      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly webSearch: {
@@ -613,7 +613,7 @@ export namespace Models {
     email: CodecTypes['pg/text@1']['output'];
     passwordHash: CodecTypes['pg/text@1']['output'];
     displayName: CodecTypes['pg/text@1']['output'] | null;
-    status: CodecTypes['pg/text@1']['output'];
+    status: 'ACTIVE' | 'SUSPENDED';
     roleId: CodecTypes['pg/int4@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -639,8 +639,8 @@ export namespace Models {
   export type public_Subscription = {
     id: CodecTypes['pg/int4@1']['output'];
     userId: CodecTypes['pg/int4@1']['output'];
-    plan: CodecTypes['pg/text@1']['output'];
-    status: CodecTypes['pg/text@1']['output'];
+    plan: 'FREE' | 'PREMIUM';
+    status: 'ACTIVE' | 'CANCELED';
     currentPeriodStart: CodecTypes['pg/timestamptz-string@1']['output'];
     currentPeriodEnd: CodecTypes['pg/timestamptz-string@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -651,7 +651,7 @@ export namespace Models {
   export type public_AiProvider = {
     id: CodecTypes['pg/int4@1']['output'];
     name: CodecTypes['pg/text@1']['output'];
-    type: CodecTypes['pg/text@1']['output'];
+    type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
     model: CodecTypes['pg/text@1']['output'];
     encryptedApiKey: CodecTypes['pg/text@1']['output'];
     apiKeyIv: CodecTypes['pg/text@1']['output'];
@@ -678,7 +678,7 @@ export namespace Models {
   export type public_Message = {
     id: CodecTypes['pg/int4@1']['output'];
     conversationId: CodecTypes['pg/int4@1']['output'];
-    role: CodecTypes['pg/text@1']['output'];
+    role: 'SYSTEM' | 'USER' | 'ASSISTANT';
     content: CodecTypes['pg/text@1']['output'];
     inputTokens: CodecTypes['pg/int4@1']['output'];
     outputTokens: CodecTypes['pg/int4@1']['output'];
@@ -709,8 +709,8 @@ export namespace Models {
     id: CodecTypes['pg/int4@1']['output'];
     userId: CodecTypes['pg/int4@1']['output'];
     providerId: CodecTypes['pg/int4@1']['output'];
-    operation: CodecTypes['pg/text@1']['output'];
-    status: CodecTypes['pg/text@1']['output'];
+    operation: 'CHAT' | 'SEARCH';
+    status: 'SUCCESS' | 'FAILED';
     inputTokens: CodecTypes['pg/int4@1']['output'];
     outputTokens: CodecTypes['pg/int4@1']['output'];
     latencyMs: CodecTypes['pg/int4@1']['output'];
@@ -1504,6 +1504,36 @@ type ContractBase = Omit<
               ];
             };
           };
+          readonly valueSet: {
+            readonly ApiUsageOperation: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['CHAT', 'SEARCH'];
+            };
+            readonly ApiUsageStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['SUCCESS', 'FAILED'];
+            };
+            readonly MessageRole: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['SYSTEM', 'USER', 'ASSISTANT'];
+            };
+            readonly ProviderType: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['OPENAI', 'ANTHROPIC', 'GEMINI'];
+            };
+            readonly SubscriptionPlan: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['FREE', 'PREMIUM'];
+            };
+            readonly SubscriptionStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['ACTIVE', 'CANCELED'];
+            };
+            readonly UserStatus: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['ACTIVE', 'SUSPENDED'];
+            };
+          };
         };
       };
     };
@@ -2251,6 +2281,59 @@ type ContractBase = Omit<
                 readonly createdAt: { readonly column: 'createdAt' };
               };
             };
+          };
+        };
+        readonly enum: {
+          readonly UserStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'ACTIVE'; readonly value: 'ACTIVE' },
+              { readonly name: 'SUSPENDED'; readonly value: 'SUSPENDED' },
+            ];
+          };
+          readonly SubscriptionPlan: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'FREE'; readonly value: 'FREE' },
+              { readonly name: 'PREMIUM'; readonly value: 'PREMIUM' },
+            ];
+          };
+          readonly SubscriptionStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'ACTIVE'; readonly value: 'ACTIVE' },
+              { readonly name: 'CANCELED'; readonly value: 'CANCELED' },
+            ];
+          };
+          readonly ProviderType: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'OPENAI'; readonly value: 'OPENAI' },
+              { readonly name: 'ANTHROPIC'; readonly value: 'ANTHROPIC' },
+              { readonly name: 'GEMINI'; readonly value: 'GEMINI' },
+            ];
+          };
+          readonly MessageRole: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'SYSTEM'; readonly value: 'SYSTEM' },
+              { readonly name: 'USER'; readonly value: 'USER' },
+              { readonly name: 'ASSISTANT'; readonly value: 'ASSISTANT' },
+            ];
+          };
+          readonly ApiUsageOperation: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'CHAT'; readonly value: 'CHAT' },
+              { readonly name: 'SEARCH'; readonly value: 'SEARCH' },
+            ];
+          };
+          readonly ApiUsageStatus: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'SUCCESS'; readonly value: 'SUCCESS' },
+              { readonly name: 'FAILED'; readonly value: 'FAILED' },
+            ];
           };
         };
       };

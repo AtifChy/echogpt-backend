@@ -1,3 +1,5 @@
+import type { Models } from "../prisma/contract";
+
 export interface ProviderPrompt {
   apiKey: string;
   model: string;
@@ -10,7 +12,9 @@ export interface ProviderResponse {
   outputTokens: number;
 }
 
+type ProviderType = Models.public_AiProvider["type"];
+
 export interface ProviderAdapter {
-  readonly type: "OPENAI" | "ANTHROPIC" | "GEMINI";
+  readonly type: ProviderType;
   generate(input: ProviderPrompt): Promise<ProviderResponse>;
 }
