@@ -1,13 +1,16 @@
-export const PLAN_LIMITS = {
+import type { Models } from "../prisma/contract";
+
+type SubscriptionPlan = Models.public_Subscription["plan"];
+type SubscriptionStatus = Models.public_Subscription["status"];
+
+export const PLAN_LIMITS: Record<SubscriptionPlan, number> = {
   FREE: 100,
   PREMIUM: 5_000,
 } as const;
 
-export type Plan = keyof typeof PLAN_LIMITS;
-
 export interface SubscriptionUsageResponse {
-  plan: Plan;
-  status: "ACTIVE" | "CANCELED";
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
   limit: number;
   used: number;
   remaining: number;

@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 
-import { PrismaService } from "../prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import { AnthropicProvider } from "./anthropic.provider";
 import type { CreateProviderDto } from "./dto/create-provider.dto";
 import type { SetEnabledProviderDto } from "./dto/set-enabled-provider.dto";
