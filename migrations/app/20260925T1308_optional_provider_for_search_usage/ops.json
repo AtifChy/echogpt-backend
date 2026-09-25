@@ -1,0 +1,45 @@
+[
+  {
+    "id": "alterNullability.dropNotNull.apiUsageLog.providerId",
+    "label": "Drop NOT NULL on \"apiUsageLog\".\"providerId\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "providerId",
+        "table": "apiUsageLog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"providerId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "apiUsageLog",
+          "providerId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop NOT NULL on \"providerId\"",
+        "sql": "ALTER TABLE \"public\".\"apiUsageLog\" ALTER COLUMN \"providerId\" DROP NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"providerId\" is nullable",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "apiUsageLog",
+          "providerId",
+          "YES"
+        ]
+      }
+    ]
+  }
+]
