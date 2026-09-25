@@ -17,9 +17,9 @@ type UserRole = AuthUser["role"];
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly jwt: JwtService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async register(dto: RegisterDto) {

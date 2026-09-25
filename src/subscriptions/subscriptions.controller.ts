@@ -1,14 +1,14 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { AuthGuard } from "../auth/auth.guard";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { SubscriptionsService } from "./subscriptions.service";
 
 @ApiTags("subscriptions")
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller()
 export class SubscriptionsController {
   constructor(private readonly subscriptions: SubscriptionsService) {}

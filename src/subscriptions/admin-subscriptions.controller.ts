@@ -1,7 +1,7 @@
 import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
-import { AuthGuard } from "../auth/auth.guard";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../common/roles.decorator";
 import { RolesGuard } from "../common/roles.guard";
 import { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
@@ -10,7 +10,7 @@ import { SubscriptionsService } from "./subscriptions.service";
 @ApiTags("admin")
 @ApiBearerAuth()
 @Roles("ADMIN")
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller("admin/users")
 export class AdminSubscriptionsController {
   constructor(private readonly subscriptions: SubscriptionsService) {}
