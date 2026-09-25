@@ -133,8 +133,12 @@
               "conversations": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["providerId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "providerId"
+                  ]
                 },
                 "to": {
                   "model": "Conversation",
@@ -144,8 +148,12 @@
               "usageLogs": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["providerId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "providerId"
+                  ]
                 },
                 "to": {
                   "model": "ApiUsageLog",
@@ -264,8 +272,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["providerId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "providerId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "AiProvider",
@@ -276,8 +288,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["userId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -361,8 +377,12 @@
               "messages": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["conversationId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "conversationId"
+                  ]
                 },
                 "to": {
                   "model": "Message",
@@ -373,8 +393,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["providerId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "providerId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "AiProvider",
@@ -385,8 +409,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["userId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -473,8 +501,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["conversationId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "conversationId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "Conversation",
@@ -531,8 +563,12 @@
               "users": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["roleId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "roleId"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -596,8 +632,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["searchId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "searchId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "WebSearch",
@@ -677,8 +717,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["userId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -775,8 +819,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["userId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -878,8 +926,12 @@
               "conversations": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["userId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
                 },
                 "to": {
                   "model": "Conversation",
@@ -890,8 +942,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["roleId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "roleId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "Role",
@@ -901,8 +957,12 @@
               "searches": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["userId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
                 },
                 "to": {
                   "model": "WebSearch",
@@ -912,8 +972,12 @@
               "sessions": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["userId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
                 },
                 "to": {
                   "model": "Session",
@@ -924,8 +988,12 @@
                 "cardinality": "1:1",
                 "nullable": true,
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["userId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
                 },
                 "to": {
                   "model": "Subscription",
@@ -935,8 +1003,12 @@
               "usageLogs": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["userId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
                 },
                 "to": {
                   "model": "ApiUsageLog",
@@ -1017,8 +1089,12 @@
               "results": {
                 "cardinality": "1:N",
                 "on": {
-                  "localFields": ["id"],
-                  "targetFields": ["searchId"]
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "searchId"
+                  ]
                 },
                 "to": {
                   "model": "SearchResult",
@@ -1029,8 +1105,12 @@
                 "cardinality": "N:1",
                 "nullable": false,
                 "on": {
-                  "localFields": ["userId"],
-                  "targetFields": ["id"]
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
                 },
                 "to": {
                   "model": "User",
@@ -1146,20 +1226,27 @@
               "foreignKeys": [],
               "indexes": [
                 {
-                  "columns": ["enabled", "isDefault"],
+                  "columns": [
+                    "enabled",
+                    "isDefault"
+                  ],
                   "name": "aiProvider_enabled_isDefault_idx_fa0ac46a",
                   "prefix": "aiProvider_enabled_isDefault_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["type"],
+                  "columns": [
+                    "type"
+                  ],
                   "name": "aiProvider_type_idx_b6b604ea",
                   "prefix": "aiProvider_type_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": []
             },
@@ -1235,24 +1322,32 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["userId"],
+                    "columns": [
+                      "userId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "apiUsageLog"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   }
                 },
                 {
                   "source": {
-                    "columns": ["providerId"],
+                    "columns": [
+                      "providerId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "apiUsageLog"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "aiProvider"
                   }
@@ -1260,38 +1355,54 @@
               ],
               "indexes": [
                 {
-                  "columns": ["operation", "status", "createdAt"],
+                  "columns": [
+                    "operation",
+                    "status",
+                    "createdAt"
+                  ],
                   "name": "apiUsageLog_operation_status_createdAt_idx_da0bdac7",
                   "prefix": "apiUsageLog_operation_status_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["providerId", "createdAt"],
+                  "columns": [
+                    "providerId",
+                    "createdAt"
+                  ],
                   "name": "apiUsageLog_providerId_createdAt_idx_e4279843",
                   "prefix": "apiUsageLog_providerId_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["providerId"],
+                  "columns": [
+                    "providerId"
+                  ],
                   "name": "apiUsageLog_providerId_idx_d1904c54",
                   "prefix": "apiUsageLog_providerId_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId", "createdAt"],
+                  "columns": [
+                    "userId",
+                    "createdAt"
+                  ],
                   "name": "apiUsageLog_userId_createdAt_idx_f726f04a",
                   "prefix": "apiUsageLog_userId_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId"],
+                  "columns": [
+                    "userId"
+                  ],
                   "name": "apiUsageLog_userId_idx_a489d58a",
                   "prefix": "apiUsageLog_userId_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": []
             },
@@ -1335,24 +1446,32 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["userId"],
+                    "columns": [
+                      "userId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "conversation"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   }
                 },
                 {
                   "source": {
-                    "columns": ["providerId"],
+                    "columns": [
+                      "providerId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "conversation"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "aiProvider"
                   }
@@ -1360,26 +1479,35 @@
               ],
               "indexes": [
                 {
-                  "columns": ["providerId"],
+                  "columns": [
+                    "providerId"
+                  ],
                   "name": "conversation_providerId_idx_d1904c54",
                   "prefix": "conversation_providerId_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId"],
+                  "columns": [
+                    "userId"
+                  ],
                   "name": "conversation_userId_idx_a489d58a",
                   "prefix": "conversation_userId_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId", "updatedAt"],
+                  "columns": [
+                    "userId",
+                    "updatedAt"
+                  ],
                   "name": "conversation_userId_updatedAt_idx_42f5280d",
                   "prefix": "conversation_userId_updatedAt_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": []
             },
@@ -1441,12 +1569,16 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["conversationId"],
+                    "columns": [
+                      "conversationId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "message"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "conversation"
                   }
@@ -1454,20 +1586,27 @@
               ],
               "indexes": [
                 {
-                  "columns": ["conversationId", "createdAt"],
+                  "columns": [
+                    "conversationId",
+                    "createdAt"
+                  ],
                   "name": "message_conversationId_createdAt_idx_44d4ac61",
                   "prefix": "message_conversationId_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["conversationId"],
+                  "columns": [
+                    "conversationId"
+                  ],
                   "name": "message_conversationId_idx_669215a6",
                   "prefix": "message_conversationId_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": []
             },
@@ -1491,11 +1630,15 @@
               "foreignKeys": [],
               "indexes": [],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": [
                 {
-                  "columns": ["name"]
+                  "columns": [
+                    "name"
+                  ]
                 }
               ]
             },
@@ -1535,12 +1678,16 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["searchId"],
+                    "columns": [
+                      "searchId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "searchResult"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "webSearch"
                   }
@@ -1548,18 +1695,25 @@
               ],
               "indexes": [
                 {
-                  "columns": ["searchId"],
+                  "columns": [
+                    "searchId"
+                  ],
                   "name": "searchResult_searchId_idx_fa57cfdf",
                   "prefix": "searchResult_searchId_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": [
                 {
-                  "columns": ["searchId", "url"]
+                  "columns": [
+                    "searchId",
+                    "url"
+                  ]
                 }
               ]
             },
@@ -1608,12 +1762,16 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["userId"],
+                    "columns": [
+                      "userId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "session"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   }
@@ -1621,24 +1779,32 @@
               ],
               "indexes": [
                 {
-                  "columns": ["expiresAt"],
+                  "columns": [
+                    "expiresAt"
+                  ],
                   "name": "session_expiresAt_idx_6b6b8c10",
                   "prefix": "session_expiresAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId"],
+                  "columns": [
+                    "userId"
+                  ],
                   "name": "session_userId_idx_a489d58a",
                   "prefix": "session_userId_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": [
                 {
-                  "columns": ["tokenHash"]
+                  "columns": [
+                    "tokenHash"
+                  ]
                 }
               ]
             },
@@ -1697,12 +1863,16 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["userId"],
+                    "columns": [
+                      "userId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "subscription"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   }
@@ -1710,18 +1880,25 @@
               ],
               "indexes": [
                 {
-                  "columns": ["plan", "status"],
+                  "columns": [
+                    "plan",
+                    "status"
+                  ],
                   "name": "subscription_plan_status_idx_b8193307",
                   "prefix": "subscription_plan_status_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": [
                 {
-                  "columns": ["userId"]
+                  "columns": [
+                    "userId"
+                  ]
                 }
               ]
             },
@@ -1779,12 +1956,16 @@
               "foreignKeys": [
                 {
                   "source": {
-                    "columns": ["roleId"],
+                    "columns": [
+                      "roleId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "role"
                   }
@@ -1792,24 +1973,32 @@
               ],
               "indexes": [
                 {
-                  "columns": ["roleId"],
+                  "columns": [
+                    "roleId"
+                  ],
                   "name": "user_roleId_idx_ffccc9a4",
                   "prefix": "user_roleId_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["status"],
+                  "columns": [
+                    "status"
+                  ],
                   "name": "user_status_idx_e98638ab",
                   "prefix": "user_status_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": [
                 {
-                  "columns": ["email"]
+                  "columns": [
+                    "email"
+                  ]
                 }
               ]
             },
@@ -1853,12 +2042,16 @@
                 {
                   "onDelete": "cascade",
                   "source": {
-                    "columns": ["userId"],
+                    "columns": [
+                      "userId"
+                    ],
                     "namespaceId": "public",
                     "tableName": "webSearch"
                   },
                   "target": {
-                    "columns": ["id"],
+                    "columns": [
+                      "id"
+                    ],
                     "namespaceId": "public",
                     "tableName": "user"
                   }
@@ -1866,26 +2059,36 @@
               ],
               "indexes": [
                 {
-                  "columns": ["normalizedQuery", "createdAt"],
+                  "columns": [
+                    "normalizedQuery",
+                    "createdAt"
+                  ],
                   "name": "webSearch_normalizedQuery_createdAt_idx_376dfe66",
                   "prefix": "webSearch_normalizedQuery_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId", "createdAt"],
+                  "columns": [
+                    "userId",
+                    "createdAt"
+                  ],
                   "name": "webSearch_userId_createdAt_idx_f726f04a",
                   "prefix": "webSearch_userId_createdAt_idx",
                   "unique": false
                 },
                 {
-                  "columns": ["userId"],
+                  "columns": [
+                    "userId"
+                  ],
                   "name": "webSearch_userId_idx_a489d58a",
                   "prefix": "webSearch_userId_idx",
                   "unique": false
                 }
               ],
               "primaryKey": {
-                "columns": ["id"]
+                "columns": [
+                  "id"
+                ]
               },
               "uniques": []
             }
