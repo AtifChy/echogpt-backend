@@ -108,16 +108,16 @@ export class ProvidersService {
     return this.getSafe(id);
   }
 
-  async generate(id: number, prompt: string): Promise<ProviderPrompt> {
+  async generate(id: number, prompt: string) {
     const provider = await this.find(id);
     if (!provider.enabled) throw new ConflictException("Provider is disabled");
     const adapter = this.adapters.get(provider.type);
     if (!adapter) throw new BadRequestException(`Unsupported provider: ${provider.type}`);
-    return {
+    return adapter.generate({
       apiKey: this.cipher.decrypt(provider),
       model: provider.model,
       prompt,
-    };
+    });
   }
 
   async resolveId(id?: number) {
