@@ -37,11 +37,7 @@ export class ProvidersService {
     anthropic: AnthropicProvider,
     gemini: GeminiProvider,
   ) {
-    this.adapters = new Map<string, ProviderAdapter>([
-      [openai.type, openai],
-      [anthropic.type, anthropic],
-      [gemini.type, gemini],
-    ]);
+    this.adapters = new Map([openai, anthropic, gemini].map((adapter) => [adapter.type, adapter]));
   }
 
   list() {
