@@ -359,7 +359,7 @@
                 }
               },
               "providerId": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
@@ -389,7 +389,7 @@
             "relations": {
               "provider": {
                 "cardinality": "N:1",
-                "nullable": false,
+                "nullable": true,
                 "on": {
                   "localFields": [
                     "providerId"
@@ -1479,7 +1479,7 @@
                 "providerId": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
-                  "nullable": false
+                  "nullable": true
                 },
                 "status": {
                   "codecId": "pg/text@1",
@@ -2381,7 +2381,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "13bc23f04d83aee0ffaf086d0c3e57b8ce1eccebd66cbd5340a7b475a905115a"
+    "storageHash": "8e72bd9ac12e9a6de629228bcc6f510d456f82cc3a292eb329428bf4819b8eed"
   },
   "execution": {
     "executionHash": "18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7",

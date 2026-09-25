@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'13bc23f04d83aee0ffaf086d0c3e57b8ce1eccebd66cbd5340a7b475a905115a'>;
+  StorageHashBase<'8e72bd9ac12e9a6de629228bcc6f510d456f82cc3a292eb329428bf4819b8eed'>;
 export type ExecutionHash =
   ExecutionHashBase<'18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7'>;
 export type ProfileHash =
@@ -258,7 +258,7 @@ export type FieldOutputTypes = {
     readonly ApiUsageLog: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
-      readonly providerId: CodecTypes['pg/int4@1']['output'];
+      readonly providerId: CodecTypes['pg/int4@1']['output'] | null;
       readonly operation: 'CHAT' | 'SEARCH';
       readonly status: 'SUCCESS' | 'FAILED';
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
@@ -348,7 +348,7 @@ export type FieldInputTypes = {
     readonly ApiUsageLog: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
-      readonly providerId: CodecTypes['pg/int4@1']['input'];
+      readonly providerId: CodecTypes['pg/int4@1']['input'] | null;
       readonly operation: 'CHAT' | 'SEARCH';
       readonly status: 'SUCCESS' | 'FAILED';
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
@@ -442,7 +442,7 @@ export type StorageColumnTypes = {
       readonly latencyMs: CodecTypes['pg/int4@1']['output'];
       readonly operation: 'CHAT' | 'SEARCH';
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
-      readonly providerId: CodecTypes['pg/int4@1']['output'];
+      readonly providerId: CodecTypes['pg/int4@1']['output'] | null;
       readonly status: 'SUCCESS' | 'FAILED';
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
@@ -532,7 +532,7 @@ export type StorageColumnInputTypes = {
       readonly latencyMs: CodecTypes['pg/int4@1']['input'];
       readonly operation: 'CHAT' | 'SEARCH';
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
-      readonly providerId: CodecTypes['pg/int4@1']['input'];
+      readonly providerId: CodecTypes['pg/int4@1']['input'] | null;
       readonly status: 'SUCCESS' | 'FAILED';
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
@@ -708,14 +708,14 @@ export namespace Models {
   export type public_ApiUsageLog = {
     id: CodecTypes['pg/int4@1']['output'];
     userId: CodecTypes['pg/int4@1']['output'];
-    providerId: CodecTypes['pg/int4@1']['output'];
+    providerId: CodecTypes['pg/int4@1']['output'] | null;
     operation: 'CHAT' | 'SEARCH';
     status: 'SUCCESS' | 'FAILED';
     inputTokens: CodecTypes['pg/int4@1']['output'];
     outputTokens: CodecTypes['pg/int4@1']['output'];
     latencyMs: CodecTypes['pg/int4@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    provider: public_AiProvider;
+    provider: public_AiProvider | null;
     user: public_User;
     readonly [RelationKeys]?: 'provider' | 'user';
   };
@@ -862,7 +862,7 @@ type ContractBase = Omit<
                 readonly providerId: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                 };
                 readonly operation: {
                   readonly nativeType: 'text';
@@ -1680,7 +1680,7 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly providerId: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly operation: {
@@ -1718,7 +1718,7 @@ type ContractBase = Omit<
                   readonly model: 'AiProvider';
                 };
                 readonly cardinality: 'N:1';
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly on: {
                   readonly localFields: readonly ['providerId'];
                   readonly targetFields: readonly ['id'];

@@ -164,8 +164,8 @@ model ApiUsageLog {
   id           Int               @id @default(autoincrement())
   userId       Int
   user         User              @relation(fields:[userId], references:[id], onDelete: Cascade)
-  providerId   Int
-  provider     AiProvider        @relation(fields:[providerId], references:[id])
+  providerId   Int?
+  provider     AiProvider?       @relation(fields:[providerId], references:[id])
   operation    ApiUsageOperation
   status       ApiUsageStatus
   inputTokens  Int               @default(0)
