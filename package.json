@@ -1,6 +1,7 @@
 {
   "name": "echogpt-backend",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsc --noEmit && tsdown",
@@ -18,6 +19,7 @@
     "dev": "bun --watch src/main.ts",
     "dev:composer": "bun run build && bun run composer:dev",
     "migrate": "prisma db migrate",
+    "migrate:advance": "prisma db migrate --advance-ref db",
     "migration:plan": "prisma migration plan",
     "migration:show": "prisma migration show",
     "migration:status": "prisma migration status",
