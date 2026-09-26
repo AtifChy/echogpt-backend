@@ -182,6 +182,23 @@ All routes use the `/api/v1` prefix.
 
 Swagger contains the complete request bodies, parameters, response examples, authentication requirements, and error responses for every endpoint.
 
+## Postman collection
+
+To open the collection:
+
+1. Start the API with `bun run dev`.
+2. Open the repository root in the Postman desktop app using **Files → Open folder**.
+3. Switch Postman to **Local View**.
+4. Select the **EchoGPT Local** environment.
+5. Open the **EchoGPT Backend API** collection.
+6. Start with **Authentication → Register user** or **Login**.
+
+Successful authentication automatically saves the access token, refresh token, and user ID. Creating a provider or conversation also saves its ID for later requests.
+
+Before using the admin folders, promote the registered account with `bun run admin:promote <email>`. Then configure `providerType`, `providerModel`, and `providerApiKey` in the collection variables. Add, enable, and select a default provider before using Chat. Supported provider types are `OPENAI`, `ANTHROPIC`, and `GEMINI`.
+
+Logout, password change, account deletion, conversation deletion, provider deletion, and history clearing change or remove stored state, so run them only when needed. Their Postman scripts clear revoked tokens and deleted resource IDs automatically.
+
 ## Tests
 
 Unit tests use test environment values. End-to-end tests also require a separate PostgreSQL database so development data is never cleared.
@@ -254,11 +271,11 @@ bun run contract:emit
 # Plan a migration from the current database reference
 bun run migration:plan -- --name describe-the-change
 
-# Review the planned migration
-bun run migration:show
-
 # Apply committed migrations
 bun run migrate
+
+# Advance the db migration reference
+bun run migrate:advance
 
 # Verify the database against the contract
 bun run db:verify
