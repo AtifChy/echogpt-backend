@@ -109,6 +109,19 @@
               }
             ]
           },
+          "RoleName": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "ADMIN",
+                "value": "ADMIN"
+              },
+              {
+                "name": "USER",
+                "value": "USER"
+              }
+            ]
+          },
           "SubscriptionPlan": {
             "codecId": "pg/text@1",
             "members": [
@@ -681,6 +694,12 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "RoleName",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               }
             },
@@ -1804,6 +1823,13 @@
               "uniques": []
             },
             "role": {
+              "checks": [
+                {
+                  "expression": "\"name\" IN ('ADMIN', 'USER')",
+                  "name": "role_name_check_f0513a97",
+                  "prefix": "role_name_check"
+                }
+              ],
               "columns": {
                 "id": {
                   "codecId": "pg/int4@1",
@@ -1817,7 +1843,13 @@
                 "name": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "RoleName",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 }
               },
               "foreignKeys": [],
@@ -2354,6 +2386,13 @@
                 "GEMINI"
               ]
             },
+            "RoleName": {
+              "kind": "valueSet",
+              "values": [
+                "ADMIN",
+                "USER"
+              ]
+            },
             "SubscriptionPlan": {
               "kind": "valueSet",
               "values": [
@@ -2381,7 +2420,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "8e72bd9ac12e9a6de629228bcc6f510d456f82cc3a292eb329428bf4819b8eed"
+    "storageHash": "f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e"
   },
   "execution": {
     "executionHash": "18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7",
