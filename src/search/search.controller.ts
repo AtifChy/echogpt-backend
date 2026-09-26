@@ -62,6 +62,6 @@ export class SearchController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({ description: "Search history cleared" })
   async clear(@CurrentUser() user: AuthUser) {
-    this.searchService.clearHistory(user.userId);
+    await this.searchService.clearHistory(user.userId);
   }
 }
