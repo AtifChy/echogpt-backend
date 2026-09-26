@@ -1,0 +1,23 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/admin/providers"
+order: 1000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "{{providerName}}",
+      "type": "{{providerType}}",
+      "model": "{{providerModel}}",
+      "apiKey": "{{providerApiKey}}",
+      "enabled": false
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      if (pm.response.code === 201) {
+        pm.collectionVariables.set('providerId', String(pm.response.json().id));
+      }
+    language: text/javascript

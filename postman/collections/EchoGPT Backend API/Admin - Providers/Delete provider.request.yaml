@@ -1,0 +1,11 @@
+$kind: http-request
+method: DELETE
+url: "{{baseUrl}}/admin/providers/{{providerId}}"
+order: 7000
+scripts:
+  - type: afterResponse
+    code: |-
+      if (pm.response.code === 204) {
+        pm.collectionVariables.unset('providerId');
+      }
+    language: text/javascript

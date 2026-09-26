@@ -1,0 +1,11 @@
+$kind: http-request
+method: DELETE
+url: "{{baseUrl}}/conversations/{{conversationId}}"
+order: 5000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      if (pm.response.code === 204) {
+        pm.collectionVariables.unset('conversationId');
+      }

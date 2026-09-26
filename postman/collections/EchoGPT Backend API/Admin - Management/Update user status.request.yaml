@@ -1,0 +1,13 @@
+$kind: http-request
+method: PATCH
+url: "{{baseUrl}}/admin/users/{{targetUserId}}/status"
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "status": "ACTIVE"
+    }

@@ -1,0 +1,20 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/conversations"
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "providerId": {{providerId}}
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      if (pm.response.code === 201) {
+        pm.collectionVariables.set('conversationId', String(pm.response.json().id));
+      }
