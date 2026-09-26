@@ -50,7 +50,7 @@ export class AdminService {
     await this.prisma.db.transaction(async (tx) => {
       await tx.orm.public.User.where({ id: userId }).update({ status });
       if (status === "SUSPENDED") {
-        await tx.orm.public.Session.where({ userId }).update({
+        await tx.orm.public.Session.where({ userId }).updateAll({
           revokedAt: new Date().toISOString(),
         });
       }
