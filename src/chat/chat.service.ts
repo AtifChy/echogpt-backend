@@ -101,7 +101,7 @@ export class ChatService {
         userId,
         providerId: conversation.providerId,
         operation: "CHAT",
-        status: "SUCCESS",
+        status: "FAILED",
         inputTokens: 0,
         outputTokens: 0,
         latencyMs: Date.now() - startedAt,
