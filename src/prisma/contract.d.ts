@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'8e72bd9ac12e9a6de629228bcc6f510d456f82cc3a292eb329428bf4819b8eed'>;
+  StorageHashBase<'f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e'>;
 export type ExecutionHash =
   ExecutionHashBase<'18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7'>;
 export type ProfileHash =
@@ -284,7 +284,7 @@ export type FieldOutputTypes = {
     };
     readonly Role: {
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly name: 'ADMIN' | 'USER';
     };
     readonly SearchResult: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -374,7 +374,7 @@ export type FieldInputTypes = {
     };
     readonly Role: {
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly name: 'ADMIN' | 'USER';
     };
     readonly SearchResult: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -464,7 +464,7 @@ export type StorageColumnTypes = {
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly name: 'ADMIN' | 'USER';
     };
     readonly searchResult: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -554,7 +554,7 @@ export type StorageColumnInputTypes = {
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly name: 'ADMIN' | 'USER';
     };
     readonly searchResult: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -604,7 +604,7 @@ export type StorageColumnInputTypes = {
 export namespace Models {
   export type public_Role = {
     id: CodecTypes['pg/int4@1']['output'];
-    name: CodecTypes['pg/text@1']['output'];
+    name: 'ADMIN' | 'USER';
     users: public_User[];
     readonly [RelationKeys]?: 'users';
   };
@@ -1521,6 +1521,10 @@ type ContractBase = Omit<
               readonly kind: 'valueSet';
               readonly values: readonly ['OPENAI', 'ANTHROPIC', 'GEMINI'];
             };
+            readonly RoleName: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['ADMIN', 'USER'];
+            };
             readonly SubscriptionPlan: {
               readonly kind: 'valueSet';
               readonly values: readonly ['FREE', 'PREMIUM'];
@@ -2284,6 +2288,13 @@ type ContractBase = Omit<
           };
         };
         readonly enum: {
+          readonly RoleName: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'ADMIN'; readonly value: 'ADMIN' },
+              { readonly name: 'USER'; readonly value: 'USER' },
+            ];
+          };
           readonly UserStatus: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
