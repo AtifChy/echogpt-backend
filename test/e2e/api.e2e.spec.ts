@@ -151,7 +151,7 @@ describe("EchoGPT API", () => {
     const response = await request(app.getHttpServer())
       .post("/api/v1/auth/login")
       .send({ email, password })
-      .expect(201);
+      .expect(200);
     accessToken = response.body.accessToken;
     refreshToken = response.body.refreshToken;
   });
@@ -272,7 +272,7 @@ describe("EchoGPT API", () => {
     const response = await request(app.getHttpServer())
       .post("/api/v1/auth/login")
       .send({ email, password: newPassword })
-      .expect(201);
+      .expect(200);
     accessToken = response.body.accessToken;
   });
 

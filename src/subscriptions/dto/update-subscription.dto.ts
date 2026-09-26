@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsIn, IsOptional } from "class-validator";
 
 export class UpdateSubscriptionDto {
@@ -6,7 +6,7 @@ export class UpdateSubscriptionDto {
   @IsIn(["FREE", "PREMIUM"])
   plan!: "FREE" | "PREMIUM";
 
-  @ApiProperty({ enum: ["ACTIVE", "CANCELED"] })
+  @ApiPropertyOptional({ enum: ["ACTIVE", "CANCELED"] })
   @IsOptional()
   @IsIn(["ACTIVE", "CANCELED"])
   status?: "ACTIVE" | "CANCELED";
