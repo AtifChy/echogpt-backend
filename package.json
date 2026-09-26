@@ -26,7 +26,7 @@
     "postinstall": "prisma skills sync || exit 0",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "admin:promote": "bun src/prisma/promote-admin.ts",
+    "admin:promote": "bun scripts/promote-admin.ts",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
     "test:coverage": "vitest run --coverage --config vitest.config.ts",
