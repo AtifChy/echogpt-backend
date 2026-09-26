@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { connectDatabase, db } from "./db";
+import { connectDatabase, db } from "../src/prisma/db";
 
 const packageManager = process.env.npm_config_user_agent?.split("/")[0] ?? "npm";
 
