@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 
+import { AdminModule } from "./admin/admin.module";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./auth/auth.module";
 import { ChatModule } from "./chat/chat.module";
@@ -32,6 +33,7 @@ import { UserModule } from "./users/users.module";
     SubscriptionsModule,
     ChatModule,
     SearchModule,
+    AdminModule,
     HealthModule,
   ],
   controllers: [AppController],
