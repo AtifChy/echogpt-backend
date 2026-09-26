@@ -37,7 +37,7 @@ export class UserService {
       await tx.orm.public.User.where({ id: userId }).update({
         passwordHash: await hash(dto.newPassword, { type: argon2id }),
       });
-      await tx.orm.public.Session.where({ userId }).update({
+      await tx.orm.public.Session.where({ userId }).updateAll({
         revokedAt: new Date().toISOString(),
       });
     });
