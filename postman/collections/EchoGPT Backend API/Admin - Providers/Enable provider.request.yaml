@@ -1,0 +1,12 @@
+$kind: http-request
+method: PATCH
+url: "{{baseUrl}}/admin/providers/{{providerId}}/enabled"
+order: 4000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "enabled": true
+    }

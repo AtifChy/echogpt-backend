@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: "{{baseUrl}}/subscriptions/me"
+order: 1000

@@ -1,0 +1,19 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/search"
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "query": "NestJS Docs",
+      "country": "BD",
+      "searchLang": "en",
+      "count": 20,
+      "maximumTokens": 4096,
+      "safesearch": "off",
+      "freshness": "pw"
+    }

@@ -1,0 +1,4 @@
+$kind: http-request
+method: GET
+url: "{{baseUrl}}/admin/health"
+order: 7000

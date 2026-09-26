@@ -1,0 +1,15 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/chat/messages"
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "conversationId": {{conversationId}},
+      "prompt": "Explain NestJS dependency injection briefly.",
+      "webSearch": false
+    }

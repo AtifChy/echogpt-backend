@@ -1,0 +1,28 @@
+$kind: collection
+description: Complete Postman collection for the current EchoGPT NestJS API. Run Register or Login to save tokens automatically. Public registration creates a USER. Promote it with bun run admin:promote <email> before using Admin requests. Configure an enabled provider before using Chat. Resource creation requests save their returned IDs, and destructive requests clear invalid tokens or IDs.
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+variables:
+  baseUrl: http://localhost:3000/api/v1
+  userEmail: ""
+  userPassword: strongpassword
+  newPassword: newstrongpassword
+  accessToken: ""
+  refreshToken: ""
+  userId: "1"
+  targetUserId: "1"
+  providerId: "1"
+  providerApiKey: replace-with-a-real-provider-api-key
+  providerName: Primary OpenAI
+  providerType: OPENAI
+  providerModel: gpt-5
+  conversationId: "1"
+scripts:
+  - type: http:beforeRequest
+    code: |-
+      if (!pm.collectionVariables.get('userEmail')) {
+        pm.collectionVariables.set('userEmail', 'postman.' + Date.now() + '@example.com');
+      }
+    language: text/javascript

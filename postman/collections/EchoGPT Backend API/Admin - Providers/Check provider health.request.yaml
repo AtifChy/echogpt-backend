@@ -1,0 +1,4 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/admin/providers/{{providerId}}/health"
+order: 6000

@@ -1,0 +1,9 @@
+$kind: http-request
+method: GET
+url: "{{baseUrl}}/admin/subscriptions?page=1&limit=25"
+order: 5000
+queryParams:
+  - key: page
+    value: "1"
+  - key: limit
+    value: "25"

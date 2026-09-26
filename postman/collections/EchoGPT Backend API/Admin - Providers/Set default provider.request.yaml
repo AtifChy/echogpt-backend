@@ -1,0 +1,4 @@
+$kind: http-request
+method: PUT
+url: "{{baseUrl}}/admin/providers/{{providerId}}/default"
+order: 5000
