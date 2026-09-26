@@ -23,7 +23,8 @@
     "start": "node dist/server.mjs",
     "postinstall": "prisma skills sync || exit 0",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "admin:promote": "bun src/prisma/promote-admin.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",
