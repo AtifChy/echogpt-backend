@@ -12,6 +12,8 @@
     "db:up": "docker compose up -d --wait postgres",
     "db:update": "prisma db update",
     "db:verify": "prisma db verify",
+    "db:test:init": "bun --env-file=.env.test run db:init",
+    "db:test:update": "bun --env-file=.env.test run db:update",
     "deploy": "bun run build && bun run composer:deploy",
     "dev": "bun --watch src/main.ts",
     "dev:composer": "bun run build && bun run composer:dev",
@@ -24,7 +26,13 @@
     "postinstall": "prisma skills sync || exit 0",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "admin:promote": "bun src/prisma/promote-admin.ts"
+    "admin:promote": "bun src/prisma/promote-admin.ts",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config vitest.config.ts",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "test:all": "bun run test && bun run test:e2e",
+    "test:typecheck": "tsc -p test/tsconfig.json"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",
@@ -55,14 +63,19 @@
     "temporal-polyfill": "^1.0.4"
   },
   "devDependencies": {
+    "@nestjs/testing": "^12.1.0",
     "@prisma/dev": "0.25.2",
     "@types/node": "^25.6.2",
     "@types/passport-jwt": "^4.0.1",
+    "@types/supertest": "^7.2.1",
+    "@vitest/coverage-v8": "^5.0.2",
     "oxfmt": "^0.70.0",
     "prisma": "8.0.0-rc.15",
+    "supertest": "^7.3.0",
     "tsdown": "^0.22.14",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.2"
   },
   "overrides": {
     "effect": "4.0.0-rc.112"
