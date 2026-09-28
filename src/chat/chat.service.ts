@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma.service";
 import { ProvidersService } from "../providers/providers.service";
 import type { LlmContextResult } from "../search/brave-llm-context.client";
 import { SearchService } from "../search/search.service";

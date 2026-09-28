@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 
+import { PrismaService } from "../prisma.service";
 import type { Models } from "../prisma/contract";
-import { PrismaService } from "../prisma/prisma.service";
 import type { PaginationDto } from "./dto/pagination.dto";
 
 type UserStatus = Models.public_User["status"];
