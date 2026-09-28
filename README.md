@@ -43,7 +43,7 @@ REST API for the EchoGPT Chrome extension. It provides authentication, user acco
 Install the following before starting:
 
 - [Bun](https://bun.sh/) 1.4 or newer
-- Node.js 22.18 or newer
+- Node.js 22.18.x or 24.11 or newer
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - Git
 
@@ -283,9 +283,6 @@ bun run migration:plan -- --name describe-the-change
 # Apply committed migrations
 bun run migrate
 
-# Advance the db migration reference
-bun run migrate:advance
-
 # Verify the database against the contract
 bun run db:verify
 ```
@@ -317,14 +314,16 @@ src/
 ├── providers/       OpenAI, Anthropic, and Gemini adapters
 ├── search/          Brave LLM Context search
 ├── subscriptions/   Plans, usage limits, and admin updates
-└── users/           Profile, password, and account operations
+├── users/           Profile, password, and account operations
+├── prisma.module.ts
+├── prisma.service.ts
+├── app.module.ts
+└── main.ts
 
 test/
 ├── unit/            Service and security tests
 └── e2e/             Full HTTP API tests
 ```
-
-The detailed implementation notes are available in [docs/README.md](docs/README.md).
 
 ## Security notes
 
