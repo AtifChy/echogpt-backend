@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma.service";
 import { SubscriptionsService } from "../subscriptions/subscriptions.service";
 import type { LlmContextOptions, LlmContextResult } from "./brave-llm-context.client";
 import { BraveLlmContextClient } from "./brave-llm-context.client";

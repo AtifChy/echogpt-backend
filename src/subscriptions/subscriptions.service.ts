@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma.service";
 import type { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
 import { PLAN_LIMITS, type SubscriptionUsageResponse } from "./subscriptions.type";
 

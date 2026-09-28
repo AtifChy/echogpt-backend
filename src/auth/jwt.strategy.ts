@@ -4,7 +4,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import type { AuthUser } from "../common/auth-user";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma.service";
 
 interface AccessPayload {
   sub: number;

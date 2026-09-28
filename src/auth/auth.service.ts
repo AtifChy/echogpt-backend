@@ -6,7 +6,7 @@ import { JwtService } from "@nestjs/jwt";
 import { argon2id, hash, verify } from "argon2";
 
 import type { AuthUser } from "../common/auth-user";
-import { PrismaService } from "../prisma/prisma.service";
+import { PrismaService } from "../prisma.service";
 import type { AuthResponse, AuthResponseUser } from "./auth.type";
 import type { LoginDto } from "./dto/login.dto";
 import type { RefreshDto } from "./dto/refresh.dto";
