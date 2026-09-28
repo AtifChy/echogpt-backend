@@ -1,5 +1,3 @@
-import { isBuiltin } from "node:module";
-
 import { defineConfig } from "tsdown";
 
 const optionalNestDependencies = [
@@ -16,15 +14,13 @@ export default defineConfig({
   platform: "node",
   target: "node22.18",
   format: "esm",
-  minify: true,
+  minify: false,
   sourcemap: false,
   clean: true,
   hash: false,
   outputOptions: { codeSplitting: false },
   deps: {
     onlyBundle: false,
-    alwaysBundle: (id) =>
-      !isBuiltin(id) && !optionalNestDependencies.some((pattern) => pattern.test(id)),
     neverBundle: optionalNestDependencies,
   },
 });
