@@ -6,10 +6,8 @@ model Role {
 }
 
 enum RoleName {
-  @@type("pg/text@1")
-
-  ADMIN = "ADMIN"
-  USER = "USER"
+  ADMIN
+  USER
 }
 
 model User {
@@ -33,10 +31,8 @@ model User {
 }
 
 enum UserStatus {
-  @@type("pg/text@1")
-
-  ACTIVE = "ACTIVE"
-  SUSPENDED = "SUSPENDED"
+  ACTIVE
+  SUSPENDED
 }
 
 model Session {
@@ -67,17 +63,13 @@ model Subscription {
 }
 
 enum SubscriptionPlan {
-  @@type("pg/text@1")
-
-  FREE = "FREE"
-  PREMIUM = "PREMIUM"
+  FREE
+  PREMIUM
 }
 
 enum SubscriptionStatus {
-  @@type("pg/text@1")
-
-  ACTIVE = "ACTIVE"
-  CANCELED = "CANCELED"
+  ACTIVE
+  CANCELED
 }
 
 model AiProvider {
@@ -100,11 +92,9 @@ model AiProvider {
 }
 
 enum ProviderType {
-  @@type("pg/text@1")
-
-  OPENAI = "OPENAI"
-  ANTHROPIC = "ANTHROPIC"
-  GEMINI = "GEMINI"
+  OPENAI
+  ANTHROPIC
+  GEMINI
 }
 
 model Conversation {
@@ -135,11 +125,9 @@ model Message {
 }
 
 enum MessageRole {
-  @@type("pg/text@1")
-
-  SYSTEM = "SYSTEM"
-  USER = "USER"
-  ASSISTANT = "ASSISTANT"
+  SYSTEM
+  USER
+  ASSISTANT
 }
 
 model WebSearch {
@@ -186,15 +174,11 @@ model ApiUsageLog {
 }
 
 enum ApiUsageOperation {
-  @@type("pg/text@1")
-
-  CHAT = "CHAT"
-  SEARCH = "SEARCH"
+  CHAT
+  SEARCH
 }
 
 enum ApiUsageStatus {
-  @@type("pg/text@1")
-
-  SUCCESS = "SUCCESS"
-  FAILED = "FAILED"
+  SUCCESS
+  FAILED
 }

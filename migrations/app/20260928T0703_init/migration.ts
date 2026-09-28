@@ -1,7 +1,15 @@
 #!/usr/bin/env -S node
-import type { Contract as End } from '../../snapshots/6ecaaa927964fbb0e4311de5f6be6d2bc0cb395e6426a85953b4a1384016d56f/contract';
-import endContract from '../../snapshots/6ecaaa927964fbb0e4311de5f6be6d2bc0cb395e6426a85953b4a1384016d56f/contract.json' with { type: 'json' };
-import { Migration, MigrationCLI, col, fn, lit, primaryKey } from '@prisma/orm-postgres/migration';
+import type { Contract as End } from '../../snapshots/f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e/contract';
+import endContract from '../../snapshots/f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e/contract.json' with { type: 'json' };
+import {
+  Migration,
+  MigrationCLI,
+  checkExpression,
+  col,
+  fn,
+  lit,
+  primaryKey,
+} from '@prisma/orm-postgres/migration';
 
 export default class M extends Migration<never, End> {
   override readonly endContractJson = endContract;
@@ -40,7 +48,13 @@ export default class M extends Migration<never, End> {
             codecRef: { codecId: 'pg/timestamptz-string@1' },
           }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression(
+            'aiProvider_type_check_03ab690d',
+            "\"type\" IN ('OPENAI', 'ANTHROPIC', 'GEMINI')",
+          ),
+        ],
       }),
       this.createTable({
         schema: 'public',
@@ -68,11 +82,21 @@ export default class M extends Migration<never, End> {
             default: lit(0),
             codecRef: { codecId: 'pg/int4@1' },
           }),
-          col('providerId', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
+          col('providerId', 'int4', { codecRef: { codecId: 'pg/int4@1' } }),
           col('status', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
           col('userId', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression(
+            'apiUsageLog_operation_check_f974256c',
+            "\"operation\" IN ('CHAT', 'SEARCH')",
+          ),
+          checkExpression(
+            'apiUsageLog_status_check_c68c3ebe',
+            "\"status\" IN ('SUCCESS', 'FAILED')",
+          ),
+        ],
       }),
       this.createTable({
         schema: 'public',
@@ -117,7 +141,13 @@ export default class M extends Migration<never, End> {
           }),
           col('role', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression(
+            'message_role_check_66a272d0',
+            "\"role\" IN ('SYSTEM', 'USER', 'ASSISTANT')",
+          ),
+        ],
       }),
       this.createTable({
         schema: 'public',
@@ -126,7 +156,10 @@ export default class M extends Migration<never, End> {
           col('id', 'SERIAL', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
           col('name', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression('role_name_check_f0513a97', "\"name\" IN ('ADMIN', 'USER')"),
+        ],
       }),
       this.createTable({
         schema: 'public',
@@ -186,7 +219,14 @@ export default class M extends Migration<never, End> {
           }),
           col('userId', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression('subscription_plan_check_c89db803', "\"plan\" IN ('FREE', 'PREMIUM')"),
+          checkExpression(
+            'subscription_status_check_8a00ac15',
+            "\"status\" IN ('ACTIVE', 'CANCELED')",
+          ),
+        ],
       }),
       this.createTable({
         schema: 'public',
@@ -208,7 +248,10 @@ export default class M extends Migration<never, End> {
             codecRef: { codecId: 'pg/timestamptz-string@1' },
           }),
         ],
-        constraints: [primaryKey(['id'])],
+        constraints: [
+          primaryKey(['id']),
+          checkExpression('user_status_check_1527ac15', "\"status\" IN ('ACTIVE', 'SUSPENDED')"),
+        ],
       }),
       this.createTable({
         schema: 'public',

@@ -41,7 +41,7 @@
     "execute": [
       {
         "description": "create table \"aiProvider\"",
-        "sql": "CREATE TABLE \"public\".\"aiProvider\" (\n  \"apiKeyAuthTag\" text NOT NULL,\n  \"apiKeyIv\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"enabled\" bool DEFAULT false NOT NULL,\n  \"encryptedApiKey\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"isDefault\" bool DEFAULT false NOT NULL,\n  \"model\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"type\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"aiProvider\" (\n  \"apiKeyAuthTag\" text NOT NULL,\n  \"apiKeyIv\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"enabled\" bool DEFAULT false NOT NULL,\n  \"encryptedApiKey\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"isDefault\" bool DEFAULT false NOT NULL,\n  \"model\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"type\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"aiProvider_type_check_03ab690d\" CHECK (\"type\" IN ('OPENAI', 'ANTHROPIC', 'GEMINI'))\n)",
         "params": []
       }
     ],
@@ -80,7 +80,7 @@
     "execute": [
       {
         "description": "create table \"apiUsageLog\"",
-        "sql": "CREATE TABLE \"public\".\"apiUsageLog\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"inputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"latencyMs\" int4 DEFAULT 0 NOT NULL,\n  \"operation\" text NOT NULL,\n  \"outputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"providerId\" int4 NOT NULL,\n  \"status\" text NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"apiUsageLog\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"inputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"latencyMs\" int4 DEFAULT 0 NOT NULL,\n  \"operation\" text NOT NULL,\n  \"outputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"providerId\" int4,\n  \"status\" text NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"apiUsageLog_operation_check_f974256c\" CHECK (\"operation\" IN ('CHAT', 'SEARCH')),\n  CONSTRAINT \"apiUsageLog_status_check_c68c3ebe\" CHECK (\"status\" IN ('SUCCESS', 'FAILED'))\n)",
         "params": []
       }
     ],
@@ -158,7 +158,7 @@
     "execute": [
       {
         "description": "create table \"message\"",
-        "sql": "CREATE TABLE \"public\".\"message\" (\n  \"content\" text NOT NULL,\n  \"conversationId\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"inputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"outputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"role\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"message\" (\n  \"content\" text NOT NULL,\n  \"conversationId\" int4 NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"inputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"outputTokens\" int4 DEFAULT 0 NOT NULL,\n  \"role\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"message_role_check_66a272d0\" CHECK (\"role\" IN ('SYSTEM', 'USER', 'ASSISTANT'))\n)",
         "params": []
       }
     ],
@@ -197,7 +197,7 @@
     "execute": [
       {
         "description": "create table \"role\"",
-        "sql": "CREATE TABLE \"public\".\"role\" (\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"role\" (\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"role_name_check_f0513a97\" CHECK (\"name\" IN ('ADMIN', 'USER'))\n)",
         "params": []
       }
     ],
@@ -314,7 +314,7 @@
     "execute": [
       {
         "description": "create table \"subscription\"",
-        "sql": "CREATE TABLE \"public\".\"subscription\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"currentPeriodEnd\" timestamptz NOT NULL,\n  \"currentPeriodStart\" timestamptz NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"plan\" text NOT NULL,\n  \"status\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"subscription\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"currentPeriodEnd\" timestamptz NOT NULL,\n  \"currentPeriodStart\" timestamptz NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"plan\" text NOT NULL,\n  \"status\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"subscription_plan_check_c89db803\" CHECK (\"plan\" IN ('FREE', 'PREMIUM')),\n  CONSTRAINT \"subscription_status_check_8a00ac15\" CHECK (\"status\" IN ('ACTIVE', 'CANCELED'))\n)",
         "params": []
       }
     ],
@@ -353,7 +353,7 @@
     "execute": [
       {
         "description": "create table \"user\"",
-        "sql": "CREATE TABLE \"public\".\"user\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"displayName\" text,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"passwordHash\" text NOT NULL,\n  \"roleId\" int4 NOT NULL,\n  \"status\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"user\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"displayName\" text,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"passwordHash\" text NOT NULL,\n  \"roleId\" int4 NOT NULL,\n  \"status\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"user_status_check_1527ac15\" CHECK (\"status\" IN ('ACTIVE', 'SUSPENDED'))\n)",
         "params": []
       }
     ],
