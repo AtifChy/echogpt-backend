@@ -6,7 +6,7 @@ import request from "supertest";
 
 import { AppModule } from "../../src/app.module";
 import { configureApp } from "../../src/configure-app";
-import { PrismaService } from "../../src/prisma/prisma.service";
+import { PrismaService } from "../../src/prisma.service";
 
 describe("EchoGPT API", () => {
   let app: INestApplication;
