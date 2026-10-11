@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc --noEmit && tsdown",
+    "build": "tsdown",
     "composer:deploy": "prisma deploy module.ts",
     "composer:dev": "prisma dev module.ts",
     "contract:emit": "prisma contract emit",
@@ -28,6 +28,7 @@
     "postinstall": "prisma skills sync || exit 0",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
+    "typecheck": "tsc --noEmit",
     "admin:promote": "bun scripts/promote-admin.ts",
     "test": "bun test --isolate ./test/unit",
     "test:watch": "bun test --isolate --watch ./test/unit",
