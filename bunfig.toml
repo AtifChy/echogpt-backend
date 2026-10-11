@@ -1,0 +1,16 @@
+[run]
+bun = true
+
+[test]
+root = "./test"
+preload = ["./test/setup.ts"]
+coverageSkipTestFiles = true
+coverageReporter = ["text", "lcov"]
+coverageDir = "./coverage"
+coveragePathIgnorePatterns = [
+  "test/**",
+  "src/prisma/**",
+  "service.ts",
+  "module.ts",
+  "prisma*.config.ts",
+]

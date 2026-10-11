@@ -5,7 +5,6 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-8-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Bun](https://img.shields.io/badge/Bun-1.4-F9F1E1?logo=bun&logoColor=black)](https://bun.sh/)
-[![Vitest](https://img.shields.io/badge/Vitest-5-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-3-6BA539?logo=openapiinitiative&logoColor=white)](https://www.openapis.org/)
 
@@ -20,7 +19,7 @@ REST API for the EchoGPT Chrome extension. It provides authentication, user acco
 - Passport JWT authentication
 - Swagger / OpenAPI
 - Bun
-- Vitest
+- Bun's built-in test runner
 - Docker Compose for the local database
 
 ## Features
@@ -259,7 +258,19 @@ bun run fmt:check
 bun run build
 ```
 
-The test guard refuses to run when `DATABASE_URL` does not point to `echogpt_test`.
+Tests use Bun's native runner and import their APIs from `bun:test`. `bunfig.toml` preloads `test/setup.ts`, which loads `.env.test` with override enabled and refuses to run when `DATABASE_URL` does not point to `echogpt_test`. It also restores spies and clears mock calls after every test.
+
+Vitest is no longer a direct test dependency or runner here. Its remaining lockfile entries come indirectly from Prisma Composer and Alchemy; those upstream dependencies are unchanged.
+
+The scripts use `--isolate` so each file gets a fresh module registry and database client. Tests run sequentially; do not enable concurrent execution for the stateful API suite. To run every test directly, use `bun test --isolate`.
+
+AI and Brave calls are mocked in the citation API suite. It writes only randomly named test fixtures and removes them afterward. Coverage uses Bun's built-in text and LCOV reporters; the LCOV file is saved to `coverage/lcov.info`.
+
+After changing the database contract, update the separate test schema before running API tests:
+
+```bash
+bun run db:test:update
+```
 
 ## Database changes with Prisma 8
 

@@ -1,3 +1,5 @@
+import { afterEach, vi } from "bun:test";
+
 import { config } from "dotenv";
 
 config({ path: ".env.test", override: true, quiet: true });
@@ -13,3 +15,8 @@ if (databaseName !== "/echogpt_test") {
 }
 
 process.env.NODE_ENV = "test";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.clearAllMocks();
+});

@@ -1,17 +1,16 @@
+import { describe, expect, it, vi } from "bun:test";
+
 import { BadGatewayException } from "@nestjs/common";
 
 import { BraveLlmContextClient } from "../../src/search/brave-llm-context.client";
 import { SearchService } from "../../src/search/search.service";
 
-afterEach(() => vi.unstubAllGlobals());
-
 describe("BraveLlmContextClient", () => {
   const config = { getOrThrow: vi.fn().mockReturnValue("test-brave-key-never-sent") };
 
   it("maps grounding and source metadata", async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: vi.fn().mockResolvedValue({
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      Response.json({
         grounding: {
           generic: [
             {
@@ -29,8 +28,7 @@ describe("BraveLlmContextClient", () => {
           },
         },
       }),
-    });
-    vi.stubGlobal("fetch", fetchMock);
+    );
     const client = new BraveLlmContextClient(config as never);
 
     await expect(
@@ -56,11 +54,13 @@ describe("BraveLlmContextClient", () => {
   });
 
   it("converts non-2xx and network failures to 502", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false, status: 422 }));
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(null, { status: 422 }));
     const client = new BraveLlmContextClient(config as never);
     await expect(client.retrieve({ query: "NestJS" })).rejects.toBeInstanceOf(BadGatewayException);
 
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("socket failed")));
+    fetchMock.mockRejectedValue(new Error("socket failed"));
     await expect(client.retrieve({ query: "NestJS" })).rejects.toMatchObject({
       message: "Brave LLM Context is unavailable",
     });

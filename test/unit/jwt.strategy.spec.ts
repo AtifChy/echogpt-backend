@@ -1,5 +1,6 @@
+import { describe, expect, it, vi } from "bun:test";
+
 import { UnauthorizedException } from "@nestjs/common";
-import { vi } from "vitest";
 
 import { JwtStrategy } from "../../src/auth/jwt.strategy";
 

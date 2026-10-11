@@ -109,3 +109,4 @@ describe("ProvidersService", () => {
     expect(openai.generate).not.toHaveBeenCalled();
   });
 });
+import { describe, expect, it, vi } from "bun:test";
