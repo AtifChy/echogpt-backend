@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e'>;
+  StorageHashBase<'247d991608922435ae9de52063224ef710b84dc33c31958401216ae58d4aae27'>;
 export type ExecutionHash =
   ExecutionHashBase<'18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7'>;
 export type ProfileHash =
@@ -270,6 +270,7 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
       readonly providerId: CodecTypes['pg/int4@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
@@ -281,6 +282,15 @@ export type FieldOutputTypes = {
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly MessageSource: {
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly messageId: CodecTypes['pg/int4@1']['output'];
+      readonly citation: CodecTypes['pg/int4@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly url: CodecTypes['pg/text@1']['output'];
+      readonly hostname: CodecTypes['pg/text@1']['output'] | null;
+      readonly publishedAt: CodecTypes['pg/text@1']['output'] | null;
     };
     readonly Role: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -360,6 +370,7 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
       readonly providerId: CodecTypes['pg/int4@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -371,6 +382,15 @@ export type FieldInputTypes = {
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly MessageSource: {
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly messageId: CodecTypes['pg/int4@1']['input'];
+      readonly citation: CodecTypes['pg/int4@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly url: CodecTypes['pg/text@1']['input'];
+      readonly hostname: CodecTypes['pg/text@1']['input'] | null;
+      readonly publishedAt: CodecTypes['pg/text@1']['input'] | null;
     };
     readonly Role: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -450,6 +470,7 @@ export type StorageColumnTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly providerId: CodecTypes['pg/int4@1']['output'];
+      readonly title: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
@@ -461,6 +482,15 @@ export type StorageColumnTypes = {
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
       readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
+    };
+    readonly messageSource: {
+      readonly citation: CodecTypes['pg/int4@1']['output'];
+      readonly hostname: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly messageId: CodecTypes['pg/int4@1']['output'];
+      readonly publishedAt: CodecTypes['pg/text@1']['output'] | null;
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly url: CodecTypes['pg/text@1']['output'];
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -540,6 +570,7 @@ export type StorageColumnInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly providerId: CodecTypes['pg/int4@1']['input'];
+      readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
     };
@@ -551,6 +582,15 @@ export type StorageColumnInputTypes = {
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
       readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
+    };
+    readonly messageSource: {
+      readonly citation: CodecTypes['pg/int4@1']['input'];
+      readonly hostname: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly messageId: CodecTypes['pg/int4@1']['input'];
+      readonly publishedAt: CodecTypes['pg/text@1']['input'] | null;
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly url: CodecTypes['pg/text@1']['input'];
     };
     readonly role: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -668,6 +708,7 @@ export namespace Models {
     id: CodecTypes['pg/int4@1']['output'];
     userId: CodecTypes['pg/int4@1']['output'];
     providerId: CodecTypes['pg/int4@1']['output'];
+    title: CodecTypes['pg/text@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     messages: public_Message[];
@@ -684,7 +725,19 @@ export namespace Models {
     outputTokens: CodecTypes['pg/int4@1']['output'];
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     conversation: public_Conversation;
-    readonly [RelationKeys]?: 'conversation';
+    sources: public_MessageSource[];
+    readonly [RelationKeys]?: 'conversation' | 'sources';
+  };
+  export type public_MessageSource = {
+    id: CodecTypes['pg/int4@1']['output'];
+    messageId: CodecTypes['pg/int4@1']['output'];
+    citation: CodecTypes['pg/int4@1']['output'];
+    title: CodecTypes['pg/text@1']['output'];
+    url: CodecTypes['pg/text@1']['output'];
+    hostname: CodecTypes['pg/text@1']['output'] | null;
+    publishedAt: CodecTypes['pg/text@1']['output'] | null;
+    message: public_Message;
+    readonly [RelationKeys]?: 'message';
   };
   export type public_WebSearch = {
     id: CodecTypes['pg/int4@1']['output'];
@@ -730,6 +783,7 @@ export declare const models: {
     AiProvider: Models.public_AiProvider;
     Conversation: Models.public_Conversation;
     Message: Models.public_Message;
+    MessageSource: Models.public_MessageSource;
     WebSearch: Models.public_WebSearch;
     SearchResult: Models.public_SearchResult;
     ApiUsageLog: Models.public_ApiUsageLog;
@@ -990,6 +1044,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                 };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
                 readonly createdAt: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -1128,6 +1187,73 @@ type ContractBase = Omit<
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'conversation';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly messageSource: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                };
+                readonly messageId: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly citation: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly url: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly hostname: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly publishedAt: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['messageId', 'citation'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'messageSource_messageId_idx_3cdded8d';
+                  readonly prefix: 'messageSource_messageId_idx';
+                  readonly columns: readonly ['messageId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'messageSource';
+                    readonly columns: readonly ['messageId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'message';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1564,6 +1690,10 @@ type ContractBase = Omit<
       readonly model: 'Conversation';
     };
     readonly message: { readonly namespace: 'public' & NamespaceId; readonly model: 'Message' };
+    readonly messageSource: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'MessageSource';
+    };
     readonly webSearch: { readonly namespace: 'public' & NamespaceId; readonly model: 'WebSearch' };
     readonly searchResult: {
       readonly namespace: 'public' & NamespaceId;
@@ -1768,6 +1898,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -1824,6 +1958,7 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly userId: { readonly column: 'userId' };
                 readonly providerId: { readonly column: 'providerId' };
+                readonly title: { readonly column: 'title' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
               };
@@ -1876,6 +2011,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly sources: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'MessageSource';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['messageId'];
+                };
+              };
             };
             readonly storage: {
               readonly table: 'message';
@@ -1888,6 +2034,65 @@ type ContractBase = Omit<
                 readonly inputTokens: { readonly column: 'inputTokens' };
                 readonly outputTokens: { readonly column: 'outputTokens' };
                 readonly createdAt: { readonly column: 'createdAt' };
+              };
+            };
+          };
+          readonly MessageSource: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly messageId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly citation: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly url: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly hostname: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly publishedAt: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly message: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Message';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['messageId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'messageSource';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly messageId: { readonly column: 'messageId' };
+                readonly citation: { readonly column: 'citation' };
+                readonly title: { readonly column: 'title' };
+                readonly url: { readonly column: 'url' };
+                readonly hostname: { readonly column: 'hostname' };
+                readonly publishedAt: { readonly column: 'publishedAt' };
               };
             };
           };

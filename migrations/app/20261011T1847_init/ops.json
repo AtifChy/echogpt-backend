@@ -119,7 +119,7 @@
     "execute": [
       {
         "description": "create table \"conversation\"",
-        "sql": "CREATE TABLE \"public\".\"conversation\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"providerId\" int4 NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "sql": "CREATE TABLE \"public\".\"conversation\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"providerId\" int4 NOT NULL,\n  \"title\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
         "params": []
       }
     ],
@@ -168,6 +168,45 @@
         "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
         "params": [
           "\"public\".\"message\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.messageSource",
+    "label": "Create table \"messageSource\"",
+    "summary": "Creates table \"messageSource\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "messageSource"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"messageSource\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"messageSource\"",
+        "sql": "CREATE TABLE \"public\".\"messageSource\" (\n  \"citation\" int4 NOT NULL,\n  \"hostname\" text,\n  \"id\" SERIAL NOT NULL,\n  \"messageId\" int4 NOT NULL,\n  \"publishedAt\" text,\n  \"title\" text NOT NULL,\n  \"url\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"messageSource\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource\""
         ]
       }
     ]
@@ -402,6 +441,48 @@
         "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
         "params": [
           "\"public\".\"webSearch\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.messageSource.messageSource_messageId_citation_key",
+    "label": "Add unique constraint on \"messageSource\" (messageId, citation)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "messageSource_messageId_citation_key",
+        "table": "messageSource"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"messageSource_messageId_citation_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_citation_key",
+          "public",
+          "\"public\".\"messageSource\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"messageSource_messageId_citation_key\"",
+        "sql": "ALTER TABLE \"public\".\"messageSource\" ADD CONSTRAINT \"messageSource_messageId_citation_key\" UNIQUE (\"messageId\", \"citation\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"messageSource_messageId_citation_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_citation_key",
+          "public",
+          "\"public\".\"messageSource\""
         ]
       }
     ]
@@ -1085,6 +1166,45 @@
     ]
   },
   {
+    "id": "index.messageSource.messageSource_messageId_idx_3cdded8d",
+    "label": "Create index \"messageSource_messageId_idx_3cdded8d\" on \"messageSource\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "messageSource_messageId_idx_3cdded8d",
+        "table": "messageSource"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"messageSource_messageId_idx_3cdded8d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource_messageId_idx_3cdded8d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"messageSource_messageId_idx_3cdded8d\"",
+        "sql": "CREATE INDEX \"messageSource_messageId_idx_3cdded8d\" ON \"public\".\"messageSource\" (\"messageId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"messageSource_messageId_idx_3cdded8d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource_messageId_idx_3cdded8d\""
+        ]
+      }
+    ]
+  },
+  {
     "id": "index.searchResult.searchResult_searchId_idx_fa57cfdf",
     "label": "Create index \"searchResult_searchId_idx_fa57cfdf\" on \"searchResult\"",
     "operationClass": "additive",
@@ -1641,6 +1761,48 @@
           "message_conversationId_fkey",
           "public",
           "\"public\".\"message\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.messageSource.messageSource_messageId_fkey",
+    "label": "Add foreign key \"messageSource_messageId_fkey\" on \"messageSource\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "messageSource_messageId_fkey",
+        "table": "messageSource"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"messageSource_messageId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_fkey",
+          "public",
+          "\"public\".\"messageSource\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"messageSource_messageId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"messageSource\"\nADD CONSTRAINT \"messageSource_messageId_fkey\"\nFOREIGN KEY (\"messageId\")\nREFERENCES \"public\".\"message\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"messageSource_messageId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_fkey",
+          "public",
+          "\"public\".\"messageSource\""
         ]
       }
     ]

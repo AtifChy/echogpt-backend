@@ -1,6 +1,6 @@
-#!/usr/bin/env -S node
-import type { Contract as End } from '../../snapshots/f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e/contract';
-import endContract from '../../snapshots/f36d4242b377c536fa40b7aad9c51ba33bbd995d8697fe5ce1e6fbcac8096f3e/contract.json' with { type: 'json' };
+#!/usr/bin/env -S bun
+import type { Contract as End } from '../../snapshots/247d991608922435ae9de52063224ef710b84dc33c31958401216ae58d4aae27/contract';
+import endContract from '../../snapshots/247d991608922435ae9de52063224ef710b84dc33c31958401216ae58d4aae27/contract.json' with { type: 'json' };
 import {
   Migration,
   MigrationCLI,
@@ -109,6 +109,7 @@ export default class M extends Migration<never, End> {
           }),
           col('id', 'SERIAL', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
           col('providerId', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
+          col('title', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
           col('updatedAt', 'timestamptz', {
             notNull: true,
             codecRef: { codecId: 'pg/timestamptz-string@1' },
@@ -148,6 +149,20 @@ export default class M extends Migration<never, End> {
             "\"role\" IN ('SYSTEM', 'USER', 'ASSISTANT')",
           ),
         ],
+      }),
+      this.createTable({
+        schema: 'public',
+        table: 'messageSource',
+        columns: [
+          col('citation', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
+          col('hostname', 'text', { codecRef: { codecId: 'pg/text@1' } }),
+          col('id', 'SERIAL', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
+          col('messageId', 'int4', { notNull: true, codecRef: { codecId: 'pg/int4@1' } }),
+          col('publishedAt', 'text', { codecRef: { codecId: 'pg/text@1' } }),
+          col('title', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
+          col('url', 'text', { notNull: true, codecRef: { codecId: 'pg/text@1' } }),
+        ],
+        constraints: [primaryKey(['id'])],
       }),
       this.createTable({
         schema: 'public',
@@ -271,6 +286,12 @@ export default class M extends Migration<never, End> {
       }),
       this.addUnique({
         schema: 'public',
+        table: 'messageSource',
+        constraint: 'messageSource_messageId_citation_key',
+        columns: ['messageId', 'citation'],
+      }),
+      this.addUnique({
+        schema: 'public',
         table: 'role',
         constraint: 'role_name_key',
         columns: ['name'],
@@ -373,6 +394,12 @@ export default class M extends Migration<never, End> {
       }),
       this.createIndex({
         schema: 'public',
+        table: 'messageSource',
+        index: 'messageSource_messageId_idx_3cdded8d',
+        columns: ['messageId'],
+      }),
+      this.createIndex({
+        schema: 'public',
         table: 'searchResult',
         index: 'searchResult_searchId_idx_fa57cfdf',
         columns: ['searchId'],
@@ -470,6 +497,16 @@ export default class M extends Migration<never, End> {
           name: 'message_conversationId_fkey',
           columns: ['conversationId'],
           references: { schema: 'public', table: 'conversation', columns: ['id'] },
+          onDelete: 'cascade',
+        },
+      }),
+      this.addForeignKey({
+        schema: 'public',
+        table: 'messageSource',
+        foreignKey: {
+          name: 'messageSource_messageId_fkey',
+          columns: ['messageId'],
+          references: { schema: 'public', table: 'message', columns: ['id'] },
           onDelete: 'cascade',
         },
       }),

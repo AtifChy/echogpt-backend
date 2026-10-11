@@ -22,6 +22,7 @@ export class ChatService {
     return this.prisma.db.orm.public.Conversation.create({
       userId,
       providerId,
+      title: "New Conversation",
     });
   }
 
@@ -37,7 +38,12 @@ export class ChatService {
     await this.requireConversation(userId, conversationId);
     return this.prisma.db.orm.public.Message.where({ conversationId })
       .select("id", "role", "content", "inputTokens", "outputTokens", "createdAt")
-      .orderBy((message) => message.createdAt.asc())
+      .include("sources", (sources) =>
+        sources
+          .select("citation", "title", "url", "hostname", "publishedAt")
+          .orderBy((source) => source.citation.asc()),
+      )
+      .orderBy([(message) => message.createdAt.asc(), (message) => message.id.asc()])
       .all();
   }
 
@@ -69,33 +75,44 @@ export class ChatService {
         : prompt;
       const result = await this.providers.generate(conversation.providerId, providedPrompt);
 
-      const message = await this.prisma.db.orm.public.Message.create({
-        conversationId: conversation.id,
-        role: "ASSISTANT",
-        content: result.content,
-        inputTokens: result.inputTokens,
-        outputTokens: result.outputTokens,
-      });
-      await this.prisma.db.orm.public.ApiUsageLog.create({
-        userId,
-        providerId: conversation.providerId,
-        operation: "CHAT",
-        status: "SUCCESS",
-        inputTokens: result.inputTokens,
-        outputTokens: result.outputTokens,
-        latencyMs: Date.now() - startedAt,
+      const sources = (searchContext?.sources ?? []).map((source) => ({
+        citation: source.citation,
+        title: source.title,
+        url: source.url,
+        hostname: source.hostname ?? null,
+        publishedAt: source.publishedAt ?? null,
+      }));
+
+      const message = await this.prisma.db.transaction(async (tx) => {
+        const created = await tx.orm.public.Message.create({
+          conversationId: conversation.id,
+          role: "ASSISTANT",
+          content: result.content,
+          inputTokens: result.inputTokens,
+          outputTokens: result.outputTokens,
+        });
+
+        for (const source of sources) {
+          await tx.orm.public.MessageSource.create({
+            messageId: created.id,
+            ...source,
+          });
+        }
+
+        await tx.orm.public.ApiUsageLog.create({
+          userId,
+          providerId: conversation.providerId,
+          operation: "CHAT",
+          status: "SUCCESS",
+          inputTokens: result.inputTokens,
+          outputTokens: result.outputTokens,
+          latencyMs: Date.now() - startedAt,
+        });
+
+        return { ...created, sources };
       });
 
-      return {
-        message,
-        sources: (searchContext?.sources ?? []).map((source) => ({
-          citation: source.citation,
-          title: source.title,
-          url: source.url,
-          hostname: source.hostname,
-          publishedAt: source.publishedAt,
-        })),
-      };
+      return { message };
     } catch (error) {
       await this.prisma.db.orm.public.ApiUsageLog.create({
         userId,

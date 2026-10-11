@@ -103,6 +103,7 @@ model Conversation {
   user       User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
   providerId Int
   provider   AiProvider                 @relation(fields:[providerId], references:[id])
+  title      String
   messages   Message[]
   createdAt  TimestamptzString          @default(now())
   updatedAt  temporal.updatedAtString()
@@ -115,6 +116,7 @@ model Message {
   id             Int               @id @default(autoincrement())
   conversationId Int
   conversation   Conversation      @relation(fields:[conversationId], references:[id], onDelete: Cascade)
+  sources        MessageSource[]
   role           MessageRole
   content        String
   inputTokens    Int               @default(0)
@@ -122,6 +124,19 @@ model Message {
   createdAt      TimestamptzString @default(now())
 
   @@index([conversationId, createdAt])
+}
+
+model MessageSource {
+  id          Int     @id @default(autoincrement())
+  messageId   Int
+  message     Message @relation(fields:[messageId], references:[id], onDelete: Cascade)
+  citation    Int
+  title       String
+  url         String
+  hostname    String?
+  publishedAt String?
+
+  @@unique([messageId, citation])
 }
 
 enum MessageRole {

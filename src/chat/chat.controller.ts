@@ -42,6 +42,14 @@ const conversationExample = {
   updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
+const citationExample = {
+  citation: 1,
+  title: "NestJS Documentation",
+  url: "https://docs.nestjs.com/",
+  hostname: "docs.nestjs.com",
+  publishedAt: null,
+};
+
 const messageExample = {
   id: 2,
   role: "ASSISTANT",
@@ -49,6 +57,7 @@ const messageExample = {
   inputTokens: 12,
   outputTokens: 18,
   createdAt: "2026-01-01T00:00:01.000Z",
+  sources: [citationExample],
 };
 
 @ApiTags("chat")
@@ -122,15 +131,7 @@ export class ChatController {
     schema: {
       example: {
         message: messageExample,
-        sources: [
-          {
-            citation: 1,
-            title: "NestJS Documentation",
-            url: "https://docs.nestjs.com/",
-            hostname: "docs.nestjs.com",
-            publishedAt: "2026-01-01T00:00:00.000Z",
-          },
-        ],
+        sources: [citationExample],
       },
     },
   })
