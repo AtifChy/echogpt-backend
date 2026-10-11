@@ -57,7 +57,7 @@ export class SearchService {
   }
 
   async clearHistory(userId: number) {
-    await this.prisma.db.orm.public.WebSearch.where({ userId }).delete();
+    await this.prisma.db.orm.public.WebSearch.where({ userId }).deleteAll();
   }
 
   private async retrieveForUser(
