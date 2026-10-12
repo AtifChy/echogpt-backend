@@ -22,13 +22,13 @@ export class ChatService {
     return this.prisma.db.orm.public.Conversation.create({
       userId,
       providerId,
-      title: "New Conversation",
+      title: dto.title ?? "New Conversation",
     });
   }
 
   listConversations(userId: number) {
     return this.prisma.db.orm.public.Conversation.where({ userId })
-      .select("id", "providerId", "createdAt", "updatedAt")
+      .select("id", "title", "providerId", "createdAt", "updatedAt")
       .orderBy((conversation) => conversation.updatedAt.desc())
       .limit(50)
       .all();

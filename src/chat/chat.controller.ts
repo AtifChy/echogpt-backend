@@ -36,6 +36,7 @@ import { SendPromptDto } from "./dto/send-prompt.dto";
 
 const conversationExample = {
   id: 1,
+  title: "Explain the theory of relativity in simple terms",
   userId: 1,
   providerId: 1,
   createdAt: "2026-01-01T00:00:00.000Z",
@@ -89,6 +90,7 @@ export class ChatController {
       example: [
         {
           id: conversationExample.id,
+          title: conversationExample.title,
           providerId: conversationExample.providerId,
           createdAt: conversationExample.createdAt,
           updatedAt: conversationExample.updatedAt,
