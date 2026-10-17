@@ -1,20 +1,16 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsInt, IsOptional, Max, Min } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class PaginationDto {
-  @ApiPropertyOptional({ type: "number", default: 1 })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  page = 1;
+const PositiveQueryInteger = z
+  .union([
+    z.string().regex(/^[1-9]\d*$/, { error: "Expected a positive integer" }),
+    z.int().positive(),
+  ])
+  .pipe(z.coerce.number<string | number>().pipe(z.int().positive()));
 
-  @ApiPropertyOptional({ type: "number", default: 25, maximum: 100 })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  @Max(100)
-  limit = 25;
-}
+export const PaginationSchema = z.strictObject({
+  page: PositiveQueryInteger.default(1),
+  limit: PositiveQueryInteger.pipe(z.number().max(100)).default(25),
+});
+
+export class PaginationDto extends createZodDto(PaginationSchema) {}

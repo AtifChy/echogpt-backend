@@ -1,19 +1,25 @@
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
+
+import { SubscriptionPlanSchema, SubscriptionStatusSchema } from "../common/schemas/enums.schema";
+import { TimestampSchema } from "../common/schemas/primitives.schema";
 import type { Models } from "../prisma/contract";
 
 type SubscriptionPlan = Models.public_Subscription["plan"];
-type SubscriptionStatus = Models.public_Subscription["status"];
 
 export const PLAN_LIMITS: Record<SubscriptionPlan, number> = {
   FREE: 100,
   PREMIUM: 5_000,
 } as const;
 
-export interface SubscriptionUsageResponse {
-  plan: SubscriptionPlan;
-  status: SubscriptionStatus;
-  limit: number;
-  used: number;
-  remaining: number;
-  periodStart: string;
-  periodEnd: string;
-}
+export const UsageResponseSchema = z.object({
+  plan: SubscriptionPlanSchema,
+  status: SubscriptionStatusSchema,
+  limit: z.int().nonnegative(),
+  used: z.int().nonnegative(),
+  remaining: z.int().nonnegative(),
+  periodStart: TimestampSchema,
+  periodEnd: TimestampSchema,
+});
+
+export class UsageResponseDto extends createZodDto(UsageResponseSchema) {}

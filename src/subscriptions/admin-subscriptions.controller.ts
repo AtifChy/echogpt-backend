@@ -1,5 +1,6 @@
 import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../common/roles.decorator";
@@ -10,6 +11,7 @@ import {
   ApiNotFoundDocs,
   ApiUnauthorizedDocs,
 } from "../common/swagger-errors";
+import { SubscriptionResponseDto } from "./dto/subscription-response.dto";
 import { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
 import { SubscriptionsService } from "./subscriptions.service";
 
@@ -26,20 +28,10 @@ export class AdminSubscriptionsController {
   @Patch(":id/subscription")
   @ApiOperation({ summary: "Update a user's subscription" })
   @ApiParam({ name: "id", type: Number, description: "User ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SubscriptionResponseDto,
     description: "Updated subscription",
-    schema: {
-      example: {
-        id: 1,
-        userId: 1,
-        plan: "PREMIUM",
-        status: "ACTIVE",
-        currentPeriodStart: "2026-01-01T00:00:00.000Z",
-        currentPeriodEnd: "2026-02-01T00:00:00.000Z",
-        createdAt: "2026-01-01T00:00:00.000Z",
-        updatedAt: "2026-01-02T00:00:00.000Z",
-      },
-    },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Subscription not found")

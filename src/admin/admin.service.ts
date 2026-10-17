@@ -2,7 +2,15 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "../prisma.service";
 import type { Models } from "../prisma/contract";
+import type {
+  AdminSubscriptionResponseDto,
+  AdminUserResponseDto,
+  UpdatedUserStatusResponseDto,
+} from "./dto/admin-response.dto";
+import type { DashboardResponseDto } from "./dto/dashboard-response.dto";
 import type { PaginationDto } from "./dto/pagination.dto";
+import type { SystemHealthResponseDto } from "./dto/system-health-response.dto";
+import type { RequestLogResponseDto, UsageLogResponseDto } from "./dto/usage-log-response.dto";
 
 type UserStatus = Models.public_User["status"];
 
@@ -10,7 +18,7 @@ type UserStatus = Models.public_User["status"];
 export class AdminService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async dashboard() {
+  async dashboard(): Promise<DashboardResponseDto> {
     const [users, conversations, searches, requests] = await Promise.all([
       this.prisma.db.orm.public.User.aggregate((a) => ({ count: a.count() })),
       this.prisma.db.orm.public.Conversation.aggregate((a) => ({ count: a.count() })),
@@ -25,8 +33,8 @@ export class AdminService {
     };
   }
 
-  users(query: PaginationDto) {
-    return this.prisma.db.orm.public.User.select(
+  async users(query: PaginationDto): Promise<AdminUserResponseDto[]> {
+    const users = await this.prisma.db.orm.public.User.select(
       "id",
       "email",
       "displayName",
@@ -41,10 +49,23 @@ export class AdminService {
       .orderBy((user) => user.createdAt.desc())
       .offset((query.page - 1) * query.limit)
       .limit(query.limit)
-      .all();
+      .all()
+      .toArray();
+
+    return users.map((user) => {
+      if (!user.role) throw new Error(`User ${user.id} has no role`);
+
+      return {
+        ...user,
+        role: user.role,
+      };
+    });
   }
 
-  async updateUserStatus(userId: number, status: UserStatus) {
+  async updateUserStatus(
+    userId: number,
+    status: UserStatus,
+  ): Promise<UpdatedUserStatusResponseDto> {
     const user = await this.prisma.db.orm.public.User.where({ id: userId }).first();
     if (!user) throw new NotFoundException("User not found");
     await this.prisma.db.transaction(async (tx) => {
@@ -58,8 +79,8 @@ export class AdminService {
     return { id: userId, status };
   }
 
-  subscriptions(query: PaginationDto) {
-    return this.prisma.db.orm.public.Subscription.select(
+  async subscriptions(query: PaginationDto): Promise<AdminSubscriptionResponseDto[]> {
+    const subscriptions = await this.prisma.db.orm.public.Subscription.select(
       "id",
       "userId",
       "plan",
@@ -71,10 +92,22 @@ export class AdminService {
       .orderBy((subscription) => subscription.createdAt.desc())
       .offset((query.page - 1) * query.limit)
       .limit(query.limit)
-      .all();
+      .all()
+      .toArray();
+
+    return subscriptions.map((subscription) => {
+      if (!subscription.user) {
+        throw new Error(`Subscription ${subscription.id} has no associated user`);
+      }
+
+      return {
+        ...subscription,
+        user: subscription.user,
+      };
+    });
   }
 
-  usage(query: PaginationDto) {
+  usage(query: PaginationDto): Promise<UsageLogResponseDto[]> {
     return this.prisma.db.orm.public.ApiUsageLog.select(
       "id",
       "userId",
@@ -89,10 +122,11 @@ export class AdminService {
       .orderBy((log) => log.createdAt.desc())
       .offset((query.page - 1) * query.limit)
       .limit(query.limit)
-      .all();
+      .all()
+      .toArray();
   }
 
-  async requestLogs(query: PaginationDto) {
+  async requestLogs(query: PaginationDto): Promise<RequestLogResponseDto[]> {
     const logs = await this.usage(query);
     return logs.map((log) => ({
       requestId: log.id,
@@ -105,7 +139,7 @@ export class AdminService {
     }));
   }
 
-  async health() {
+  async health(): Promise<SystemHealthResponseDto> {
     const startedAt = Date.now();
     await this.prisma.db.orm.public.Role.select("id").limit(1).all();
     return {

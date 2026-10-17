@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "bun:test";
 import { BadGatewayException } from "@nestjs/common";
 
 import { BraveLlmContextClient } from "../../src/search/brave-llm-context.client";
+import { SearchContextSchema } from "../../src/search/dto/search-context.dto";
 import { SearchService } from "../../src/search/search.service";
 
 describe("BraveLlmContextClient", () => {
@@ -99,10 +100,14 @@ function serviceFixture() {
   };
 }
 
+function searchInput(query: string) {
+  return { ...SearchContextSchema.parse({ query }), query };
+}
+
 describe("SearchService", () => {
   it("checks quota, normalizes a query, and logs success", async () => {
     const f = serviceFixture();
-    await expect(f.service.search(5, { query: "  NestJS   Docs  " })).resolves.toMatchObject({
+    await expect(f.service.search(5, searchInput("  NestJS   Docs  "))).resolves.toMatchObject({
       searchId: 12,
     });
     expect(f.subscriptions.assertAvailable).toHaveBeenCalledWith(5);
@@ -119,7 +124,7 @@ describe("SearchService", () => {
   it("logs failure when Brave fails", async () => {
     const f = serviceFixture();
     f.brave.retrieve.mockRejectedValue(new BadGatewayException("Brave failed"));
-    await expect(f.service.search(5, { query: "x" })).rejects.toBeInstanceOf(BadGatewayException);
+    await expect(f.service.search(5, searchInput("x"))).rejects.toBeInstanceOf(BadGatewayException);
     expect(f.failureCreate).toHaveBeenCalledWith(
       expect.objectContaining({ operation: "SEARCH", status: "FAILED" }),
     );

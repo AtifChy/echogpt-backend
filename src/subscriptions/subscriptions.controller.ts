@@ -1,22 +1,14 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { ApiNotFoundDocs, ApiUnauthorizedDocs } from "../common/swagger-errors";
+import { SubscriptionResponseDto } from "./dto/subscription-response.dto";
 import { SubscriptionsService } from "./subscriptions.service";
-
-const subscriptionExample = {
-  id: 1,
-  userId: 1,
-  plan: "FREE",
-  status: "ACTIVE",
-  currentPeriodStart: "2026-01-01T00:00:00.000Z",
-  currentPeriodEnd: "2026-02-01T00:00:00.000Z",
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z",
-};
+import { UsageResponseDto } from "./subscriptions.type";
 
 @ApiTags("subscriptions")
 @ApiBearerAuth()
@@ -28,9 +20,10 @@ export class SubscriptionsController {
 
   @Get("subscriptions/me")
   @ApiOperation({ summary: "Get the current user's subscription" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SubscriptionResponseDto,
     description: "Current subscription",
-    schema: { example: subscriptionExample },
   })
   @ApiNotFoundDocs("Subscription not found")
   getSubscription(@CurrentUser() user: AuthUser) {
@@ -39,19 +32,10 @@ export class SubscriptionsController {
 
   @Get("usage/me")
   @ApiOperation({ summary: "Get the current user's request usage and remaining quota" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: UsageResponseDto,
     description: "Usage for the current subscription period",
-    schema: {
-      example: {
-        plan: "FREE",
-        status: "ACTIVE",
-        limit: 100,
-        used: 12,
-        remaining: 88,
-        periodStart: subscriptionExample.currentPeriodStart,
-        periodEnd: subscriptionExample.currentPeriodEnd,
-      },
-    },
   })
   @ApiNotFoundDocs("Subscription not found")
   getUsage(@CurrentUser() user: AuthUser) {

@@ -1,22 +1,25 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, Length, MinLength } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class UpdateProviderDto {
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @Length(1, 80)
-  name?: string;
+export const UpdateProviderSchema = z.strictObject({
+  name: z
+    .string()
+    .min(1)
+    .max(80)
+    .nullish()
+    .transform((value) => value ?? undefined),
+  model: z
+    .string()
+    .min(1)
+    .max(100)
+    .nullish()
+    .transform((value) => value ?? undefined),
+  apiKey: z
+    .string()
+    .min(10)
+    .nullish()
+    .transform((value) => value ?? undefined)
+    .meta({ writeOnly: true }),
+});
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @Length(1, 100)
-  model?: string;
-
-  @ApiPropertyOptional({ writeOnly: true })
-  @IsOptional()
-  @IsString()
-  @MinLength(10)
-  apiKey?: string;
-}
+export class UpdateProviderDto extends createZodDto(UpdateProviderSchema) {}

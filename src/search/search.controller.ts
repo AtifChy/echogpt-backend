@@ -9,13 +9,8 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiNoContentResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiNoContentResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
@@ -27,6 +22,11 @@ import {
   ApiUnauthorizedDocs,
 } from "../common/swagger-errors";
 import { SearchContextDto } from "./dto/search-context.dto";
+import {
+  SearchHistoryResponseDto,
+  SearchResponseDto,
+  SuggestionsResponseDto,
+} from "./dto/search-response.dto";
 import { SuggestionQueryDto } from "./dto/suggestions-query.dto";
 import { SearchService } from "./search.service";
 
@@ -39,27 +39,11 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Post()
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Search the web and retrieve context for a query" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SearchResponseDto,
     description: "Search context and citations retrieved",
-    schema: {
-      example: {
-        searchId: 1,
-        query: "NestJS documentation",
-        sources: [
-          {
-            citation: 1,
-            title: "NestJS Documentation",
-            url: "https://docs.nestjs.com/",
-            snippets: ["A progressive Node.js framework."],
-            hostname: "docs.nestjs.com",
-            siteName: "NestJS",
-            publishedAt: "2026-01-01T00:00:00.000Z",
-          },
-        ],
-      },
-    },
   })
   @ApiBadRequestDocs()
   @ApiTooManyRequestsDocs()
@@ -70,33 +54,32 @@ export class SearchController {
 
   @Get("history")
   @ApiOperation({ summary: "Retrieve the user's search history" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SearchHistoryResponseDto,
     description: "Up to 50 searches in reverse chronological order",
-    schema: {
-      example: [{ id: 1, query: "NestJS documentation", createdAt: "2026-01-01T00:00:00.000Z" }],
-    },
   })
-  history(@CurrentUser() user: AuthUser) {
+  async history(@CurrentUser() user: AuthUser) {
     return this.searchService.history(user.userId);
   }
 
   @Get("recent")
   @ApiOperation({ summary: "Retrieve the user's recent searches" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SearchHistoryResponseDto,
     description: "Up to 10 recent searches",
-    schema: {
-      example: [{ id: 1, query: "NestJS documentation", createdAt: "2026-01-01T00:00:00.000Z" }],
-    },
   })
-  recent(@CurrentUser() user: AuthUser) {
+  async recent(@CurrentUser() user: AuthUser) {
     return this.searchService.recent(user.userId);
   }
 
   @Get("suggestions")
   @ApiOperation({ summary: "Retrieve search suggestions based on a query prefix" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SuggestionsResponseDto,
     description: "Up to eight unique suggestions from the user's own history",
-    schema: { example: ["NestJS documentation", "NestJS authentication"] },
   })
   @ApiBadRequestDocs()
   suggestions(@CurrentUser() user: AuthUser, @Query() query: SuggestionQueryDto) {

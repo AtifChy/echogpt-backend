@@ -1,20 +1,21 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "../prisma.service";
+import type { SubscriptionResponseDto } from "./dto/subscription-response.dto";
 import type { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
-import { PLAN_LIMITS, type SubscriptionUsageResponse } from "./subscriptions.type";
+import { PLAN_LIMITS, UsageResponseDto } from "./subscriptions.type";
 
 @Injectable()
 export class SubscriptionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getSubscription(userId: number) {
+  async getSubscription(userId: number): Promise<SubscriptionResponseDto> {
     const subscription = await this.prisma.db.orm.public.Subscription.where({ userId }).first();
     if (!subscription) throw new NotFoundException("Subscription not found");
     return subscription;
   }
 
-  async getUsage(userId: number): Promise<SubscriptionUsageResponse> {
+  async getUsage(userId: number): Promise<UsageResponseDto> {
     const subscription = await this.getSubscription(userId);
     const plan = subscription.plan;
     const limit = PLAN_LIMITS[plan];
@@ -27,7 +28,7 @@ export class SubscriptionsService {
 
     return {
       plan,
-      status: subscription.status as SubscriptionUsageResponse["status"],
+      status: subscription.status,
       limit,
       used: result.used,
       remaining: Math.max(limit - result.used, 0),

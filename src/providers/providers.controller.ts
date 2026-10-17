@@ -14,13 +14,12 @@ import {
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
-  ApiCreatedResponse,
   ApiNoContentResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../common/roles.decorator";
@@ -33,19 +32,14 @@ import {
   ApiUnauthorizedDocs,
 } from "../common/swagger-errors";
 import { CreateProviderDto } from "./dto/create-provider.dto";
+import {
+  ProviderHealthResponseDto,
+  ProvidersResponseDto,
+  ProviderResponseDto,
+} from "./dto/provider-response.dto";
 import { SetEnabledProviderDto } from "./dto/set-enabled-provider.dto";
 import { UpdateProviderDto } from "./dto/update-provider.dto";
 import { ProvidersService } from "./providers.service";
-
-const providerExample = {
-  id: 1,
-  name: "Primary OpenAI",
-  type: "OPENAI",
-  model: "gpt-5",
-  enabled: true,
-  isDefault: false,
-  hasApiKey: true,
-};
 
 @ApiTags("admin")
 @ApiBearerAuth()
@@ -59,9 +53,10 @@ export class ProvidersController {
 
   @Post()
   @ApiOperation({ summary: "Add an encrypted AI provider configuration" })
-  @ApiCreatedResponse({
+  @ZodResponse({
+    status: 201,
+    type: ProviderResponseDto,
     description: "Provider created; the API key is never returned",
-    schema: { example: providerExample },
   })
   @ApiBadRequestDocs()
   create(@Body() dto: CreateProviderDto) {
@@ -70,9 +65,10 @@ export class ProvidersController {
 
   @Get()
   @ApiOperation({ summary: "List AI provider configurations" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProvidersResponseDto,
     description: "Provider list without encrypted key fields",
-    schema: { example: [providerExample] },
   })
   list() {
     return this.providers.list();
@@ -81,9 +77,10 @@ export class ProvidersController {
   @Patch(":id")
   @ApiOperation({ summary: "Update an AI provider configuration" })
   @ApiParam({ name: "id", type: Number, description: "Provider ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProviderResponseDto,
     description: "Updated provider without encrypted key fields",
-    schema: { example: { ...providerExample, model: "gpt-5-mini" } },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Provider not found")
@@ -105,9 +102,10 @@ export class ProvidersController {
   @Patch(":id/enabled")
   @ApiOperation({ summary: "Enable or disable an AI provider" })
   @ApiParam({ name: "id", type: Number, description: "Provider ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProviderResponseDto,
     description: "Provider enabled state updated",
-    schema: { example: providerExample },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Provider not found")
@@ -118,9 +116,10 @@ export class ProvidersController {
   @Put(":id/default")
   @ApiOperation({ summary: "Select the default AI provider" })
   @ApiParam({ name: "id", type: Number, description: "Provider ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProviderResponseDto,
     description: "Default provider selected",
-    schema: { example: { ...providerExample, isDefault: true } },
   })
   @ApiNotFoundDocs("Provider not found")
   @ApiConflictDocs("Provider is disabled")
@@ -129,12 +128,12 @@ export class ProvidersController {
   }
 
   @Post(":id/health")
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Check connectivity to an AI provider" })
   @ApiParam({ name: "id", type: Number, description: "Provider ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProviderHealthResponseDto,
     description: "Provider responded successfully",
-    schema: { example: { status: "ok", latency: 245 } },
   })
   @ApiNotFoundDocs("Provider not found")
   @ApiConflictDocs("Provider is disabled")

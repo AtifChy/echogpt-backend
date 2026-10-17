@@ -1,23 +1,22 @@
 import { Controller, Get } from "@nestjs/common";
-import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
+
+import { HealthResponseDto } from "../common/dto/status-response.dto";
 
 @ApiTags("health")
 @Controller("health")
 export class HealthController {
   @Get()
   @ApiOperation({ summary: "Check public API health" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: HealthResponseDto,
     description: "The API process is healthy",
-    schema: {
-      example: {
-        status: "ok",
-        timestamp: "2026-01-01T00:00:00.000Z",
-      },
-    },
   })
   check() {
     return {
-      status: "ok",
+      status: "ok" as const,
       timestamp: new Date().toISOString(),
     };
   }

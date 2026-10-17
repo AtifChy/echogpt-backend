@@ -118,7 +118,7 @@ describe("ChatService", () => {
   it("trims a prompt and logs successful token usage", async () => {
     const f = fixture({ id: 10, userId: 5, providerId: 4 });
     await expect(
-      f.service.send(5, { conversationId: 10, prompt: "  hello  " }),
+      f.service.send(5, { conversationId: 10, prompt: "  hello  ", webSearch: false }),
     ).resolves.toMatchObject({
       message: { role: "ASSISTANT", content: "answer", sources: [] },
     });
@@ -179,7 +179,7 @@ describe("ChatService", () => {
   it("hides another user's conversation", async () => {
     const f = fixture(null);
     await expect(
-      f.service.send(99, { conversationId: 10, prompt: "hello" }),
+      f.service.send(99, { conversationId: 10, prompt: "hello", webSearch: false }),
     ).rejects.toBeInstanceOf(NotFoundException);
     expect(f.providers.generate).not.toHaveBeenCalled();
     expect(f.userMessageCreate).not.toHaveBeenCalled();
@@ -190,9 +190,9 @@ describe("ChatService", () => {
   it("records FAILED when the provider fails", async () => {
     const f = fixture({ id: 10, userId: 5, providerId: 4 });
     f.providers.generate.mockRejectedValue(new Error("provider unavailable"));
-    await expect(f.service.send(5, { conversationId: 10, prompt: "hello" })).rejects.toThrow(
-      "provider unavailable",
-    );
+    await expect(
+      f.service.send(5, { conversationId: 10, prompt: "hello", webSearch: false }),
+    ).rejects.toThrow("provider unavailable");
     expect(f.failedUsageCreate).toHaveBeenCalledWith(
       expect.objectContaining({ operation: "CHAT", status: "FAILED" }),
     );
@@ -278,6 +278,7 @@ describe("ChatService", () => {
     const regularResult = await withoutSearch.service.send(5, {
       conversationId: 10,
       prompt: "hello",
+      webSearch: false,
     });
     expect(regularResult.message.sources).toEqual([]);
     expect(withoutSearch.search.retrieveForChat).not.toHaveBeenCalled();
@@ -314,9 +315,9 @@ describe("ChatService", () => {
   it("records FAILED when the transaction success log fails", async () => {
     const f = fixture({ id: 10, userId: 5, providerId: 4 });
     f.successUsageCreate.mockRejectedValue(new Error("transaction failed"));
-    await expect(f.service.send(5, { conversationId: 10, prompt: "hello" })).rejects.toThrow(
-      "transaction failed",
-    );
+    await expect(
+      f.service.send(5, { conversationId: 10, prompt: "hello", webSearch: false }),
+    ).rejects.toThrow("transaction failed");
     expect(f.failedUsageCreate).toHaveBeenCalledWith(
       expect.objectContaining({ operation: "CHAT", status: "FAILED" }),
     );
@@ -341,9 +342,9 @@ describe("ChatService", () => {
   it("denies quota before writing messages, transactions, or usage logs", async () => {
     const f = fixture({ id: 10, userId: 5, providerId: 4 });
     f.subscriptions.assertAvailable.mockRejectedValue(new Error("quota exceeded"));
-    await expect(f.service.send(5, { conversationId: 10, prompt: "hello" })).rejects.toThrow(
-      "quota exceeded",
-    );
+    await expect(
+      f.service.send(5, { conversationId: 10, prompt: "hello", webSearch: false }),
+    ).rejects.toThrow("quota exceeded");
     expect(f.userMessageCreate).not.toHaveBeenCalled();
     expect(f.transaction).not.toHaveBeenCalled();
     expect(f.failedUsageCreate).not.toHaveBeenCalled();

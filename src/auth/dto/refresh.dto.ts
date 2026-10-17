@@ -1,9 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MinLength } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class RefreshDto {
-  @ApiProperty({ description: "Opaque refresh token returned by login" })
-  @IsString()
-  @MinLength(40)
-  refreshToken!: string;
-}
+export const RefreshSchema = z.strictObject({
+  refreshToken: z.string().min(40).meta({
+    writeOnly: true,
+    description: "Opaque refresh token returned by login",
+  }),
+});
+
+export class RefreshDto extends createZodDto(RefreshSchema) {}

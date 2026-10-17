@@ -1,18 +1,22 @@
 import { Controller, Get } from "@nestjs/common";
-import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
+
+import { RootResponseDto } from "./common/dto/status-response.dto";
 
 @ApiTags("app")
 @Controller()
 export class AppController {
   @Get()
   @ApiOperation({ summary: "Identify the EchoGPT API" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: RootResponseDto,
     description: "API identification message",
-    schema: { example: { message: "EchoGPT API" } },
   })
   getRoot() {
     return {
-      message: "EchoGPT API",
+      message: "EchoGPT API" as const,
     };
   }
 }

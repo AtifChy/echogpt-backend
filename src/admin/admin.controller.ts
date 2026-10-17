@@ -8,7 +8,8 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { Roles } from "../common/roles.decorator";
@@ -20,8 +21,16 @@ import {
   ApiUnauthorizedDocs,
 } from "../common/swagger-errors";
 import { AdminService } from "./admin.service";
+import {
+  AdminSubscriptionsResponseDto,
+  AdminUsersResponseDto,
+  UpdatedUserStatusResponseDto,
+} from "./dto/admin-response.dto";
+import { DashboardResponseDto } from "./dto/dashboard-response.dto";
 import { PaginationDto } from "./dto/pagination.dto";
+import { SystemHealthResponseDto } from "./dto/system-health-response.dto";
 import { UpdateUserStatusDto } from "./dto/update-user-status.dto";
+import { RequestLogsResponseDto } from "./dto/usage-log-response.dto";
 
 @ApiTags("admin")
 @ApiBearerAuth()
@@ -35,9 +44,10 @@ export class AdminController {
 
   @Get("dashboard")
   @ApiOperation({ summary: "Get dashboard statistics" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: DashboardResponseDto,
     description: "System-wide entity and request counts",
-    schema: { example: { users: 120, conversations: 640, searches: 310, requests: 1_250 } },
   })
   dashboard() {
     return this.admin.dashboard();
@@ -45,27 +55,10 @@ export class AdminController {
 
   @Get("users")
   @ApiOperation({ summary: "List users" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: AdminUsersResponseDto,
     description: "Paginated user list without password hashes",
-    schema: {
-      example: [
-        {
-          id: 1,
-          email: "user@example.com",
-          displayName: "Atif",
-          status: "ACTIVE",
-          createdAt: "2026-01-01T00:00:00.000Z",
-          updatedAt: "2026-01-01T00:00:00.000Z",
-          role: { name: "USER" },
-          subscriptions: {
-            plan: "FREE",
-            status: "ACTIVE",
-            currentPeriodStart: "2026-01-01T00:00:00.000Z",
-            currentPeriodEnd: "2026-02-01T00:00:00.000Z",
-          },
-        },
-      ],
-    },
   })
   @ApiBadRequestDocs()
   users(@Query() query: PaginationDto) {
@@ -75,9 +68,10 @@ export class AdminController {
   @Patch("users/:id/status")
   @ApiOperation({ summary: "Activate or suspend a user" })
   @ApiParam({ name: "id", type: Number, description: "User ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: UpdatedUserStatusResponseDto,
     description: "User status updated; suspension revokes every session",
-    schema: { example: { id: 1, status: "SUSPENDED" } },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("User not found")
@@ -87,21 +81,10 @@ export class AdminController {
 
   @Get("subscriptions")
   @ApiOperation({ summary: "List subscriptions" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: AdminSubscriptionsResponseDto,
     description: "Paginated subscription list",
-    schema: {
-      example: [
-        {
-          id: 1,
-          userId: 1,
-          plan: "FREE",
-          status: "ACTIVE",
-          currentPeriodStart: "2026-01-01T00:00:00.000Z",
-          currentPeriodEnd: "2026-02-01T00:00:00.000Z",
-          user: { email: "user@example.com", displayName: "Atif" },
-        },
-      ],
-    },
   })
   @ApiBadRequestDocs()
   subscriptions(@Query() query: PaginationDto) {
@@ -110,21 +93,10 @@ export class AdminController {
 
   @Get("request-logs")
   @ApiOperation({ summary: "List API request logs" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: RequestLogsResponseDto,
     description: "Paginated sanitized request logs",
-    schema: {
-      example: [
-        {
-          requestId: 1,
-          userId: 1,
-          providerId: 1,
-          operation: "CHAT",
-          status: "SUCCESS",
-          latencyMs: 245,
-          createdAt: "2026-01-01T00:00:00.000Z",
-        },
-      ],
-    },
   })
   @ApiBadRequestDocs()
   requestLogs(@Query() query: PaginationDto) {
@@ -133,24 +105,10 @@ export class AdminController {
 
   @Get("health")
   @ApiOperation({ summary: "Get application and database health details" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: SystemHealthResponseDto,
     description: "Runtime and database health",
-    schema: {
-      example: {
-        status: "ok",
-        database: "up",
-        databaseLatencyMs: 2,
-        uptimeSeconds: 3600,
-        memory: {
-          rss: 120_000_000,
-          heapTotal: 60_000_000,
-          heapUsed: 45_000_000,
-          external: 2_000_000,
-          arrayBuffers: 100_000,
-        },
-        timestamp: "2026-01-01T00:00:00.000Z",
-      },
-    },
   })
   health() {
     return this.admin.health();

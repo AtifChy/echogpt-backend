@@ -1,28 +1,18 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsBoolean, IsIn, IsOptional, IsString, Length, MinLength } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateProviderDto {
-  @ApiProperty({ example: "Primary OpenAI" })
-  @IsString()
-  @Length(1, 80)
-  name!: string;
+import { ProviderTypeSchema } from "../../common/schemas/enums.schema";
 
-  @ApiProperty({ enum: ["OPENAI", "ANTHROPIC", "GEMINI"] })
-  @IsIn(["OPENAI", "ANTHROPIC", "GEMINI"])
-  type!: "OPENAI" | "ANTHROPIC" | "GEMINI";
+export const CreateProviderSchema = z.strictObject({
+  name: z.string().min(1).max(80),
+  type: ProviderTypeSchema,
+  model: z.string().min(1).max(100),
+  apiKey: z.string().min(10).meta({ writeOnly: true }),
+  enabled: z
+    .boolean()
+    .nullish()
+    .transform((value) => value ?? undefined)
+    .meta({ default: false }),
+});
 
-  @ApiProperty({ example: "gpt-5" })
-  @IsString()
-  @Length(1, 100)
-  model!: string;
-
-  @ApiProperty({ writeOnly: true })
-  @IsString()
-  @MinLength(10)
-  apiKey!: string;
-
-  @ApiPropertyOptional({ default: false })
-  @IsOptional()
-  @IsBoolean()
-  enabled?: boolean;
-}
+export class CreateProviderDto extends createZodDto(CreateProviderSchema) {}

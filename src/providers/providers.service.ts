@@ -8,6 +8,11 @@ import {
 import { PrismaService } from "../prisma.service";
 import { AnthropicProvider } from "./anthropic.provider";
 import type { CreateProviderDto } from "./dto/create-provider.dto";
+import type {
+  ProviderHealthResponseDto,
+  ProviderListResponseDto,
+  ProviderResponseDto,
+} from "./dto/provider-response.dto";
 import type { SetEnabledProviderDto } from "./dto/set-enabled-provider.dto";
 import type { UpdateProviderDto } from "./dto/update-provider.dto";
 import { GeminiProvider } from "./gemini.provider";
@@ -15,16 +20,6 @@ import { OpenAiProvider } from "./openai.provider";
 import type { ProviderAdapter } from "./provider.interface";
 import type { EncryptedSecret } from "./secret-cipher.service";
 import { SecretCipherService } from "./secret-cipher.service";
-
-interface ProvidersResponse {
-  id: number;
-  name: string;
-  type: string;
-  model: string;
-  enabled: boolean;
-  isDefault: boolean;
-  hasApiKey: boolean;
-}
 
 @Injectable()
 export class ProvidersService {
@@ -40,7 +35,7 @@ export class ProvidersService {
     this.adapters = new Map([openai, anthropic, gemini].map((adapter) => [adapter.type, adapter]));
   }
 
-  list() {
+  list(): Promise<ProviderListResponseDto[]> {
     return this.prisma.db.orm.public.AiProvider.select(
       "id",
       "name",
@@ -50,7 +45,9 @@ export class ProvidersService {
       "isDefault",
       "createdAt",
       "updatedAt",
-    ).all();
+    )
+      .all()
+      .toArray();
   }
 
   async create(dto: CreateProviderDto) {
@@ -134,7 +131,7 @@ export class ProvidersService {
     return provider.id;
   }
 
-  async health(id: number) {
+  async health(id: number): Promise<ProviderHealthResponseDto> {
     const startedAt = Date.now();
     await this.generate(id, "Reply with only: 'OK'");
     return { status: "ok", latency: Date.now() - startedAt };
@@ -151,7 +148,7 @@ export class ProvidersService {
     return this.safe(provider);
   }
 
-  private safe(provider: Omit<ProvidersResponse, "hasApiKey">): ProvidersResponse {
+  private safe(provider: Omit<ProviderResponseDto, "hasApiKey">): ProviderResponseDto {
     return {
       id: provider.id,
       name: provider.name,

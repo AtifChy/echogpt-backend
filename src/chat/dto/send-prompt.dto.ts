@@ -1,19 +1,14 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsInt, IsOptional, IsString, Length, Min } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class SendPromptDto {
-  @ApiProperty()
-  @IsInt()
-  @Min(1)
-  conversationId!: number;
+export const SendPromptSchema = z.strictObject({
+  conversationId: z.int().positive(),
+  prompt: z.string().min(1).max(20_000),
+  webSearch: z
+    .boolean()
+    .nullish()
+    .transform((value) => value ?? undefined)
+    .meta({ default: false }),
+});
 
-  @ApiProperty({ maxLength: 20_000 })
-  @IsString()
-  @Length(1, 20_000)
-  prompt!: string;
-
-  @ApiProperty({ default: false })
-  @IsOptional()
-  @IsBoolean()
-  webSearch?: boolean;
-}
+export class SendPromptDto extends createZodDto(SendPromptSchema) {}

@@ -12,13 +12,12 @@ import {
 } from "@nestjs/common";
 import {
   ApiBearerAuth,
-  ApiCreatedResponse,
   ApiNoContentResponse,
-  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiTags,
 } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
@@ -31,35 +30,13 @@ import {
   ApiUnauthorizedDocs,
 } from "../common/swagger-errors";
 import { ChatService } from "./chat.service";
+import {
+  ConversationListResponseDto,
+  CreateConversationResponseDto,
+} from "./dto/conversation-response.dto";
 import { CreateConversationDto } from "./dto/create-conversation.dto";
+import { ChatResponseDto, MessageListResponseDto } from "./dto/message-response.dto";
 import { SendPromptDto } from "./dto/send-prompt.dto";
-
-const conversationExample = {
-  id: 1,
-  title: "Explain the theory of relativity in simple terms",
-  userId: 1,
-  providerId: 1,
-  createdAt: "2026-01-01T00:00:00.000Z",
-  updatedAt: "2026-01-01T00:00:00.000Z",
-};
-
-const citationExample = {
-  citation: 1,
-  title: "NestJS Documentation",
-  url: "https://docs.nestjs.com/",
-  hostname: "docs.nestjs.com",
-  publishedAt: null,
-};
-
-const messageExample = {
-  id: 2,
-  role: "ASSISTANT",
-  content: "NestJS is a progressive Node.js framework.",
-  inputTokens: 12,
-  outputTokens: 18,
-  createdAt: "2026-01-01T00:00:01.000Z",
-  sources: [citationExample],
-};
 
 @ApiTags("chat")
 @ApiBearerAuth()
@@ -71,9 +48,10 @@ export class ChatController {
 
   @Post("conversations")
   @ApiOperation({ summary: "Create a conversation" })
-  @ApiCreatedResponse({
+  @ZodResponse({
+    status: 201,
+    type: CreateConversationResponseDto,
     description: "Conversation created using the selected or default provider",
-    schema: { example: conversationExample },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("No default provider configured")
@@ -84,19 +62,10 @@ export class ChatController {
 
   @Get("conversations")
   @ApiOperation({ summary: "List the current user's conversations" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ConversationListResponseDto,
     description: "Up to 50 most recently updated conversations",
-    schema: {
-      example: [
-        {
-          id: conversationExample.id,
-          title: conversationExample.title,
-          providerId: conversationExample.providerId,
-          createdAt: conversationExample.createdAt,
-          updatedAt: conversationExample.updatedAt,
-        },
-      ],
-    },
   })
   list(@CurrentUser() user: AuthUser) {
     return this.chat.listConversations(user.userId);
@@ -105,9 +74,10 @@ export class ChatController {
   @Get("conversations/:id/messages")
   @ApiOperation({ summary: "List messages in a conversation" })
   @ApiParam({ name: "id", type: Number, description: "Conversation ID" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: MessageListResponseDto,
     description: "Conversation messages in chronological order",
-    schema: { example: [messageExample] },
   })
   @ApiBadRequestDocs("Conversation ID must be an integer")
   @ApiNotFoundDocs("Conversation not found")
@@ -128,14 +98,10 @@ export class ChatController {
 
   @Post("chat/messages")
   @ApiOperation({ summary: "Send a prompt and persist the AI response" })
-  @ApiCreatedResponse({
+  @ZodResponse({
+    status: 201,
+    type: ChatResponseDto,
     description: "Assistant response and optional web citations",
-    schema: {
-      example: {
-        message: messageExample,
-        sources: [citationExample],
-      },
-    },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Conversation not found")

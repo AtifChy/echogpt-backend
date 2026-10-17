@@ -1,32 +1,16 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiNoContentResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiNoContentResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { ApiBadRequestDocs, ApiConflictDocs, ApiUnauthorizedDocs } from "../common/swagger-errors";
 import { AuthService } from "./auth.service";
+import { AuthResponseDto, TokenPairResponseDto } from "./dto/auth-response.dto";
 import { LoginDto } from "./dto/login.dto";
 import { RefreshDto } from "./dto/refresh.dto";
 import { RegisterDto } from "./dto/register.dto";
 import { JwtAuthGuard } from "./jwt-auth.guard";
-
-const authResponseExample = {
-  user: {
-    id: 1,
-    email: "user@example.com",
-    displayName: "Atif",
-    role: "USER",
-  },
-  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  refreshToken: "opaque-refresh-token",
-};
 
 @ApiTags("auth")
 @Controller("auth")
@@ -35,9 +19,10 @@ export class AuthController {
 
   @Post("register")
   @ApiOperation({ summary: "Register a user account" })
-  @ApiCreatedResponse({
+  @ZodResponse({
+    status: HttpStatus.CREATED,
+    type: AuthResponseDto,
     description: "Account, subscription, session, and token pair created",
-    schema: { example: authResponseExample },
   })
   @ApiBadRequestDocs()
   @ApiConflictDocs("Email is already registered")
@@ -46,11 +31,11 @@ export class AuthController {
   }
 
   @Post("login")
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Log in with email and password" })
-  @ApiOkResponse({
-    description: "Authenticated user and token pair returned",
-    schema: { example: authResponseExample },
+  @ZodResponse({
+    status: HttpStatus.OK,
+    type: AuthResponseDto,
+    description: "Authenticated user and token pair",
   })
   @ApiBadRequestDocs()
   @ApiUnauthorizedDocs("Invalid email or password")
@@ -59,16 +44,11 @@ export class AuthController {
   }
 
   @Post("refresh")
-  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "Rotate a refresh token" })
-  @ApiOkResponse({
-    description: "Previous refresh token invalidated and a new token pair returned",
-    schema: {
-      example: {
-        accessToken: authResponseExample.accessToken,
-        refreshToken: authResponseExample.refreshToken,
-      },
-    },
+  @ZodResponse({
+    status: HttpStatus.OK,
+    type: TokenPairResponseDto,
+    description: "Rotated token pair",
   })
   @ApiBadRequestDocs()
   @ApiUnauthorizedDocs("Refresh token is invalid, expired, or already used")

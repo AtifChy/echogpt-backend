@@ -1,14 +1,11 @@
-import type { AuthUser } from "../common/auth-user";
+import type { z } from "zod";
 
-export interface AuthResponseUser {
-  id: number;
-  email: string;
-  displayName: string | null;
-  role: AuthUser["role"];
-}
+import {
+  AuthResponseSchema,
+  AuthResponseUserSchema,
+  TokenPairSchema,
+} from "./dto/auth-response.dto";
 
-export interface AuthResponse {
-  user: AuthResponseUser;
-  accessToken: string;
-  refreshToken: string;
-}
+export type AuthResponseUser = z.output<typeof AuthResponseUserSchema>;
+export type AuthResponse = z.output<typeof AuthResponseSchema>;
+export type TokenPair = z.output<typeof TokenPairSchema>;

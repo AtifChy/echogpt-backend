@@ -1,7 +1,10 @@
-import { ValidationPipe, type INestApplication } from "@nestjs/common";
+import { type INestApplication } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import helmet from "helmet";
+import { cleanupOpenApiDoc } from "nestjs-zod";
+
+import { ZodRequestPipe } from "./common/pipes/zod-request.pipe";
 
 export function configureApp(app: INestApplication) {
   const config = app.get(ConfigService);
@@ -14,13 +17,7 @@ export function configureApp(app: INestApplication) {
   app.setGlobalPrefix("api/v1");
   app.use(helmet());
   app.enableCors({ origin: origins, credentials: true });
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
+  app.useGlobalPipes(new ZodRequestPipe());
 
   const swagger = new DocumentBuilder()
     .setTitle("EchoGPT API")
@@ -29,5 +26,5 @@ export function configureApp(app: INestApplication) {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swagger);
-  SwaggerModule.setup("docs", app, document, { jsonDocumentUrl: "docs-json" });
+  SwaggerModule.setup("docs", app, cleanupOpenApiDoc(document), { jsonDocumentUrl: "docs-json" });
 }

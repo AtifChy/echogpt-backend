@@ -1,21 +1,31 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { argon2id, hash, verify } from "argon2";
 
 import { PrismaService } from "../prisma.service";
 import type { ChangePasswordDto } from "./dto/change-password.dto";
+import type { ProfileResponseDto } from "./dto/profile-response.dto";
 import type { UpdateProfileDto } from "./dto/update-profile.dto";
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMe(userId: number) {
+  async findMe(userId: number): Promise<ProfileResponseDto> {
     const user = await this.prisma.db.orm.public.User.where({ id: userId })
       .select("id", "email", "displayName", "status", "createdAt")
       .include("role", (role) => role.select("name"))
       .first();
+
     if (!user) throw new NotFoundException("User not found");
-    return user;
+
+    if (!user.role) throw new InternalServerErrorException("User role not found");
+
+    return { ...user, role: user.role };
   }
 
   async updateProfile(userId: number, dto: UpdateProfileDto) {

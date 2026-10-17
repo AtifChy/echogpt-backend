@@ -1,23 +1,25 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
-import { IsInt, IsOptional, IsString, Length, Min } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class CreateConversationDto {
-  @ApiPropertyOptional({ description: "Uses default provider if not specified" })
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  providerId?: number;
+export const CreateConversationSchema = z.strictObject({
+  providerId: z
+    .int()
+    .positive()
+    .nullish()
+    .transform((value) => value ?? undefined)
+    .meta({ description: "Uses default provider if not specified" }),
+  title: z
+    .string()
+    .trim()
+    .transform((value) => value.replace(/\s+/g, " "))
+    .pipe(z.string().min(1).max(60))
+    .nullish()
+    .transform((value) => value ?? undefined)
+    .meta({
+      description: "Conversation title derived from the first prompt",
+      minLength: 1,
+      maxLength: 60,
+    }),
+});
 
-  @ApiPropertyOptional({
-    description: "Conversation title derived from the first prompt",
-    minLength: 1,
-    maxLength: 60,
-    example: "Explain the theory of relativity in simple terms",
-  })
-  @Transform(({ value }) => (typeof value === "string" ? value.trim().replace(/\s+/g, " ") : value))
-  @IsOptional()
-  @IsString()
-  @Length(1, 60)
-  title?: string;
-}
+export class CreateConversationDto extends createZodDto(CreateConversationSchema) {}

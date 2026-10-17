@@ -1,10 +1,13 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, Length } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class UpdateProfileDto {
-  @ApiPropertyOptional({ example: "Atif" })
-  @IsOptional()
-  @IsString()
-  @Length(1, 80)
-  displayName?: string;
-}
+export const UpdateProfileSchema = z.strictObject({
+  displayName: z
+    .string()
+    .min(1)
+    .max(80)
+    .nullish()
+    .transform((value) => value ?? undefined),
+});
+
+export class UpdateProfileDto extends createZodDto(UpdateProfileSchema) {}

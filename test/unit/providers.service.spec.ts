@@ -88,6 +88,7 @@ describe("ProvidersService", () => {
         type: "UNKNOWN" as never,
         model: "unknown",
         apiKey: "key",
+        enabled: false,
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });

@@ -1,8 +1,8 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class SetEnabledProviderDto {
-  @ApiProperty({ example: true, description: "Whether the provider can be used for chat requests" })
-  @IsBoolean()
-  enabled!: boolean;
-}
+export const SetEnabledProviderSchema = z.strictObject({
+  enabled: z.boolean().meta({ description: "Whether the provider can be used for chat requests" }),
+});
+
+export class SetEnabledProviderDto extends createZodDto(SetEnabledProviderSchema) {}

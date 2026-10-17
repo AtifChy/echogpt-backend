@@ -1,13 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsIn, IsOptional } from "class-validator";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-export class UpdateSubscriptionDto {
-  @ApiProperty({ enum: ["FREE", "PREMIUM"] })
-  @IsIn(["FREE", "PREMIUM"])
-  plan!: "FREE" | "PREMIUM";
+import {
+  SubscriptionPlanSchema,
+  SubscriptionStatusSchema,
+} from "../../common/schemas/enums.schema";
 
-  @ApiPropertyOptional({ enum: ["ACTIVE", "CANCELED"] })
-  @IsOptional()
-  @IsIn(["ACTIVE", "CANCELED"])
-  status?: "ACTIVE" | "CANCELED";
-}
+export const UpdateSubscriptionSchema = z.strictObject({
+  plan: SubscriptionPlanSchema,
+  status: SubscriptionStatusSchema.nullish().transform((value) => value ?? undefined),
+});
+
+export class UpdateSubscriptionDto extends createZodDto(UpdateSubscriptionSchema) {}

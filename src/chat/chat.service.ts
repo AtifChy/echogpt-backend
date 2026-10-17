@@ -5,7 +5,12 @@ import { ProvidersService } from "../providers/providers.service";
 import type { LlmContextResult } from "../search/brave-llm-context.client";
 import { SearchService } from "../search/search.service";
 import { SubscriptionsService } from "../subscriptions/subscriptions.service";
+import type {
+  ConversationResponseDto,
+  CreateConversationResponseDto,
+} from "./dto/conversation-response.dto";
 import type { CreateConversationDto } from "./dto/create-conversation.dto";
+import type { ChatResponseDto, MessageResponseDto } from "./dto/message-response.dto";
 import type { SendPromptDto } from "./dto/send-prompt.dto";
 
 @Injectable()
@@ -17,7 +22,10 @@ export class ChatService {
     private readonly search: SearchService,
   ) {}
 
-  async createConversation(userId: number, dto: CreateConversationDto) {
+  async createConversation(
+    userId: number,
+    dto: CreateConversationDto,
+  ): Promise<CreateConversationResponseDto> {
     const providerId = await this.providers.resolveId(dto.providerId);
     return this.prisma.db.orm.public.Conversation.create({
       userId,
@@ -26,15 +34,16 @@ export class ChatService {
     });
   }
 
-  listConversations(userId: number) {
+  listConversations(userId: number): Promise<ConversationResponseDto[]> {
     return this.prisma.db.orm.public.Conversation.where({ userId })
       .select("id", "title", "providerId", "createdAt", "updatedAt")
       .orderBy((conversation) => conversation.updatedAt.desc())
       .limit(50)
-      .all();
+      .all()
+      .toArray();
   }
 
-  async listMessages(userId: number, conversationId: number) {
+  async listMessages(userId: number, conversationId: number): Promise<MessageResponseDto[]> {
     await this.requireConversation(userId, conversationId);
     return this.prisma.db.orm.public.Message.where({ conversationId })
       .select("id", "role", "content", "inputTokens", "outputTokens", "createdAt")
@@ -47,12 +56,15 @@ export class ChatService {
       .all();
   }
 
-  async removeConversation(userId: number, conversationId: number) {
+  async removeConversation(
+    userId: number,
+    conversationId: number,
+  ): Promise<ConversationResponseDto | null> {
     await this.requireConversation(userId, conversationId);
     return this.prisma.db.orm.public.Conversation.where({ id: conversationId }).delete();
   }
 
-  async send(userId: number, dto: SendPromptDto) {
+  async send(userId: number, dto: SendPromptDto): Promise<ChatResponseDto> {
     const conversation = await this.requireConversation(userId, dto.conversationId);
     await this.subscriptions.assertAvailable(userId, dto.webSearch ? 2 : 1);
 
@@ -151,7 +163,10 @@ export class ChatService {
     ].join("\n");
   }
 
-  private async requireConversation(userId: number, conversationId: number) {
+  private async requireConversation(
+    userId: number,
+    conversationId: number,
+  ): Promise<ConversationResponseDto> {
     const conversation = await this.prisma.db.orm.public.Conversation.where({
       id: conversationId,
       userId,

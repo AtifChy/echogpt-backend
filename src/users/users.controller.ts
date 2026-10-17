@@ -8,30 +8,17 @@ import {
   Patch,
   UseGuards,
 } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiNoContentResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiNoContentResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import type { AuthUser } from "../common/auth-user";
 import { CurrentUser } from "../common/current-user.decorator";
 import { ApiBadRequestDocs, ApiNotFoundDocs, ApiUnauthorizedDocs } from "../common/swagger-errors";
 import { ChangePasswordDto } from "./dto/change-password.dto";
+import { ProfileResponseDto } from "./dto/profile-response.dto";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { UserService } from "./users.service";
-
-const profileExample = {
-  id: 1,
-  email: "user@example.com",
-  displayName: "Atif",
-  status: "ACTIVE",
-  createdAt: "2026-01-01T00:00:00.000Z",
-  role: { name: "USER" },
-};
 
 @ApiTags("users")
 @ApiBearerAuth()
@@ -43,9 +30,10 @@ export class UsersController {
 
   @Get("me")
   @ApiOperation({ summary: "Get the current user's profile" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProfileResponseDto,
     description: "Current user profile",
-    schema: { example: profileExample },
   })
   @ApiNotFoundDocs("User not found")
   findMe(@CurrentUser() user: AuthUser) {
@@ -54,9 +42,10 @@ export class UsersController {
 
   @Patch("me")
   @ApiOperation({ summary: "Update the current user's profile" })
-  @ApiOkResponse({
+  @ZodResponse({
+    status: 200,
+    type: ProfileResponseDto,
     description: "Updated user profile",
-    schema: { example: { ...profileExample, displayName: "Updated name" } },
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("User not found")
