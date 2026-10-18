@@ -12,40 +12,43 @@ export const SearchContextSchema = z.strictObject({
     .trim()
     .toUpperCase()
     .regex(/^(?:ALL|[A-Z]{2})$/)
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
-    .meta({
-      description: "Country must be a valid 2 character country code or 'ALL'",
-    }),
+    .optional(),
   searchLang: z
     .string()
     .regex(/^[a-z]{2,}$/)
-    .nullish()
-    .transform((value) => value ?? undefined),
+    .nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
   count: z
     .int()
     .min(1)
     .max(50)
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ default: 10 }),
   maximumTokens: z
     .int()
     .min(1024)
     .max(8192)
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ default: 4096 }),
   safesearch: z
     .enum(["off", "moderate", "strict"])
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ default: "moderate" }),
   freshness: z
     .string()
     .regex(/^(pd|pw|pm|py|\d{4}-\d{2}-\d{2}to\d{4}-\d{2}-\d{2})$/)
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({
       description:
         "Freshness filter for search results. Options: 'pd' (past day), 'pw' (past week), 'pm' (past month), 'py' (past year), or a custom date range in the format 'YYYY-MM-DDtoYYYY-MM-DD'.",

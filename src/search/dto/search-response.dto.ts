@@ -13,18 +13,24 @@ export const SearchSourceSchema = z.object({
   publishedAt: z.string().optional(),
 });
 
-export const SearchResponseSchema = z.object({
-  searchId: IdSchema,
+export const SearchContextResultSchema = z.object({
   query: z.string(),
   sources: z.array(SearchSourceSchema),
 });
 
-export const SearchHistoryResponseSchema = z.object({
+export const SearchResponseSchema = SearchContextResultSchema.extend({
+  searchId: IdSchema,
+});
+
+export const SearchHistoryItemSchema = z.object({
   id: IdSchema,
   query: z.string(),
   createdAt: TimestampSchema,
 });
 
+export const SearchHistoryResponseSchema = z.array(SearchHistoryItemSchema);
+export const SuggestionsResponseSchema = z.array(z.string());
+
 export class SearchResponseDto extends createZodDto(SearchResponseSchema) {}
-export class SearchHistoryResponseDto extends createZodDto(z.array(SearchHistoryResponseSchema)) {}
-export class SuggestionsResponseDto extends createZodDto(z.array(z.string())) {}
+export class SearchHistoryResponseDto extends createZodDto(SearchHistoryResponseSchema) {}
+export class SuggestionsResponseDto extends createZodDto(SuggestionsResponseSchema) {}

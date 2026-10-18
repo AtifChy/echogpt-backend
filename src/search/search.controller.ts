@@ -43,7 +43,6 @@ export class SearchController {
   @ZodResponse({
     status: 200,
     type: SearchResponseDto,
-    description: "Search context and citations retrieved",
   })
   @ApiBadRequestDocs()
   @ApiTooManyRequestsDocs()
@@ -59,7 +58,7 @@ export class SearchController {
     type: SearchHistoryResponseDto,
     description: "Up to 50 searches in reverse chronological order",
   })
-  async history(@CurrentUser() user: AuthUser) {
+  history(@CurrentUser() user: AuthUser) {
     return this.searchService.history(user.userId);
   }
 
@@ -70,7 +69,7 @@ export class SearchController {
     type: SearchHistoryResponseDto,
     description: "Up to 10 recent searches",
   })
-  async recent(@CurrentUser() user: AuthUser) {
+  recent(@CurrentUser() user: AuthUser) {
     return this.searchService.recent(user.userId);
   }
 
@@ -90,7 +89,7 @@ export class SearchController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: "Clear the current user's search history" })
   @ApiNoContentResponse({ description: "Search history cleared" })
-  async clear(@CurrentUser() user: AuthUser) {
-    await this.searchService.clearHistory(user.userId);
+  clear(@CurrentUser() user: AuthUser) {
+    return this.searchService.clearHistory(user.userId);
   }
 }

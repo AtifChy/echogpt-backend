@@ -2,9 +2,13 @@ import { Injectable, Logger } from "@nestjs/common";
 
 import { PrismaService } from "../prisma.service";
 import { SubscriptionsService } from "../subscriptions/subscriptions.service";
-import type { LlmContextOptions, LlmContextResult } from "./brave-llm-context.client";
 import { BraveLlmContextClient } from "./brave-llm-context.client";
 import type { SearchContextDto } from "./dto/search-context.dto";
+import type {
+  SearchHistoryResponseDto,
+  SearchResponseDto,
+  SuggestionsResponseDto,
+} from "./dto/search-response.dto";
 
 @Injectable()
 export class SearchService {
@@ -16,16 +20,16 @@ export class SearchService {
     private readonly brave: BraveLlmContextClient,
   ) {}
 
-  async search(userId: number, dto: SearchContextDto) {
+  async search(userId: number, dto: SearchContextDto): Promise<SearchResponseDto> {
     await this.subscriptions.assertAvailable(userId);
     return this.retrieveForUser(userId, dto);
   }
 
-  retrieveForChat(userId: number, query: string) {
+  retrieveForChat(userId: number, query: string): Promise<SearchResponseDto> {
     return this.retrieveForUser(userId, { query });
   }
 
-  history(userId: number) {
+  async history(userId: number): Promise<SearchHistoryResponseDto> {
     return this.prisma.db.orm.public.WebSearch.where({ userId })
       .select("id", "query", "createdAt")
       .orderBy((search) => search.createdAt.desc())
@@ -33,7 +37,7 @@ export class SearchService {
       .all();
   }
 
-  recent(userId: number) {
+  async recent(userId: number): Promise<SearchHistoryResponseDto> {
     return this.prisma.db.orm.public.WebSearch.where({ userId })
       .select("id", "query", "createdAt")
       .orderBy((search) => search.createdAt.desc())
@@ -41,7 +45,7 @@ export class SearchService {
       .all();
   }
 
-  async suggestions(userId: number, rawPrefix: string) {
+  async suggestions(userId: number, rawPrefix: string): Promise<SuggestionsResponseDto> {
     const prefix = rawPrefix.trim().toLowerCase();
     const rows = await this.prisma.db.orm.public.WebSearch.where({ userId })
       .select("query", "normalizedQuery")
@@ -56,14 +60,14 @@ export class SearchService {
     ].slice(0, 8);
   }
 
-  async clearHistory(userId: number) {
+  async clearHistory(userId: number): Promise<void> {
     await this.prisma.db.orm.public.WebSearch.where({ userId }).deleteAll();
   }
 
   private async retrieveForUser(
     userId: number,
-    options: LlmContextOptions,
-  ): Promise<LlmContextResult & { searchId: number }> {
+    options: SearchContextDto,
+  ): Promise<SearchResponseDto> {
     const startedAt = Date.now();
 
     try {

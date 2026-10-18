@@ -1,50 +1,14 @@
 import { BadGatewayException, HttpException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import type { z } from "zod";
 
-interface BraveContextResponse {
-  grounding?: {
-    generic?: Array<{
-      url?: string;
-      title?: string;
-      snippets?: string[];
-    }>;
-  };
-  sources?: Record<
-    string,
-    {
-      title?: string;
-      hostname?: string;
-      age?: string[];
-      snippet?: string;
-      site_name?: string;
-    }
-  >;
-}
+import type { SearchContextSchema } from "./dto/search-context.dto";
+import type { SearchContextResultSchema, SearchSourceSchema } from "./dto/search-response.dto";
+import { BraveContextResponseSchema } from "./schemas/brave-context.schema";
 
-export interface LlmContextOptions {
-  query: string;
-  country?: string;
-  searchLang?: string;
-  count?: number;
-  maximumTokens?: number;
-  safesearch?: "off" | "moderate" | "strict";
-  freshness?: string;
-}
-
-export interface LlmContextSource {
-  citation: number;
-  title: string;
-  url: string;
-  snippets: string[];
-  hostname?: string;
-  siteName?: string;
-  publishedAt?: string;
-}
-
-export interface LlmContextResult {
-  query: string;
-  sources: LlmContextSource[];
-}
+export type LlmContextOptions = z.output<typeof SearchContextSchema>;
+export type LlmContextSource = z.output<typeof SearchSourceSchema>;
+export type LlmContextResult = z.output<typeof SearchContextResultSchema>;
 
 @Injectable()
 export class BraveLlmContextClient {
@@ -80,7 +44,11 @@ export class BraveLlmContextClient {
         throw new BadGatewayException(`Brave returned ${response.status}`);
       }
 
-      const body = (await response.json()) as BraveContextResponse;
+      const parsed = BraveContextResponseSchema.safeParse(await response.json());
+      if (!parsed.success) {
+        throw new BadGatewayException("Brave LLM Context returned an invalid response");
+      }
+      const body = parsed.data;
       const sources: LlmContextSource[] = (body.grounding?.generic ?? []).flatMap((item, index) => {
         if (!item.url) return [];
 
