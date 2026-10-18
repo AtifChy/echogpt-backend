@@ -3,6 +3,8 @@ model Role {
   id    Int      @id @default(autoincrement())
   name  RoleName @unique
   users User[]
+
+  @@map("role")
 }
 
 enum RoleName {
@@ -28,6 +30,7 @@ model User {
 
   @@index([roleId])
   @@index([status])
+  @@map("user")
 }
 
 enum UserStatus {
@@ -46,6 +49,7 @@ model Session {
 
   @@index([userId])
   @@index([expiresAt])
+  @@map("session")
 }
 
 model Subscription {
@@ -60,6 +64,7 @@ model Subscription {
   updatedAt          temporal.updatedAtString()
 
   @@index([plan, status])
+  @@map("subscription")
 }
 
 enum SubscriptionPlan {
@@ -89,6 +94,7 @@ model AiProvider {
 
   @@index([type])
   @@index([enabled, isDefault])
+  @@map("aiProvider")
 }
 
 enum ProviderType {
@@ -110,6 +116,7 @@ model Conversation {
 
   @@index([userId, updatedAt])
   @@index([providerId])
+  @@map("conversation")
 }
 
 model Message {
@@ -124,6 +131,7 @@ model Message {
   createdAt      TimestamptzString @default(now())
 
   @@index([conversationId, createdAt])
+  @@map("message")
 }
 
 model MessageSource {
@@ -137,6 +145,7 @@ model MessageSource {
   publishedAt String?
 
   @@unique([messageId, citation])
+  @@map("messageSource")
 }
 
 enum MessageRole {
@@ -156,6 +165,7 @@ model WebSearch {
 
   @@index([userId, createdAt])
   @@index([normalizedQuery, createdAt])
+  @@map("webSearch")
 }
 
 model SearchResult {
@@ -168,6 +178,7 @@ model SearchResult {
 
   @@unique([searchId, url])
   @@index([searchId])
+  @@map("searchResult")
 }
 
 model ApiUsageLog {
@@ -186,6 +197,7 @@ model ApiUsageLog {
   @@index([userId, createdAt])
   @@index([providerId, createdAt])
   @@index([operation, status, createdAt])
+  @@map("apiUsageLog")
 }
 
 enum ApiUsageOperation {

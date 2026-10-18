@@ -1449,68 +1449,68 @@
               "columns": {
                 "apiKeyAuthTag": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "apiKeyIv": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "enabled": {
                   "codecId": "pg/bool@1",
+                  "dataType": "pg/bool",
                   "default": {
                     "kind": "literal",
                     "value": false
                   },
-                  "nativeType": "bool",
                   "nullable": false
                 },
                 "encryptedApiKey": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "isDefault": {
                   "codecId": "pg/bool@1",
+                  "dataType": "pg/bool",
                   "default": {
                     "kind": "literal",
                     "value": false
                   },
-                  "nativeType": "bool",
                   "nullable": false
                 },
                 "model": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "name": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "type": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -1521,7 +1521,7 @@
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 }
               },
@@ -1568,43 +1568,43 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "inputTokens": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "kind": "literal",
                     "value": 0
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "latencyMs": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "kind": "literal",
                     "value": 0
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "operation": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -1615,21 +1615,21 @@
                 },
                 "outputTokens": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "kind": "literal",
                     "value": 0
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "providerId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": true
                 },
                 "status": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -1640,12 +1640,15 @@
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "apiUsageLog_userId_idx_a489d58a"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -1663,6 +1666,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "apiUsageLog_providerId_idx_d1904c54"
+                  },
                   "source": {
                     "columns": [
                       "providerId"
@@ -1736,45 +1742,48 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "providerId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "title": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "conversation_userId_idx_a489d58a"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -1792,6 +1801,9 @@
                   }
                 },
                 {
+                  "index": {
+                    "name": "conversation_providerId_idx_d1904c54"
+                  },
                   "source": {
                     "columns": [
                       "providerId"
@@ -1853,53 +1865,53 @@
               "columns": {
                 "content": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "conversationId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "inputTokens": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "kind": "literal",
                     "value": 0
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "outputTokens": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "kind": "literal",
                     "value": 0
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "role": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -1911,6 +1923,9 @@
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "message_conversationId_idx_669215a6"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -1958,46 +1973,49 @@
               "columns": {
                 "citation": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "hostname": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": true
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "messageId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "publishedAt": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": true
                 },
                 "title": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "url": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "messageSource_messageId_idx_3cdded8d"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -2050,16 +2068,16 @@
               "columns": {
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "name": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -2088,36 +2106,39 @@
               "columns": {
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "searchId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "snippet": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "title": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "url": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "searchResult_searchId_idx_fa57cfdf"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -2163,45 +2184,48 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "expiresAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "revokedAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": true
                 },
                 "tokenHash": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "session_userId_idx_a489d58a"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -2266,35 +2290,35 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "currentPeriodEnd": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "currentPeriodStart": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "plan": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -2305,7 +2329,7 @@
                 },
                 "status": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -2316,17 +2340,22 @@
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "unique": [
+                      "userId"
+                    ]
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -2379,45 +2408,45 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "displayName": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": true
                 },
                 "email": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "passwordHash": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "roleId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "status": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false,
                   "valueSet": {
                     "entityKind": "valueSet",
@@ -2428,12 +2457,15 @@
                 },
                 "updatedAt": {
                   "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
+                  "dataType": "pg/timestamptz",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "user_roleId_idx_ffccc9a4"
+                  },
                   "source": {
                     "columns": [
                       "roleId"
@@ -2485,40 +2517,43 @@
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
                   "default": {
                     "expression": "now()",
                     "kind": "function"
                   },
-                  "nativeType": "timestamptz",
                   "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "default": {
                     "expression": "autoincrement()",
                     "kind": "function"
                   },
-                  "nativeType": "int4",
                   "nullable": false
                 },
                 "normalizedQuery": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "query": {
                   "codecId": "pg/text@1",
-                  "nativeType": "text",
+                  "dataType": "pg/text",
                   "nullable": false
                 },
                 "userId": {
                   "codecId": "pg/int4@1",
-                  "nativeType": "int4",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
               "foreignKeys": [
                 {
+                  "index": {
+                    "name": "webSearch_userId_idx_a489d58a"
+                  },
                   "onDelete": "cascade",
                   "source": {
                     "columns": [
@@ -2637,10 +2672,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "247d991608922435ae9de52063224ef710b84dc33c31958401216ae58d4aae27"
+    "storageHash": "438846e6a75ceb4c1298cb6b719307150c872447378e491e5beb597c72705393"
   },
   "execution": {
-    "executionHash": "18beeefaf592476909d15550717c3665f9b510b06d96337085f3a2a7d46402e7",
+    "executionHash": "d1e7583ea9c5141354e05127b9e069ddaab92b139f8462389649e668357518be",
     "mutations": {
       "defaults": [
         {
@@ -2653,9 +2688,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "updatedAt",
-            "namespace": "public",
-            "table": "aiProvider"
+            "entry": "aiProvider",
+            "field": "updatedAt",
+            "namespace": "public"
           }
         },
         {
@@ -2668,9 +2703,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "updatedAt",
-            "namespace": "public",
-            "table": "conversation"
+            "entry": "conversation",
+            "field": "updatedAt",
+            "namespace": "public"
           }
         },
         {
@@ -2683,9 +2718,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "updatedAt",
-            "namespace": "public",
-            "table": "subscription"
+            "entry": "subscription",
+            "field": "updatedAt",
+            "namespace": "public"
           }
         },
         {
@@ -2698,9 +2733,9 @@
             "kind": "generator"
           },
           "ref": {
-            "column": "updatedAt",
-            "namespace": "public",
-            "table": "user"
+            "entry": "user",
+            "field": "updatedAt",
+            "namespace": "public"
           }
         }
       ]
@@ -2709,6 +2744,8 @@
   "capabilities": {
     "postgres": {
       "distinctOn": true,
+      "forKeyShare": true,
+      "forNoKeyUpdate": true,
       "jsonAgg": true,
       "lateral": true,
       "limit": true,
@@ -2719,7 +2756,14 @@
       "checkConstraint": true,
       "defaultInInsert": true,
       "enums": true,
+      "forShare": true,
+      "forUpdate": true,
+      "insertOnConflictSkip": true,
+      "insertOnConflictWithoutTarget": true,
       "lateral": true,
+      "lockNowait": true,
+      "lockOf": true,
+      "lockSkipLocked": true,
       "returning": true,
       "scalarList": true
     }
