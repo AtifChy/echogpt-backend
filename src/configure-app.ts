@@ -20,6 +20,7 @@ export function configureApp(app: INestApplication) {
   app.useGlobalPipes(new ZodRequestPipe());
 
   const swagger = new DocumentBuilder()
+    .setOpenAPIVersion("3.1.0")
     .setTitle("EchoGPT API")
     .setDescription("Backend API for EchoGPT")
     .setVersion("1.0")

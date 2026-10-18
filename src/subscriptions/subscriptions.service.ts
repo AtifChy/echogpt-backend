@@ -3,7 +3,8 @@ import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestj
 import { PrismaService } from "../prisma.service";
 import type { SubscriptionResponseDto } from "./dto/subscription-response.dto";
 import type { UpdateSubscriptionDto } from "./dto/update-subscription.dto";
-import { PLAN_LIMITS, UsageResponseDto } from "./subscriptions.type";
+import { PLAN_LIMITS } from "./subscriptions.type";
+import type { UsageResponseDto } from "./subscriptions.type";
 
 @Injectable()
 export class SubscriptionsService {
@@ -37,14 +38,17 @@ export class SubscriptionsService {
     };
   }
 
-  async assertAvailable(userId: number, required = 1) {
+  async assertAvailable(userId: number, required = 1): Promise<void> {
     const usage = await this.getUsage(userId);
     if (usage.status !== "ACTIVE" || usage.remaining < required) {
       throw new HttpException("Request limit reached", HttpStatus.TOO_MANY_REQUESTS);
     }
   }
 
-  async updateSubscription(userId: number, dto: UpdateSubscriptionDto) {
+  async updateSubscription(
+    userId: number,
+    dto: UpdateSubscriptionDto,
+  ): Promise<SubscriptionResponseDto> {
     const subscription = await this.getSubscription(userId);
     await this.prisma.db.orm.public.Subscription.where({ id: subscription.id }).update({
       plan: dto.plan,

@@ -10,13 +10,7 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiNoContentResponse,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiNoContentResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
@@ -51,7 +45,6 @@ export class ChatController {
   @ZodResponse({
     status: 201,
     type: CreateConversationResponseDto,
-    description: "Conversation created using the selected or default provider",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("No default provider configured")
@@ -73,7 +66,6 @@ export class ChatController {
 
   @Get("conversations/:id/messages")
   @ApiOperation({ summary: "List messages in a conversation" })
-  @ApiParam({ name: "id", type: Number, description: "Conversation ID" })
   @ZodResponse({
     status: 200,
     type: MessageListResponseDto,
@@ -88,12 +80,11 @@ export class ChatController {
   @Delete("conversations/:id")
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: "Delete a conversation" })
-  @ApiParam({ name: "id", type: Number, description: "Conversation ID" })
   @ApiNoContentResponse({ description: "Conversation and its messages deleted" })
   @ApiBadRequestDocs("Conversation ID must be an integer")
   @ApiNotFoundDocs("Conversation not found")
-  async remove(@CurrentUser() user: AuthUser, @Param("id", ParseIntPipe) id: number) {
-    await this.chat.removeConversation(user.userId, id);
+  remove(@CurrentUser() user: AuthUser, @Param("id", ParseIntPipe) id: number) {
+    return this.chat.removeConversation(user.userId, id);
   }
 
   @Post("chat/messages")
@@ -101,7 +92,6 @@ export class ChatController {
   @ZodResponse({
     status: 201,
     type: ChatResponseDto,
-    description: "Assistant response and optional web citations",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Conversation not found")

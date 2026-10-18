@@ -6,11 +6,12 @@ import type { LlmContextResult } from "../search/brave-llm-context.client";
 import { SearchService } from "../search/search.service";
 import { SubscriptionsService } from "../subscriptions/subscriptions.service";
 import type {
+  ConversationListResponseDto,
   ConversationResponseDto,
   CreateConversationResponseDto,
 } from "./dto/conversation-response.dto";
 import type { CreateConversationDto } from "./dto/create-conversation.dto";
-import type { ChatResponseDto, MessageResponseDto } from "./dto/message-response.dto";
+import type { ChatResponseDto, MessageListResponseDto } from "./dto/message-response.dto";
 import type { SendPromptDto } from "./dto/send-prompt.dto";
 
 @Injectable()
@@ -34,7 +35,7 @@ export class ChatService {
     });
   }
 
-  listConversations(userId: number): Promise<ConversationResponseDto[]> {
+  listConversations(userId: number): Promise<ConversationListResponseDto> {
     return this.prisma.db.orm.public.Conversation.where({ userId })
       .select("id", "title", "providerId", "createdAt", "updatedAt")
       .orderBy((conversation) => conversation.updatedAt.desc())
@@ -43,7 +44,7 @@ export class ChatService {
       .toArray();
   }
 
-  async listMessages(userId: number, conversationId: number): Promise<MessageResponseDto[]> {
+  async listMessages(userId: number, conversationId: number): Promise<MessageListResponseDto> {
     await this.requireConversation(userId, conversationId);
     return this.prisma.db.orm.public.Message.where({ conversationId })
       .select("id", "role", "content", "inputTokens", "outputTokens", "createdAt")
@@ -56,12 +57,9 @@ export class ChatService {
       .all();
   }
 
-  async removeConversation(
-    userId: number,
-    conversationId: number,
-  ): Promise<ConversationResponseDto | null> {
+  async removeConversation(userId: number, conversationId: number): Promise<void> {
     await this.requireConversation(userId, conversationId);
-    return this.prisma.db.orm.public.Conversation.where({ id: conversationId }).delete();
+    await this.prisma.db.orm.public.Conversation.where({ id: conversationId }).delete();
   }
 
   async send(userId: number, dto: SendPromptDto): Promise<ChatResponseDto> {

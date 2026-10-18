@@ -10,14 +10,14 @@ import { AnthropicProvider } from "./anthropic.provider";
 import type { CreateProviderDto } from "./dto/create-provider.dto";
 import type {
   ProviderHealthResponseDto,
-  ProviderListResponseDto,
+  ProvidersResponseDto,
   ProviderResponseDto,
 } from "./dto/provider-response.dto";
 import type { SetEnabledProviderDto } from "./dto/set-enabled-provider.dto";
 import type { UpdateProviderDto } from "./dto/update-provider.dto";
 import { GeminiProvider } from "./gemini.provider";
 import { OpenAiProvider } from "./openai.provider";
-import type { ProviderAdapter } from "./provider.interface";
+import type { ProviderAdapter, ProviderResponse } from "./provider.interface";
 import type { EncryptedSecret } from "./secret-cipher.service";
 import { SecretCipherService } from "./secret-cipher.service";
 
@@ -35,7 +35,7 @@ export class ProvidersService {
     this.adapters = new Map([openai, anthropic, gemini].map((adapter) => [adapter.type, adapter]));
   }
 
-  list(): Promise<ProviderListResponseDto[]> {
+  list(): Promise<ProvidersResponseDto> {
     return this.prisma.db.orm.public.AiProvider.select(
       "id",
       "name",
@@ -50,7 +50,7 @@ export class ProvidersService {
       .toArray();
   }
 
-  async create(dto: CreateProviderDto) {
+  async create(dto: CreateProviderDto): Promise<ProviderResponseDto> {
     if (!this.adapters.has(dto.type)) {
       throw new BadRequestException(`Unsupported provider: ${dto.type}`);
     }
@@ -66,7 +66,7 @@ export class ProvidersService {
     return this.safe(provider);
   }
 
-  async update(id: number, dto: UpdateProviderDto) {
+  async update(id: number, dto: UpdateProviderDto): Promise<ProviderResponseDto> {
     const provider = await this.find(id);
     const secret: EncryptedSecret = dto.apiKey
       ? this.cipher.encrypt(dto.apiKey)
@@ -83,19 +83,19 @@ export class ProvidersService {
     return this.getSafe(id);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     const provider = await this.find(id);
     if (provider.isDefault) throw new ConflictException("Choose another default procider first");
     await this.prisma.db.orm.public.AiProvider.where({ id }).delete();
   }
 
-  async setEnabled(id: number, dto: SetEnabledProviderDto) {
+  async setEnabled(id: number, dto: SetEnabledProviderDto): Promise<ProviderResponseDto> {
     await this.find(id);
     await this.prisma.db.orm.public.AiProvider.where({ id }).update({ enabled: dto.enabled });
     return this.getSafe(id);
   }
 
-  async setDefault(id: number) {
+  async setDefault(id: number): Promise<ProviderResponseDto> {
     const provider = await this.find(id);
     if (!provider.enabled) throw new ConflictException("Provider is disabled");
     await this.prisma.db.transaction(async (tx) => {
@@ -105,7 +105,7 @@ export class ProvidersService {
     return this.getSafe(id);
   }
 
-  async generate(id: number, prompt: string) {
+  async generate(id: number, prompt: string): Promise<ProviderResponse> {
     const provider = await this.find(id);
     if (!provider.enabled) throw new ConflictException("Provider is disabled");
     const adapter = this.adapters.get(provider.type);
@@ -117,7 +117,7 @@ export class ProvidersService {
     });
   }
 
-  async resolveId(id?: number) {
+  async resolveId(id?: number): Promise<number> {
     if (id) {
       const provider = await this.find(id);
       if (!provider.enabled) throw new ConflictException("Provider is disabled");
@@ -143,7 +143,7 @@ export class ProvidersService {
     return provider;
   }
 
-  private async getSafe(id: number) {
+  private async getSafe(id: number): Promise<ProviderResponseDto> {
     const provider = await this.find(id);
     return this.safe(provider);
   }

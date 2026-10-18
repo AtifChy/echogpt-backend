@@ -3,14 +3,14 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import type { Models } from "../prisma/contract";
 import type {
-  AdminSubscriptionResponseDto,
-  AdminUserResponseDto,
+  AdminSubscriptionsResponseDto,
+  AdminUsersResponseDto,
   UpdatedUserStatusResponseDto,
 } from "./dto/admin-response.dto";
 import type { DashboardResponseDto } from "./dto/dashboard-response.dto";
 import type { PaginationDto } from "./dto/pagination.dto";
 import type { SystemHealthResponseDto } from "./dto/system-health-response.dto";
-import type { RequestLogResponseDto, UsageLogResponseDto } from "./dto/usage-log-response.dto";
+import type { RequestLogsResponseDto, UsageLogResponseDto } from "./dto/usage-log-response.dto";
 
 type UserStatus = Models.public_User["status"];
 
@@ -33,7 +33,7 @@ export class AdminService {
     };
   }
 
-  async users(query: PaginationDto): Promise<AdminUserResponseDto[]> {
+  async users(query: PaginationDto): Promise<AdminUsersResponseDto> {
     const users = await this.prisma.db.orm.public.User.select(
       "id",
       "email",
@@ -49,8 +49,7 @@ export class AdminService {
       .orderBy((user) => user.createdAt.desc())
       .offset((query.page - 1) * query.limit)
       .limit(query.limit)
-      .all()
-      .toArray();
+      .all();
 
     return users.map((user) => {
       if (!user.role) throw new Error(`User ${user.id} has no role`);
@@ -79,7 +78,7 @@ export class AdminService {
     return { id: userId, status };
   }
 
-  async subscriptions(query: PaginationDto): Promise<AdminSubscriptionResponseDto[]> {
+  async subscriptions(query: PaginationDto): Promise<AdminSubscriptionsResponseDto> {
     const subscriptions = await this.prisma.db.orm.public.Subscription.select(
       "id",
       "userId",
@@ -92,8 +91,7 @@ export class AdminService {
       .orderBy((subscription) => subscription.createdAt.desc())
       .offset((query.page - 1) * query.limit)
       .limit(query.limit)
-      .all()
-      .toArray();
+      .all();
 
     return subscriptions.map((subscription) => {
       if (!subscription.user) {
@@ -126,7 +124,7 @@ export class AdminService {
       .toArray();
   }
 
-  async requestLogs(query: PaginationDto): Promise<RequestLogResponseDto[]> {
+  async requestLogs(query: PaginationDto): Promise<RequestLogsResponseDto> {
     const logs = await this.usage(query);
     return logs.map((log) => ({
       requestId: log.id,

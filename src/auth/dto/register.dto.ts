@@ -8,8 +8,9 @@ export const RegisterSchema = z.strictObject({
     .string()
     .min(1)
     .max(90)
-    .nullish()
-    .transform((value) => value ?? undefined),
+    .nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
 });
 
 export class RegisterDto extends createZodDto(RegisterSchema) {}

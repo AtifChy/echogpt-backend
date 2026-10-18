@@ -6,8 +6,9 @@ export const SendPromptSchema = z.strictObject({
   prompt: z.string().min(1).max(20_000),
   webSearch: z
     .boolean()
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ default: false }),
 });
 

@@ -12,13 +12,7 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiNoContentResponse,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from "@nestjs/swagger";
+import { ApiBearerAuth, ApiNoContentResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
@@ -56,7 +50,6 @@ export class ProvidersController {
   @ZodResponse({
     status: 201,
     type: ProviderResponseDto,
-    description: "Provider created; the API key is never returned",
   })
   @ApiBadRequestDocs()
   create(@Body() dto: CreateProviderDto) {
@@ -68,7 +61,6 @@ export class ProvidersController {
   @ZodResponse({
     status: 200,
     type: ProvidersResponseDto,
-    description: "Provider list without encrypted key fields",
   })
   list() {
     return this.providers.list();
@@ -76,11 +68,9 @@ export class ProvidersController {
 
   @Patch(":id")
   @ApiOperation({ summary: "Update an AI provider configuration" })
-  @ApiParam({ name: "id", type: Number, description: "Provider ID" })
   @ZodResponse({
     status: 200,
     type: ProviderResponseDto,
-    description: "Updated provider without encrypted key fields",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Provider not found")
@@ -91,21 +81,18 @@ export class ProvidersController {
   @Delete(":id")
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: "Delete an AI provider configuration" })
-  @ApiParam({ name: "id", type: Number, description: "Provider ID" })
   @ApiNoContentResponse({ description: "Provider deleted" })
   @ApiNotFoundDocs("Provider not found")
   @ApiConflictDocs("Choose another default provider before deleting this one")
-  async remove(@Param("id", ParseIntPipe) id: number) {
-    await this.providers.remove(id);
+  remove(@Param("id", ParseIntPipe) id: number) {
+    return this.providers.remove(id);
   }
 
   @Patch(":id/enabled")
   @ApiOperation({ summary: "Enable or disable an AI provider" })
-  @ApiParam({ name: "id", type: Number, description: "Provider ID" })
   @ZodResponse({
     status: 200,
     type: ProviderResponseDto,
-    description: "Provider enabled state updated",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Provider not found")
@@ -115,11 +102,9 @@ export class ProvidersController {
 
   @Put(":id/default")
   @ApiOperation({ summary: "Select the default AI provider" })
-  @ApiParam({ name: "id", type: Number, description: "Provider ID" })
   @ZodResponse({
     status: 200,
     type: ProviderResponseDto,
-    description: "Default provider selected",
   })
   @ApiNotFoundDocs("Provider not found")
   @ApiConflictDocs("Provider is disabled")
@@ -129,11 +114,9 @@ export class ProvidersController {
 
   @Post(":id/health")
   @ApiOperation({ summary: "Check connectivity to an AI provider" })
-  @ApiParam({ name: "id", type: Number, description: "Provider ID" })
   @ZodResponse({
     status: 200,
     type: ProviderHealthResponseDto,
-    description: "Provider responded successfully",
   })
   @ApiNotFoundDocs("Provider not found")
   @ApiConflictDocs("Provider is disabled")

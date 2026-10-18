@@ -7,7 +7,7 @@ import { IdSchema, TimestampSchema } from "../../common/schemas/primitives.schem
 export const ProfileResponseSchema = z.object({
   id: IdSchema,
   email: z.string(),
-  displayName: z.string().nullable().meta({ type: "string", nullable: true }),
+  displayName: z.string().nullable(),
   status: UserStatusSchema,
   createdAt: TimestampSchema,
   role: z.object({ name: RoleSchema }),

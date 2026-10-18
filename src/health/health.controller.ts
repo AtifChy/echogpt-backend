@@ -12,11 +12,10 @@ export class HealthController {
   @ZodResponse({
     status: 200,
     type: HealthResponseDto,
-    description: "The API process is healthy",
   })
-  check() {
+  check(): HealthResponseDto {
     return {
-      status: "ok" as const,
+      status: "ok",
       timestamp: new Date().toISOString(),
     };
   }

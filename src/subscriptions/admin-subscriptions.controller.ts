@@ -1,5 +1,5 @@
 import { Body, Controller, Param, ParseIntPipe, Patch, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
@@ -27,11 +27,9 @@ export class AdminSubscriptionsController {
 
   @Patch(":id/subscription")
   @ApiOperation({ summary: "Update a user's subscription" })
-  @ApiParam({ name: "id", type: Number, description: "User ID" })
   @ZodResponse({
     status: 200,
     type: SubscriptionResponseDto,
-    description: "Updated subscription",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("Subscription not found")

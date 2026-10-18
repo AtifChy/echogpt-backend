@@ -2,7 +2,7 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 import { SubscriptionPlanSchema, SubscriptionStatusSchema } from "../common/schemas/enums.schema";
-import { TimestampSchema } from "../common/schemas/primitives.schema";
+import { CountSchema, TimestampSchema } from "../common/schemas/primitives.schema";
 import type { Models } from "../prisma/contract";
 
 type SubscriptionPlan = Models.public_Subscription["plan"];
@@ -15,9 +15,9 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, number> = {
 export const UsageResponseSchema = z.object({
   plan: SubscriptionPlanSchema,
   status: SubscriptionStatusSchema,
-  limit: z.int().nonnegative(),
-  used: z.int().nonnegative(),
-  remaining: z.int().nonnegative(),
+  limit: CountSchema,
+  used: CountSchema,
+  remaining: CountSchema,
   periodStart: TimestampSchema,
   periodEnd: TimestampSchema,
 });

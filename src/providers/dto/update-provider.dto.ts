@@ -6,19 +6,22 @@ export const UpdateProviderSchema = z.strictObject({
     .string()
     .min(1)
     .max(80)
-    .nullish()
-    .transform((value) => value ?? undefined),
+    .nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
   model: z
     .string()
     .min(1)
     .max(100)
-    .nullish()
-    .transform((value) => value ?? undefined),
+    .nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
   apiKey: z
     .string()
     .min(10)
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ writeOnly: true }),
 });
 

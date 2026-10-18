@@ -23,7 +23,6 @@ export class SubscriptionsController {
   @ZodResponse({
     status: 200,
     type: SubscriptionResponseDto,
-    description: "Current subscription",
   })
   @ApiNotFoundDocs("Subscription not found")
   getSubscription(@CurrentUser() user: AuthUser) {
@@ -35,7 +34,6 @@ export class SubscriptionsController {
   @ZodResponse({
     status: 200,
     type: UsageResponseDto,
-    description: "Usage for the current subscription period",
   })
   @ApiNotFoundDocs("Subscription not found")
   getUsage(@CurrentUser() user: AuthUser) {

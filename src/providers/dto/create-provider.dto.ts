@@ -10,8 +10,9 @@ export const CreateProviderSchema = z.strictObject({
   apiKey: z.string().min(10).meta({ writeOnly: true }),
   enabled: z
     .boolean()
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ default: false }),
 });
 

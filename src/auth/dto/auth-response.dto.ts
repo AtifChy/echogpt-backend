@@ -7,7 +7,7 @@ import { IdSchema } from "../../common/schemas/primitives.schema";
 export const AuthResponseUserSchema = z.object({
   id: IdSchema,
   email: z.string(),
-  displayName: z.string().nullable().meta({ type: "string", nullable: true }),
+  displayName: z.string().nullable(),
   role: RoleSchema,
 });
 

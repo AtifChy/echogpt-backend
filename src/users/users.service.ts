@@ -28,7 +28,7 @@ export class UserService {
     return { ...user, role: user.role };
   }
 
-  async updateProfile(userId: number, dto: UpdateProfileDto) {
+  async updateProfile(userId: number, dto: UpdateProfileDto): Promise<ProfileResponseDto> {
     await this.findMe(userId);
     await this.prisma.db.orm.public.User.where({ id: userId }).update({
       displayName: dto.displayName?.trim() || null,
@@ -36,7 +36,7 @@ export class UserService {
     return this.findMe(userId);
   }
 
-  async changePassword(userId: number, dto: ChangePasswordDto) {
+  async changePassword(userId: number, dto: ChangePasswordDto): Promise<void> {
     const user = await this.prisma.db.orm.public.User.where({ id: userId }).first();
     if (!user) throw new NotFoundException("User not found");
     if (!(await verify(user.passwordHash, dto.currentPassword))) {
@@ -53,7 +53,7 @@ export class UserService {
     });
   }
 
-  async deleteAccount(userId: number) {
+  async deleteAccount(userId: number): Promise<void> {
     await this.prisma.db.orm.public.User.where({ id: userId }).delete();
   }
 }

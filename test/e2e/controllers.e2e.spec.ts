@@ -449,6 +449,27 @@ describe("Controllers (isolated services, no database or network providers)", ()
     expect(search.suggestions).toHaveBeenCalledWith(1, "nestjs");
   });
 
+  it("serializes search responses and strips nested non-public fields", async () => {
+    search.search.mockImplementationOnce(() => ({
+      ...searchResult,
+      internal: "private",
+      sources: searchResult.sources.map((source) => ({ ...source, internal: "private" })),
+    }));
+    const response = await request(app.getHttpServer())
+      .post("/api/v1/search")
+      .set("Authorization", "Bearer test-user")
+      .send({ query: "NestJS" })
+      .expect(200);
+    expect(response.body).toEqual(searchResult);
+    for (const path of ["history", "recent"]) {
+      const history = await request(app.getHttpServer())
+        .get(`/api/v1/search/${path}`)
+        .set("Authorization", "Bearer test-user")
+        .expect(200);
+      expect(history.body).toEqual(searchHistory);
+    }
+  });
+
   it("keeps conversation titles and the message-only chat envelope", async () => {
     const created = await request(app.getHttpServer())
       .post("/api/v1/conversations")
@@ -496,9 +517,10 @@ describe("Controllers (isolated services, no database or network providers)", ()
   it("retains useful Swagger documentation and uses the auth DTO schemas", async () => {
     const response = await request(app.getHttpServer()).get("/docs-json").expect(200);
     const doc = response.body;
+    expect(doc.openapi).toBe("3.1.0");
     const resolveSchema = (schema: any): any =>
       schema.$ref ? doc.components.schemas[schema.$ref.split("/").at(-1)] : schema;
-    for (const item of Object.values(doc.paths) as Array<Record<string, any>>) {
+    for (const [path, item] of Object.entries(doc.paths) as Array<[string, Record<string, any>]>) {
       for (const operation of Object.values(item)) {
         expect(operation.summary).toBeTruthy();
         expect(operation.responses).toBeDefined();
@@ -506,6 +528,8 @@ describe("Controllers (isolated services, no database or network providers)", ()
           [string, any]
         >) {
           if (!status.startsWith("2") || status === "204") continue;
+          // The fixed root response intentionally has no DTO; its body is tested over HTTP.
+          if (path.replace(/\/$/, "") === "/api/v1") continue;
           const schema = resolveSchema(result.content["application/json"].schema);
           expect(["object", "array"]).toContain(schema.type);
           if (schema.type === "object")
@@ -522,8 +546,7 @@ describe("Controllers (isolated services, no database or network providers)", ()
       "user",
     ]);
     expect(authSchema.properties.user.properties.displayName).toMatchObject({
-      type: "string",
-      nullable: true,
+      type: ["string", "null"],
     });
     expect(register.requestBody.content["application/json"].schema.$ref).toContain("RegisterDto");
     expect(
@@ -535,6 +558,26 @@ describe("Controllers (isolated services, no database or network providers)", ()
       ].schema.$ref,
     ).toContain("SetEnabledProviderDto");
     expect(doc.paths["/api/v1/admin/users"].get.security).toEqual([{ bearer: [] }]);
+    for (const [path, method] of [
+      ["/api/v1/admin/users/{id}/status", "patch"],
+      ["/api/v1/admin/users/{id}/subscription", "patch"],
+      ["/api/v1/admin/providers/{id}", "patch"],
+      ["/api/v1/admin/providers/{id}", "delete"],
+      ["/api/v1/admin/providers/{id}/enabled", "patch"],
+      ["/api/v1/admin/providers/{id}/default", "put"],
+      ["/api/v1/admin/providers/{id}/health", "post"],
+      ["/api/v1/conversations/{id}/messages", "get"],
+      ["/api/v1/conversations/{id}", "delete"],
+    ]) {
+      expect(doc.paths[path][method].parameters).toContainEqual(
+        expect.objectContaining({
+          name: "id",
+          in: "path",
+          required: true,
+          schema: { type: "number" },
+        }),
+      );
+    }
     const chatSchema = resolveSchema(
       doc.paths["/api/v1/chat/messages"].post.responses["201"].content["application/json"].schema,
     );
@@ -545,6 +588,35 @@ describe("Controllers (isolated services, no database or network providers)", ()
     );
     expect(conversations.type).toBe("array");
     expect(conversations.items.properties.title.type).toBe("string");
+    const searchSchema = resolveSchema(
+      doc.paths["/api/v1/search"].post.responses["200"].content["application/json"].schema,
+    );
+    expect(Object.keys(searchSchema.properties).sort()).toEqual(["query", "searchId", "sources"]);
+    expect(Object.keys(searchSchema.properties.sources.items.properties).sort()).toEqual([
+      "citation",
+      "hostname",
+      "publishedAt",
+      "siteName",
+      "snippets",
+      "title",
+      "url",
+    ]);
+    for (const path of ["history", "recent"]) {
+      const historySchema = resolveSchema(
+        doc.paths[`/api/v1/search/${path}`].get.responses["200"].content["application/json"].schema,
+      );
+      expect(historySchema.type).toBe("array");
+      expect(Object.keys(historySchema.items.properties).sort()).toEqual([
+        "createdAt",
+        "id",
+        "query",
+      ]);
+    }
+    const suggestionsSchema = resolveSchema(
+      doc.paths["/api/v1/search/suggestions"].get.responses["200"].content["application/json"]
+        .schema,
+    );
+    expect(suggestionsSchema).toMatchObject({ type: "array", items: { type: "string" } });
     const checkNoExamples = (value: unknown) => {
       if (!value || typeof value !== "object") return;
       expect(Object.hasOwn(value, "example")).toBe(false);

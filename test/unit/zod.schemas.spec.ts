@@ -51,6 +51,33 @@ const validRequests: Array<[string, z.ZodType, Record<string, unknown>]> = [
 ];
 
 describe("Zod request contracts", () => {
+  it("normalizes optional nulls to undefined at the request boundary", () => {
+    const fields: z.ZodType[] = [
+      RegisterSchema.shape.displayName,
+      UpdateProfileSchema.shape.displayName,
+      CreateConversationSchema.shape.providerId,
+      CreateConversationSchema.shape.title,
+      SendPromptSchema.shape.webSearch,
+      CreateProviderSchema.shape.enabled,
+      UpdateProviderSchema.shape.name,
+      UpdateProviderSchema.shape.model,
+      UpdateProviderSchema.shape.apiKey,
+      UpdateSubscriptionSchema.shape.status,
+      SearchContextSchema.shape.country,
+      SearchContextSchema.shape.searchLang,
+      SearchContextSchema.shape.count,
+      SearchContextSchema.shape.maximumTokens,
+      SearchContextSchema.shape.safesearch,
+      SearchContextSchema.shape.freshness,
+    ];
+    for (const field of fields) {
+      expect(field.parse(null)).toBeUndefined();
+      expect(field.parse(undefined)).toBeUndefined();
+    }
+    expect(SendPromptSchema.shape.webSearch.parse(false)).toBe(false);
+    expect(CreateProviderSchema.shape.enabled.parse(false)).toBe(false);
+  });
+
   for (const [name, schema, value] of validRequests) {
     it(`accepts valid ${name} and rejects unknown fields`, () => {
       expect(schema.safeParse(value).success).toBe(true);
@@ -66,44 +93,6 @@ describe("Zod request contracts", () => {
     ).toBe("");
     expect(RegisterSchema.safeParse({ email: "bad", password: "short" }).success).toBe(false);
     expect(RefreshSchema.safeParse({ refreshToken: "short" }).success).toBe(false);
-  });
-
-  it("normalizes optional nulls without introducing runtime search defaults", () => {
-    expect(
-      RegisterSchema.parse({ email: "user@example.com", password, displayName: null }).displayName,
-    ).toBeUndefined();
-    expect(UpdateProfileSchema.parse({ displayName: null }).displayName).toBeUndefined();
-    expect(CreateConversationSchema.parse({ providerId: null, title: null })).toEqual({
-      providerId: undefined,
-      title: undefined,
-    });
-    expect(UpdateProviderSchema.parse({ apiKey: null }).apiKey).toBeUndefined();
-    expect(
-      CreateProviderSchema.parse({
-        name: "Test",
-        type: "OPENAI",
-        model: "test",
-        apiKey: "test-secret",
-        enabled: null,
-      }).enabled,
-    ).toBeUndefined();
-    expect(UpdateSubscriptionSchema.parse({ plan: "FREE", status: null }).status).toBeUndefined();
-    expect(
-      SendPromptSchema.parse({ conversationId: 1, prompt: "Hi", webSearch: null }).webSearch,
-    ).toBeUndefined();
-    const fields = {
-      count: null,
-      maximumTokens: null,
-      safesearch: null,
-      country: null,
-      searchLang: null,
-      freshness: null,
-    };
-    const search = SearchContextSchema.parse({ query: "NestJS", ...fields });
-    for (const key of Object.keys(fields) as Array<keyof typeof fields>) {
-      expect(search[key]).toBeUndefined();
-      expect(SearchContextSchema.parse({ query: "NestJS" })[key]).toBeUndefined();
-    }
   });
 
   it("validates normalized title lengths", () => {

@@ -8,10 +8,9 @@ import { AdminModule } from "./admin/admin.module";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./auth/auth.module";
 import { ChatModule } from "./chat/chat.module";
-import { validateEnv } from "./config/env.validation";
+import { EnvSchema } from "./config/env.validation";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma.module";
-import { PrismaService } from "./prisma.service";
 import { ProvidersModule } from "./providers/providers.module";
 import { SearchModule } from "./search/search.module";
 import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
@@ -22,7 +21,7 @@ import { UserModule } from "./users/users.module";
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      validate: validateEnv,
+      validationSchema: EnvSchema,
     }),
     ThrottlerModule.forRoot({
       throttlers: [{ name: "default", ttl: 60_000, limit: 100 }],
@@ -39,7 +38,6 @@ import { UserModule } from "./users/users.module";
   ],
   controllers: [AppController],
   providers: [
-    PrismaService,
     { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],

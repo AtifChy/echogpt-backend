@@ -8,7 +8,7 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
@@ -47,7 +47,6 @@ export class AdminController {
   @ZodResponse({
     status: 200,
     type: DashboardResponseDto,
-    description: "System-wide entity and request counts",
   })
   dashboard() {
     return this.admin.dashboard();
@@ -58,7 +57,6 @@ export class AdminController {
   @ZodResponse({
     status: 200,
     type: AdminUsersResponseDto,
-    description: "Paginated user list without password hashes",
   })
   @ApiBadRequestDocs()
   users(@Query() query: PaginationDto) {
@@ -67,7 +65,6 @@ export class AdminController {
 
   @Patch("users/:id/status")
   @ApiOperation({ summary: "Activate or suspend a user" })
-  @ApiParam({ name: "id", type: Number, description: "User ID" })
   @ZodResponse({
     status: 200,
     type: UpdatedUserStatusResponseDto,
@@ -84,7 +81,6 @@ export class AdminController {
   @ZodResponse({
     status: 200,
     type: AdminSubscriptionsResponseDto,
-    description: "Paginated subscription list",
   })
   @ApiBadRequestDocs()
   subscriptions(@Query() query: PaginationDto) {
@@ -96,7 +92,6 @@ export class AdminController {
   @ZodResponse({
     status: 200,
     type: RequestLogsResponseDto,
-    description: "Paginated sanitized request logs",
   })
   @ApiBadRequestDocs()
   requestLogs(@Query() query: PaginationDto) {
@@ -108,7 +103,6 @@ export class AdminController {
   @ZodResponse({
     status: 200,
     type: SystemHealthResponseDto,
-    description: "Runtime and database health",
   })
   health() {
     return this.admin.health();

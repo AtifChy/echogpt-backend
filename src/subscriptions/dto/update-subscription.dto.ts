@@ -8,7 +8,9 @@ import {
 
 export const UpdateSubscriptionSchema = z.strictObject({
   plan: SubscriptionPlanSchema,
-  status: SubscriptionStatusSchema.nullish().transform((value) => value ?? undefined),
+  status: SubscriptionStatusSchema.nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
 });
 
 export class UpdateSubscriptionDto extends createZodDto(UpdateSubscriptionSchema) {}

@@ -33,7 +33,6 @@ export class UsersController {
   @ZodResponse({
     status: 200,
     type: ProfileResponseDto,
-    description: "Current user profile",
   })
   @ApiNotFoundDocs("User not found")
   findMe(@CurrentUser() user: AuthUser) {
@@ -45,7 +44,6 @@ export class UsersController {
   @ZodResponse({
     status: 200,
     type: ProfileResponseDto,
-    description: "Updated user profile",
   })
   @ApiBadRequestDocs()
   @ApiNotFoundDocs("User not found")
@@ -62,8 +60,8 @@ export class UsersController {
   @ApiBadRequestDocs()
   @ApiUnauthorizedDocs("Access token or current password is invalid")
   @ApiNotFoundDocs("User not found")
-  async changePassword(@CurrentUser() user: AuthUser, @Body() dto: ChangePasswordDto) {
-    await this.users.changePassword(user.userId, dto);
+  changePassword(@CurrentUser() user: AuthUser, @Body() dto: ChangePasswordDto) {
+    return this.users.changePassword(user.userId, dto);
   }
 
   @Delete("me")
@@ -72,7 +70,7 @@ export class UsersController {
   @ApiNoContentResponse({
     description: "Account and its dependent records deleted",
   })
-  async deleteAccount(@CurrentUser() user: AuthUser) {
-    await this.users.deleteAccount(user.userId);
+  deleteAccount(@CurrentUser() user: AuthUser) {
+    return this.users.deleteAccount(user.userId);
   }
 }

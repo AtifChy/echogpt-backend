@@ -1,5 +1,7 @@
 import { BadRequestException, ConflictException } from "@nestjs/common";
 
+import { CreateConversationSchema } from "../../src/chat/dto/create-conversation.dto";
+import { CreateProviderSchema } from "../../src/providers/dto/create-provider.dto";
 import { ProvidersService } from "../../src/providers/providers.service";
 
 const provider = {
@@ -52,10 +54,29 @@ function fixture(stored: typeof provider | null = provider) {
     create,
     cipher,
     openai,
+    where,
   };
 }
 
 describe("ProvidersService", () => {
+  it("uses defaults after request DTOs normalize null optional values", async () => {
+    const { service, create, where } = fixture();
+    await service.create(
+      CreateProviderSchema.parse({
+        name: "OpenAI",
+        type: "OPENAI",
+        model: "gpt-test",
+        apiKey: "plain-api-key",
+        enabled: null,
+      }),
+    );
+    expect(create).toHaveBeenCalledWith(expect.objectContaining({ enabled: false }));
+    expect(
+      await service.resolveId(CreateConversationSchema.parse({ providerId: null }).providerId),
+    ).toBe(provider.id);
+    expect(where).toHaveBeenCalledWith({ enabled: true, isDefault: true });
+  });
+
   it("encrypts a key and never returns encrypted columns", async () => {
     const { service, create, cipher } = fixture();
     const result = await service.create({

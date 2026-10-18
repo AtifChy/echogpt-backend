@@ -6,8 +6,9 @@ export const UpdateProfileSchema = z.strictObject({
     .string()
     .min(1)
     .max(80)
-    .nullish()
-    .transform((value) => value ?? undefined),
+    .nullable()
+    .transform((value) => value ?? undefined)
+    .optional(),
 });
 
 export class UpdateProfileDto extends createZodDto(UpdateProfileSchema) {}

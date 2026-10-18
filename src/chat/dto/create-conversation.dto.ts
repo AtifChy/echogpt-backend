@@ -5,18 +5,19 @@ export const CreateConversationSchema = z.strictObject({
   providerId: z
     .int()
     .positive()
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({ description: "Uses default provider if not specified" }),
   title: z
     .string()
     .trim()
     .transform((value) => value.replace(/\s+/g, " "))
     .pipe(z.string().min(1).max(60))
-    .nullish()
+    .nullable()
     .transform((value) => value ?? undefined)
+    .optional()
     .meta({
-      description: "Conversation title derived from the first prompt",
       minLength: 1,
       maxLength: 60,
     }),

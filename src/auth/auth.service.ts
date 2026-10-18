@@ -7,7 +7,7 @@ import { argon2id, hash, verify } from "argon2";
 
 import type { AuthUser } from "../common/auth-user";
 import { PrismaService } from "../prisma.service";
-import type { AuthResponse, AuthResponseUser } from "./auth.type";
+import type { AuthResponse, AuthResponseUser, TokenPair } from "./auth.type";
 import type { LoginDto } from "./dto/login.dto";
 import type { RefreshDto } from "./dto/refresh.dto";
 import type { RegisterDto } from "./dto/register.dto";
@@ -22,7 +22,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto): Promise<AuthResponse> {
     const email = dto.email.trim().toLowerCase();
     const existing = await this.prisma.db.orm.public.User.where({ email }).first();
     if (existing) throw new ConflictException("Email is already registered");
@@ -57,11 +57,11 @@ export class AuthService {
       id: user.id,
       email: user.email,
       displayName: user.displayName,
-      role: role.name as UserRole,
+      role: role.name,
     });
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto): Promise<AuthResponse> {
     const email = dto.email.trim().toLowerCase();
     const user = await this.prisma.db.orm.public.User.where({ email }).include("role").first();
 
@@ -73,11 +73,11 @@ export class AuthService {
       id: user.id,
       email: user.email,
       displayName: user.displayName,
-      role: user.role.name as UserRole,
+      role: user.role.name,
     });
   }
 
-  async refresh(dto: RefreshDto): Promise<Omit<AuthResponse, "user">> {
+  async refresh(dto: RefreshDto): Promise<TokenPair> {
     const tokenHash = this.digest(dto.refreshToken);
     const session = await this.prisma.db.orm.public.Session.where({ tokenHash })
       .include("user", (user) => user.include("role"))
@@ -98,16 +98,12 @@ export class AuthService {
     });
 
     return {
-      accessToken: await this.signAccessToken(
-        session.userId,
-        session.id,
-        session.user.role.name as UserRole,
-      ),
+      accessToken: await this.signAccessToken(session.userId, session.id, session.user.role.name),
       refreshToken: nextToken,
     };
   }
 
-  async logout(sessionId: number) {
+  async logout(sessionId: number): Promise<void> {
     await this.prisma.db.orm.public.Session.where({ id: sessionId }).update({
       revokedAt: new Date().toISOString(),
     });

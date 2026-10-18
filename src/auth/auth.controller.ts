@@ -35,7 +35,6 @@ export class AuthController {
   @ZodResponse({
     status: HttpStatus.OK,
     type: AuthResponseDto,
-    description: "Authenticated user and token pair",
   })
   @ApiBadRequestDocs()
   @ApiUnauthorizedDocs("Invalid email or password")
@@ -48,7 +47,6 @@ export class AuthController {
   @ZodResponse({
     status: HttpStatus.OK,
     type: TokenPairResponseDto,
-    description: "Rotated token pair",
   })
   @ApiBadRequestDocs()
   @ApiUnauthorizedDocs("Refresh token is invalid, expired, or already used")
@@ -63,7 +61,7 @@ export class AuthController {
   @ApiOperation({ summary: "Log out the current session" })
   @ApiNoContentResponse({ description: "Session revoked" })
   @ApiUnauthorizedDocs()
-  async logout(@CurrentUser() user: AuthUser) {
-    await this.auth.logout(user.sessionId);
+  logout(@CurrentUser() user: AuthUser) {
+    return this.auth.logout(user.sessionId);
   }
 }
