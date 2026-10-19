@@ -4,11 +4,11 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "aiProvider": {
+    "ai_provider": {
       "model": "AiProvider",
       "namespace": "public"
     },
-    "apiUsageLog": {
+    "api_usage_log": {
       "model": "ApiUsageLog",
       "namespace": "public"
     },
@@ -20,7 +20,7 @@
       "model": "Message",
       "namespace": "public"
     },
-    "messageSource": {
+    "message_source": {
       "model": "MessageSource",
       "namespace": "public"
     },
@@ -28,7 +28,7 @@
       "model": "Role",
       "namespace": "public"
     },
-    "searchResult": {
+    "search_result": {
       "model": "SearchResult",
       "namespace": "public"
     },
@@ -44,7 +44,7 @@
       "model": "User",
       "namespace": "public"
     },
-    "webSearch": {
+    "web_search": {
       "model": "WebSearch",
       "namespace": "public"
     }
@@ -322,7 +322,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "aiProvider"
+              "table": "ai_provider"
             }
           },
           "ApiUsageLog": {
@@ -468,7 +468,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "apiUsageLog"
+              "table": "api_usage_log"
             }
           },
           "Conversation": {
@@ -804,7 +804,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "messageSource"
+              "table": "message_source"
             }
           },
           "Role": {
@@ -935,7 +935,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "searchResult"
+              "table": "search_result"
             }
           },
           "Session": {
@@ -1426,7 +1426,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "webSearch"
+              "table": "web_search"
             }
           }
         }
@@ -1438,12 +1438,12 @@
       "public": {
         "entries": {
           "table": {
-            "aiProvider": {
+            "ai_provider": {
               "checks": [
                 {
                   "expression": "\"type\" IN ('OPENAI', 'ANTHROPIC', 'GEMINI')",
-                  "name": "aiProvider_type_check_03ab690d",
-                  "prefix": "aiProvider_type_check"
+                  "name": "ai_provider_type_check_03ab690d",
+                  "prefix": "ai_provider_type_check"
                 }
               ],
               "columns": {
@@ -1532,16 +1532,16 @@
                     "enabled",
                     "isDefault"
                   ],
-                  "name": "aiProvider_enabled_isDefault_idx_fa0ac46a",
-                  "prefix": "aiProvider_enabled_isDefault_idx",
+                  "name": "ai_provider_enabled_isDefault_idx_fa0ac46a",
+                  "prefix": "ai_provider_enabled_isDefault_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "type"
                   ],
-                  "name": "aiProvider_type_idx_b6b604ea",
-                  "prefix": "aiProvider_type_idx",
+                  "name": "ai_provider_type_idx_b6b604ea",
+                  "prefix": "ai_provider_type_idx",
                   "unique": false
                 }
               ],
@@ -1552,17 +1552,17 @@
               },
               "uniques": []
             },
-            "apiUsageLog": {
+            "api_usage_log": {
               "checks": [
                 {
                   "expression": "\"operation\" IN ('CHAT', 'SEARCH')",
-                  "name": "apiUsageLog_operation_check_f974256c",
-                  "prefix": "apiUsageLog_operation_check"
+                  "name": "api_usage_log_operation_check_f974256c",
+                  "prefix": "api_usage_log_operation_check"
                 },
                 {
                   "expression": "\"status\" IN ('SUCCESS', 'FAILED')",
-                  "name": "apiUsageLog_status_check_c68c3ebe",
-                  "prefix": "apiUsageLog_status_check"
+                  "name": "api_usage_log_status_check_c68c3ebe",
+                  "prefix": "api_usage_log_status_check"
                 }
               ],
               "columns": {
@@ -1647,7 +1647,7 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "apiUsageLog_userId_idx_a489d58a"
+                    "name": "api_usage_log_userId_idx_a489d58a"
                   },
                   "onDelete": "cascade",
                   "source": {
@@ -1655,7 +1655,7 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "apiUsageLog"
+                    "tableName": "api_usage_log"
                   },
                   "target": {
                     "columns": [
@@ -1667,21 +1667,21 @@
                 },
                 {
                   "index": {
-                    "name": "apiUsageLog_providerId_idx_d1904c54"
+                    "name": "api_usage_log_providerId_idx_d1904c54"
                   },
                   "source": {
                     "columns": [
                       "providerId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "apiUsageLog"
+                    "tableName": "api_usage_log"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "aiProvider"
+                    "tableName": "ai_provider"
                   }
                 }
               ],
@@ -1692,8 +1692,8 @@
                     "status",
                     "createdAt"
                   ],
-                  "name": "apiUsageLog_operation_status_createdAt_idx_da0bdac7",
-                  "prefix": "apiUsageLog_operation_status_createdAt_idx",
+                  "name": "api_usage_log_operation_status_createdAt_idx_da0bdac7",
+                  "prefix": "api_usage_log_operation_status_createdAt_idx",
                   "unique": false
                 },
                 {
@@ -1701,16 +1701,16 @@
                     "providerId",
                     "createdAt"
                   ],
-                  "name": "apiUsageLog_providerId_createdAt_idx_e4279843",
-                  "prefix": "apiUsageLog_providerId_createdAt_idx",
+                  "name": "api_usage_log_providerId_createdAt_idx_e4279843",
+                  "prefix": "api_usage_log_providerId_createdAt_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "providerId"
                   ],
-                  "name": "apiUsageLog_providerId_idx_d1904c54",
-                  "prefix": "apiUsageLog_providerId_idx",
+                  "name": "api_usage_log_providerId_idx_d1904c54",
+                  "prefix": "api_usage_log_providerId_idx",
                   "unique": false
                 },
                 {
@@ -1718,16 +1718,16 @@
                     "userId",
                     "createdAt"
                   ],
-                  "name": "apiUsageLog_userId_createdAt_idx_f726f04a",
-                  "prefix": "apiUsageLog_userId_createdAt_idx",
+                  "name": "api_usage_log_userId_createdAt_idx_f726f04a",
+                  "prefix": "api_usage_log_userId_createdAt_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "apiUsageLog_userId_idx_a489d58a",
-                  "prefix": "apiUsageLog_userId_idx",
+                  "name": "api_usage_log_userId_idx_a489d58a",
+                  "prefix": "api_usage_log_userId_idx",
                   "unique": false
                 }
               ],
@@ -1816,7 +1816,7 @@
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "aiProvider"
+                    "tableName": "ai_provider"
                   }
                 }
               ],
@@ -1969,7 +1969,7 @@
               },
               "uniques": []
             },
-            "messageSource": {
+            "message_source": {
               "columns": {
                 "citation": {
                   "codecId": "pg/int4@1",
@@ -2014,7 +2014,7 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "messageSource_messageId_idx_3cdded8d"
+                    "name": "message_source_messageId_idx_3cdded8d"
                   },
                   "onDelete": "cascade",
                   "source": {
@@ -2022,7 +2022,7 @@
                       "messageId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "messageSource"
+                    "tableName": "message_source"
                   },
                   "target": {
                     "columns": [
@@ -2038,8 +2038,8 @@
                   "columns": [
                     "messageId"
                   ],
-                  "name": "messageSource_messageId_idx_3cdded8d",
-                  "prefix": "messageSource_messageId_idx",
+                  "name": "message_source_messageId_idx_3cdded8d",
+                  "prefix": "message_source_messageId_idx",
                   "unique": false
                 }
               ],
@@ -2102,7 +2102,7 @@
                 }
               ]
             },
-            "searchResult": {
+            "search_result": {
               "columns": {
                 "id": {
                   "codecId": "pg/int4@1",
@@ -2137,7 +2137,7 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "searchResult_searchId_idx_fa57cfdf"
+                    "name": "search_result_searchId_idx_fa57cfdf"
                   },
                   "onDelete": "cascade",
                   "source": {
@@ -2145,14 +2145,14 @@
                       "searchId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "searchResult"
+                    "tableName": "search_result"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "webSearch"
+                    "tableName": "web_search"
                   }
                 }
               ],
@@ -2161,8 +2161,8 @@
                   "columns": [
                     "searchId"
                   ],
-                  "name": "searchResult_searchId_idx_fa57cfdf",
-                  "prefix": "searchResult_searchId_idx",
+                  "name": "search_result_searchId_idx_fa57cfdf",
+                  "prefix": "search_result_searchId_idx",
                   "unique": false
                 }
               ],
@@ -2513,7 +2513,7 @@
                 }
               ]
             },
-            "webSearch": {
+            "web_search": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -2552,7 +2552,7 @@
               "foreignKeys": [
                 {
                   "index": {
-                    "name": "webSearch_userId_idx_a489d58a"
+                    "name": "web_search_userId_idx_a489d58a"
                   },
                   "onDelete": "cascade",
                   "source": {
@@ -2560,7 +2560,7 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "webSearch"
+                    "tableName": "web_search"
                   },
                   "target": {
                     "columns": [
@@ -2577,8 +2577,8 @@
                     "normalizedQuery",
                     "createdAt"
                   ],
-                  "name": "webSearch_normalizedQuery_createdAt_idx_376dfe66",
-                  "prefix": "webSearch_normalizedQuery_createdAt_idx",
+                  "name": "web_search_normalizedQuery_createdAt_idx_376dfe66",
+                  "prefix": "web_search_normalizedQuery_createdAt_idx",
                   "unique": false
                 },
                 {
@@ -2586,16 +2586,16 @@
                     "userId",
                     "createdAt"
                   ],
-                  "name": "webSearch_userId_createdAt_idx_f726f04a",
-                  "prefix": "webSearch_userId_createdAt_idx",
+                  "name": "web_search_userId_createdAt_idx_f726f04a",
+                  "prefix": "web_search_userId_createdAt_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "webSearch_userId_idx_a489d58a",
-                  "prefix": "webSearch_userId_idx",
+                  "name": "web_search_userId_idx_a489d58a",
+                  "prefix": "web_search_userId_idx",
                   "unique": false
                 }
               ],
@@ -2672,10 +2672,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "438846e6a75ceb4c1298cb6b719307150c872447378e491e5beb597c72705393"
+    "storageHash": "cea8ec2f6761f83265418f8a3b047f8da06a1b31a368a07771d222c1d901d9ec"
   },
   "execution": {
-    "executionHash": "d1e7583ea9c5141354e05127b9e069ddaab92b139f8462389649e668357518be",
+    "executionHash": "6ed8f4cd9e78a8fd93d169e652dfe78197912830aac34732ec7bd2378c881eec",
     "mutations": {
       "defaults": [
         {
@@ -2688,7 +2688,7 @@
             "kind": "generator"
           },
           "ref": {
-            "entry": "aiProvider",
+            "entry": "ai_provider",
             "field": "updatedAt",
             "namespace": "public"
           }

@@ -1,0 +1,1574 @@
+[
+  {
+    "id": "renameTable.aiProvider",
+    "label": "Rename table \"aiProvider\" to \"ai_provider\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ai_provider"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"aiProvider\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"aiProvider\""
+        ]
+      },
+      {
+        "description": "ensure table \"ai_provider\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename table \"aiProvider\" to \"ai_provider\"",
+        "sql": "ALTER TABLE \"public\".\"aiProvider\" RENAME TO \"ai_provider\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ai_provider\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider\""
+        ]
+      },
+      {
+        "description": "verify table \"aiProvider\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"aiProvider\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.public.ai_provider.aiProvider_pkey.rename",
+    "label": "Rename primary key \"aiProvider_pkey\" to \"ai_provider_pkey\" on \"ai_provider\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "ai_provider_pkey",
+        "table": "ai_provider"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"aiProvider_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "aiProvider_pkey",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"ai_provider_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ai_provider_pkey",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename primary key \"aiProvider_pkey\" to \"ai_provider_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"ai_provider\" RENAME CONSTRAINT \"aiProvider_pkey\" TO \"ai_provider_pkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"ai_provider_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ai_provider_pkey",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.ai_provider.aiProvider_enabled_isDefault_idx_fa0ac46a.rename",
+    "label": "Rename index \"aiProvider_enabled_isDefault_idx_fa0ac46a\" to \"ai_provider_enabled_isDefault_idx_fa0ac46a\" on \"ai_provider\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ai_provider_enabled_isDefault_idx_fa0ac46a",
+        "table": "ai_provider"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"aiProvider_enabled_isDefault_idx_fa0ac46a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"aiProvider_enabled_isDefault_idx_fa0ac46a\""
+        ]
+      },
+      {
+        "description": "ensure index \"ai_provider_enabled_isDefault_idx_fa0ac46a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider_enabled_isDefault_idx_fa0ac46a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"aiProvider_enabled_isDefault_idx_fa0ac46a\" to \"ai_provider_enabled_isDefault_idx_fa0ac46a\"",
+        "sql": "ALTER INDEX \"public\".\"aiProvider_enabled_isDefault_idx_fa0ac46a\" RENAME TO \"ai_provider_enabled_isDefault_idx_fa0ac46a\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ai_provider_enabled_isDefault_idx_fa0ac46a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider_enabled_isDefault_idx_fa0ac46a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.ai_provider.aiProvider_type_idx_b6b604ea.rename",
+    "label": "Rename index \"aiProvider_type_idx_b6b604ea\" to \"ai_provider_type_idx_b6b604ea\" on \"ai_provider\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ai_provider_type_idx_b6b604ea",
+        "table": "ai_provider"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"aiProvider_type_idx_b6b604ea\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"aiProvider_type_idx_b6b604ea\""
+        ]
+      },
+      {
+        "description": "ensure index \"ai_provider_type_idx_b6b604ea\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider_type_idx_b6b604ea\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"aiProvider_type_idx_b6b604ea\" to \"ai_provider_type_idx_b6b604ea\"",
+        "sql": "ALTER INDEX \"public\".\"aiProvider_type_idx_b6b604ea\" RENAME TO \"ai_provider_type_idx_b6b604ea\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ai_provider_type_idx_b6b604ea\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ai_provider_type_idx_b6b604ea\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.public.ai_provider.aiProvider_type_check_03ab690d.rename",
+    "label": "Rename check constraint \"aiProvider_type_check_03ab690d\" to \"ai_provider_type_check_03ab690d\" on \"ai_provider\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "ai_provider_type_check_03ab690d",
+        "table": "ai_provider"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"aiProvider_type_check_03ab690d\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "aiProvider_type_check_03ab690d",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"ai_provider_type_check_03ab690d\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ai_provider_type_check_03ab690d",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename check constraint \"aiProvider_type_check_03ab690d\" to \"ai_provider_type_check_03ab690d\"",
+        "sql": "ALTER TABLE \"public\".\"ai_provider\" RENAME CONSTRAINT \"aiProvider_type_check_03ab690d\" TO \"ai_provider_type_check_03ab690d\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"ai_provider_type_check_03ab690d\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "ai_provider_type_check_03ab690d",
+          "public",
+          "\"public\".\"ai_provider\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "renameTable.apiUsageLog",
+    "label": "Rename table \"apiUsageLog\" to \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"apiUsageLog\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog\""
+        ]
+      },
+      {
+        "description": "ensure table \"api_usage_log\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename table \"apiUsageLog\" to \"api_usage_log\"",
+        "sql": "ALTER TABLE \"public\".\"apiUsageLog\" RENAME TO \"api_usage_log\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"api_usage_log\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "verify table \"apiUsageLog\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.public.api_usage_log.apiUsageLog_pkey.rename",
+    "label": "Rename primary key \"apiUsageLog_pkey\" to \"api_usage_log_pkey\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "api_usage_log_pkey",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"apiUsageLog_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "apiUsageLog_pkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"api_usage_log_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_pkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename primary key \"apiUsageLog_pkey\" to \"api_usage_log_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"api_usage_log\" RENAME CONSTRAINT \"apiUsageLog_pkey\" TO \"api_usage_log_pkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"api_usage_log_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_pkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.public.api_usage_log.apiUsageLog_userId_fkey.rename",
+    "label": "Rename foreign key \"apiUsageLog_userId_fkey\" to \"api_usage_log_userId_fkey\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "api_usage_log_userId_fkey",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"apiUsageLog_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "apiUsageLog_userId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"api_usage_log_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_userId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename foreign key \"apiUsageLog_userId_fkey\" to \"api_usage_log_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"api_usage_log\" RENAME CONSTRAINT \"apiUsageLog_userId_fkey\" TO \"api_usage_log_userId_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"api_usage_log_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_userId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.public.api_usage_log.apiUsageLog_providerId_fkey.rename",
+    "label": "Rename foreign key \"apiUsageLog_providerId_fkey\" to \"api_usage_log_providerId_fkey\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "api_usage_log_providerId_fkey",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"apiUsageLog_providerId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "apiUsageLog_providerId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"api_usage_log_providerId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_providerId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename foreign key \"apiUsageLog_providerId_fkey\" to \"api_usage_log_providerId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"api_usage_log\" RENAME CONSTRAINT \"apiUsageLog_providerId_fkey\" TO \"api_usage_log_providerId_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"api_usage_log_providerId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_providerId_fkey",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.api_usage_log.apiUsageLog_operation_status_createdAt_idx_da0bdac7.rename",
+    "label": "Rename index \"apiUsageLog_operation_status_createdAt_idx_da0bdac7\" to \"api_usage_log_operation_status_createdAt_idx_da0bdac7\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "api_usage_log_operation_status_createdAt_idx_da0bdac7",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"apiUsageLog_operation_status_createdAt_idx_da0bdac7\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog_operation_status_createdAt_idx_da0bdac7\""
+        ]
+      },
+      {
+        "description": "ensure index \"api_usage_log_operation_status_createdAt_idx_da0bdac7\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_operation_status_createdAt_idx_da0bdac7\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"apiUsageLog_operation_status_createdAt_idx_da0bdac7\" to \"api_usage_log_operation_status_createdAt_idx_da0bdac7\"",
+        "sql": "ALTER INDEX \"public\".\"apiUsageLog_operation_status_createdAt_idx_da0bdac7\" RENAME TO \"api_usage_log_operation_status_createdAt_idx_da0bdac7\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"api_usage_log_operation_status_createdAt_idx_da0bdac7\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_operation_status_createdAt_idx_da0bdac7\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.api_usage_log.apiUsageLog_providerId_createdAt_idx_e4279843.rename",
+    "label": "Rename index \"apiUsageLog_providerId_createdAt_idx_e4279843\" to \"api_usage_log_providerId_createdAt_idx_e4279843\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "api_usage_log_providerId_createdAt_idx_e4279843",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"apiUsageLog_providerId_createdAt_idx_e4279843\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog_providerId_createdAt_idx_e4279843\""
+        ]
+      },
+      {
+        "description": "ensure index \"api_usage_log_providerId_createdAt_idx_e4279843\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_providerId_createdAt_idx_e4279843\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"apiUsageLog_providerId_createdAt_idx_e4279843\" to \"api_usage_log_providerId_createdAt_idx_e4279843\"",
+        "sql": "ALTER INDEX \"public\".\"apiUsageLog_providerId_createdAt_idx_e4279843\" RENAME TO \"api_usage_log_providerId_createdAt_idx_e4279843\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"api_usage_log_providerId_createdAt_idx_e4279843\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_providerId_createdAt_idx_e4279843\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.api_usage_log.apiUsageLog_providerId_idx_d1904c54.rename",
+    "label": "Rename index \"apiUsageLog_providerId_idx_d1904c54\" to \"api_usage_log_providerId_idx_d1904c54\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "api_usage_log_providerId_idx_d1904c54",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"apiUsageLog_providerId_idx_d1904c54\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog_providerId_idx_d1904c54\""
+        ]
+      },
+      {
+        "description": "ensure index \"api_usage_log_providerId_idx_d1904c54\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_providerId_idx_d1904c54\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"apiUsageLog_providerId_idx_d1904c54\" to \"api_usage_log_providerId_idx_d1904c54\"",
+        "sql": "ALTER INDEX \"public\".\"apiUsageLog_providerId_idx_d1904c54\" RENAME TO \"api_usage_log_providerId_idx_d1904c54\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"api_usage_log_providerId_idx_d1904c54\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_providerId_idx_d1904c54\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.api_usage_log.apiUsageLog_userId_createdAt_idx_f726f04a.rename",
+    "label": "Rename index \"apiUsageLog_userId_createdAt_idx_f726f04a\" to \"api_usage_log_userId_createdAt_idx_f726f04a\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "api_usage_log_userId_createdAt_idx_f726f04a",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"apiUsageLog_userId_createdAt_idx_f726f04a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog_userId_createdAt_idx_f726f04a\""
+        ]
+      },
+      {
+        "description": "ensure index \"api_usage_log_userId_createdAt_idx_f726f04a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_userId_createdAt_idx_f726f04a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"apiUsageLog_userId_createdAt_idx_f726f04a\" to \"api_usage_log_userId_createdAt_idx_f726f04a\"",
+        "sql": "ALTER INDEX \"public\".\"apiUsageLog_userId_createdAt_idx_f726f04a\" RENAME TO \"api_usage_log_userId_createdAt_idx_f726f04a\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"api_usage_log_userId_createdAt_idx_f726f04a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_userId_createdAt_idx_f726f04a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.api_usage_log.apiUsageLog_userId_idx_a489d58a.rename",
+    "label": "Rename index \"apiUsageLog_userId_idx_a489d58a\" to \"api_usage_log_userId_idx_a489d58a\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "api_usage_log_userId_idx_a489d58a",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"apiUsageLog_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"apiUsageLog_userId_idx_a489d58a\""
+        ]
+      },
+      {
+        "description": "ensure index \"api_usage_log_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"apiUsageLog_userId_idx_a489d58a\" to \"api_usage_log_userId_idx_a489d58a\"",
+        "sql": "ALTER INDEX \"public\".\"apiUsageLog_userId_idx_a489d58a\" RENAME TO \"api_usage_log_userId_idx_a489d58a\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"api_usage_log_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"api_usage_log_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.public.api_usage_log.apiUsageLog_operation_check_f974256c.rename",
+    "label": "Rename check constraint \"apiUsageLog_operation_check_f974256c\" to \"api_usage_log_operation_check_f974256c\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "api_usage_log_operation_check_f974256c",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"apiUsageLog_operation_check_f974256c\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "apiUsageLog_operation_check_f974256c",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"api_usage_log_operation_check_f974256c\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_operation_check_f974256c",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename check constraint \"apiUsageLog_operation_check_f974256c\" to \"api_usage_log_operation_check_f974256c\"",
+        "sql": "ALTER TABLE \"public\".\"api_usage_log\" RENAME CONSTRAINT \"apiUsageLog_operation_check_f974256c\" TO \"api_usage_log_operation_check_f974256c\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"api_usage_log_operation_check_f974256c\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_operation_check_f974256c",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.public.api_usage_log.apiUsageLog_status_check_c68c3ebe.rename",
+    "label": "Rename check constraint \"apiUsageLog_status_check_c68c3ebe\" to \"api_usage_log_status_check_c68c3ebe\" on \"api_usage_log\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "api_usage_log_status_check_c68c3ebe",
+        "table": "api_usage_log"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"apiUsageLog_status_check_c68c3ebe\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "apiUsageLog_status_check_c68c3ebe",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"api_usage_log_status_check_c68c3ebe\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_status_check_c68c3ebe",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename check constraint \"apiUsageLog_status_check_c68c3ebe\" to \"api_usage_log_status_check_c68c3ebe\"",
+        "sql": "ALTER TABLE \"public\".\"api_usage_log\" RENAME CONSTRAINT \"apiUsageLog_status_check_c68c3ebe\" TO \"api_usage_log_status_check_c68c3ebe\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"api_usage_log_status_check_c68c3ebe\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "api_usage_log_status_check_c68c3ebe",
+          "public",
+          "\"public\".\"api_usage_log\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "renameTable.messageSource",
+    "label": "Rename table \"messageSource\" to \"message_source\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "message_source"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"messageSource\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource\""
+        ]
+      },
+      {
+        "description": "ensure table \"message_source\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"message_source\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename table \"messageSource\" to \"message_source\"",
+        "sql": "ALTER TABLE \"public\".\"messageSource\" RENAME TO \"message_source\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"message_source\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"message_source\""
+        ]
+      },
+      {
+        "description": "verify table \"messageSource\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.public.message_source.messageSource_pkey.rename",
+    "label": "Rename primary key \"messageSource_pkey\" to \"message_source_pkey\" on \"message_source\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "message_source_pkey",
+        "table": "message_source"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"messageSource_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_pkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"message_source_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_pkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename primary key \"messageSource_pkey\" to \"message_source_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"message_source\" RENAME CONSTRAINT \"messageSource_pkey\" TO \"message_source_pkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"message_source_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_pkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.public.message_source.messageSource_messageId_citation_key.rename",
+    "label": "Rename unique constraint \"messageSource_messageId_citation_key\" to \"message_source_messageId_citation_key\" on \"message_source\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "message_source_messageId_citation_key",
+        "table": "message_source"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"messageSource_messageId_citation_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_citation_key",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"message_source_messageId_citation_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_messageId_citation_key",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename unique constraint \"messageSource_messageId_citation_key\" to \"message_source_messageId_citation_key\"",
+        "sql": "ALTER TABLE \"public\".\"message_source\" RENAME CONSTRAINT \"messageSource_messageId_citation_key\" TO \"message_source_messageId_citation_key\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"message_source_messageId_citation_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_messageId_citation_key",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.public.message_source.messageSource_messageId_fkey.rename",
+    "label": "Rename foreign key \"messageSource_messageId_fkey\" to \"message_source_messageId_fkey\" on \"message_source\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "message_source_messageId_fkey",
+        "table": "message_source"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"messageSource_messageId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "messageSource_messageId_fkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"message_source_messageId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_messageId_fkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename foreign key \"messageSource_messageId_fkey\" to \"message_source_messageId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"message_source\" RENAME CONSTRAINT \"messageSource_messageId_fkey\" TO \"message_source_messageId_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"message_source_messageId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "message_source_messageId_fkey",
+          "public",
+          "\"public\".\"message_source\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.message_source.messageSource_messageId_idx_3cdded8d.rename",
+    "label": "Rename index \"messageSource_messageId_idx_3cdded8d\" to \"message_source_messageId_idx_3cdded8d\" on \"message_source\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "message_source_messageId_idx_3cdded8d",
+        "table": "message_source"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"messageSource_messageId_idx_3cdded8d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"messageSource_messageId_idx_3cdded8d\""
+        ]
+      },
+      {
+        "description": "ensure index \"message_source_messageId_idx_3cdded8d\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"message_source_messageId_idx_3cdded8d\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"messageSource_messageId_idx_3cdded8d\" to \"message_source_messageId_idx_3cdded8d\"",
+        "sql": "ALTER INDEX \"public\".\"messageSource_messageId_idx_3cdded8d\" RENAME TO \"message_source_messageId_idx_3cdded8d\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"message_source_messageId_idx_3cdded8d\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"message_source_messageId_idx_3cdded8d\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "renameTable.webSearch",
+    "label": "Rename table \"webSearch\" to \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"webSearch\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"webSearch\""
+        ]
+      },
+      {
+        "description": "ensure table \"web_search\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename table \"webSearch\" to \"web_search\"",
+        "sql": "ALTER TABLE \"public\".\"webSearch\" RENAME TO \"web_search\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"web_search\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search\""
+        ]
+      },
+      {
+        "description": "verify table \"webSearch\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"webSearch\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.public.web_search.webSearch_pkey.rename",
+    "label": "Rename primary key \"webSearch_pkey\" to \"web_search_pkey\" on \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "web_search_pkey",
+        "table": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"webSearch_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "webSearch_pkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"web_search_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "web_search_pkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename primary key \"webSearch_pkey\" to \"web_search_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"web_search\" RENAME CONSTRAINT \"webSearch_pkey\" TO \"web_search_pkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"web_search_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "web_search_pkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.public.web_search.webSearch_userId_fkey.rename",
+    "label": "Rename foreign key \"webSearch_userId_fkey\" to \"web_search_userId_fkey\" on \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "web_search_userId_fkey",
+        "table": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"webSearch_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "webSearch_userId_fkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"web_search_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "web_search_userId_fkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename foreign key \"webSearch_userId_fkey\" to \"web_search_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"web_search\" RENAME CONSTRAINT \"webSearch_userId_fkey\" TO \"web_search_userId_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"web_search_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "web_search_userId_fkey",
+          "public",
+          "\"public\".\"web_search\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.web_search.webSearch_normalizedQuery_createdAt_idx_376dfe66.rename",
+    "label": "Rename index \"webSearch_normalizedQuery_createdAt_idx_376dfe66\" to \"web_search_normalizedQuery_createdAt_idx_376dfe66\" on \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "web_search_normalizedQuery_createdAt_idx_376dfe66",
+        "table": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"webSearch_normalizedQuery_createdAt_idx_376dfe66\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"webSearch_normalizedQuery_createdAt_idx_376dfe66\""
+        ]
+      },
+      {
+        "description": "ensure index \"web_search_normalizedQuery_createdAt_idx_376dfe66\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_normalizedQuery_createdAt_idx_376dfe66\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"webSearch_normalizedQuery_createdAt_idx_376dfe66\" to \"web_search_normalizedQuery_createdAt_idx_376dfe66\"",
+        "sql": "ALTER INDEX \"public\".\"webSearch_normalizedQuery_createdAt_idx_376dfe66\" RENAME TO \"web_search_normalizedQuery_createdAt_idx_376dfe66\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"web_search_normalizedQuery_createdAt_idx_376dfe66\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_normalizedQuery_createdAt_idx_376dfe66\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.web_search.webSearch_userId_createdAt_idx_f726f04a.rename",
+    "label": "Rename index \"webSearch_userId_createdAt_idx_f726f04a\" to \"web_search_userId_createdAt_idx_f726f04a\" on \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "web_search_userId_createdAt_idx_f726f04a",
+        "table": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"webSearch_userId_createdAt_idx_f726f04a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"webSearch_userId_createdAt_idx_f726f04a\""
+        ]
+      },
+      {
+        "description": "ensure index \"web_search_userId_createdAt_idx_f726f04a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_userId_createdAt_idx_f726f04a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"webSearch_userId_createdAt_idx_f726f04a\" to \"web_search_userId_createdAt_idx_f726f04a\"",
+        "sql": "ALTER INDEX \"public\".\"webSearch_userId_createdAt_idx_f726f04a\" RENAME TO \"web_search_userId_createdAt_idx_f726f04a\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"web_search_userId_createdAt_idx_f726f04a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_userId_createdAt_idx_f726f04a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.web_search.webSearch_userId_idx_a489d58a.rename",
+    "label": "Rename index \"webSearch_userId_idx_a489d58a\" to \"web_search_userId_idx_a489d58a\" on \"web_search\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "web_search_userId_idx_a489d58a",
+        "table": "web_search"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"webSearch_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"webSearch_userId_idx_a489d58a\""
+        ]
+      },
+      {
+        "description": "ensure index \"web_search_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"webSearch_userId_idx_a489d58a\" to \"web_search_userId_idx_a489d58a\"",
+        "sql": "ALTER INDEX \"public\".\"webSearch_userId_idx_a489d58a\" RENAME TO \"web_search_userId_idx_a489d58a\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"web_search_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"web_search_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "renameTable.searchResult",
+    "label": "Rename table \"searchResult\" to \"search_result\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "search_result"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"searchResult\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"searchResult\""
+        ]
+      },
+      {
+        "description": "ensure table \"search_result\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"search_result\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename table \"searchResult\" to \"search_result\"",
+        "sql": "ALTER TABLE \"public\".\"searchResult\" RENAME TO \"search_result\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"search_result\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"search_result\""
+        ]
+      },
+      {
+        "description": "verify table \"searchResult\" no longer exists",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"searchResult\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.public.search_result.searchResult_pkey.rename",
+    "label": "Rename primary key \"searchResult_pkey\" to \"search_result_pkey\" on \"search_result\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "search_result_pkey",
+        "table": "search_result"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"searchResult_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "searchResult_pkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"search_result_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_pkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename primary key \"searchResult_pkey\" to \"search_result_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"search_result\" RENAME CONSTRAINT \"searchResult_pkey\" TO \"search_result_pkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"search_result_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_pkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.public.search_result.searchResult_searchId_url_key.rename",
+    "label": "Rename unique constraint \"searchResult_searchId_url_key\" to \"search_result_searchId_url_key\" on \"search_result\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "search_result_searchId_url_key",
+        "table": "search_result"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"searchResult_searchId_url_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "searchResult_searchId_url_key",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"search_result_searchId_url_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_searchId_url_key",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename unique constraint \"searchResult_searchId_url_key\" to \"search_result_searchId_url_key\"",
+        "sql": "ALTER TABLE \"public\".\"search_result\" RENAME CONSTRAINT \"searchResult_searchId_url_key\" TO \"search_result_searchId_url_key\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"search_result_searchId_url_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_searchId_url_key",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.public.search_result.searchResult_searchId_fkey.rename",
+    "label": "Rename foreign key \"searchResult_searchId_fkey\" to \"search_result_searchId_fkey\" on \"search_result\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "search_result_searchId_fkey",
+        "table": "search_result"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"searchResult_searchId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "searchResult_searchId_fkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      },
+      {
+        "description": "ensure constraint \"search_result_searchId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_searchId_fkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename foreign key \"searchResult_searchId_fkey\" to \"search_result_searchId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"search_result\" RENAME CONSTRAINT \"searchResult_searchId_fkey\" TO \"search_result_searchId_fkey\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"search_result_searchId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "search_result_searchId_fkey",
+          "public",
+          "\"public\".\"search_result\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.public.search_result.searchResult_searchId_idx_fa57cfdf.rename",
+    "label": "Rename index \"searchResult_searchId_idx_fa57cfdf\" to \"search_result_searchId_idx_fa57cfdf\" on \"search_result\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "search_result_searchId_idx_fa57cfdf",
+        "table": "search_result"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"searchResult_searchId_idx_fa57cfdf\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"searchResult_searchId_idx_fa57cfdf\""
+        ]
+      },
+      {
+        "description": "ensure index \"search_result_searchId_idx_fa57cfdf\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"search_result_searchId_idx_fa57cfdf\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "rename index \"searchResult_searchId_idx_fa57cfdf\" to \"search_result_searchId_idx_fa57cfdf\"",
+        "sql": "ALTER INDEX \"public\".\"searchResult_searchId_idx_fa57cfdf\" RENAME TO \"search_result_searchId_idx_fa57cfdf\"",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"search_result_searchId_idx_fa57cfdf\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"search_result_searchId_idx_fa57cfdf\""
+        ]
+      }
+    ]
+  }
+]

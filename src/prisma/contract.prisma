@@ -19,7 +19,7 @@ model User {
   displayName   String?
   status        UserStatus
   roleId        Int
-  role          Role                       @relation(fields:[roleId], references:[id])
+  role          Role                       @relation(fields: [roleId], references: [id])
   sessions      Session[]
   subscriptions Subscription?
   conversations Conversation[]
@@ -41,7 +41,7 @@ enum UserStatus {
 model Session {
   id        Int                @id @default(autoincrement())
   userId    Int
-  user      User               @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokenHash String             @unique
   expiresAt TimestamptzString
   revokedAt TimestamptzString?
@@ -55,7 +55,7 @@ model Session {
 model Subscription {
   id                 Int                        @id @default(autoincrement())
   userId             Int                        @unique
-  user               User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user               User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   plan               SubscriptionPlan
   status             SubscriptionStatus
   currentPeriodStart TimestamptzString
@@ -94,7 +94,7 @@ model AiProvider {
 
   @@index([type])
   @@index([enabled, isDefault])
-  @@map("aiProvider")
+  @@map("ai_provider")
 }
 
 enum ProviderType {
@@ -106,9 +106,9 @@ enum ProviderType {
 model Conversation {
   id         Int                        @id @default(autoincrement())
   userId     Int
-  user       User                       @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user       User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
   providerId Int
-  provider   AiProvider                 @relation(fields:[providerId], references:[id])
+  provider   AiProvider                 @relation(fields: [providerId], references: [id])
   title      String
   messages   Message[]
   createdAt  TimestamptzString          @default(now())
@@ -122,7 +122,7 @@ model Conversation {
 model Message {
   id             Int               @id @default(autoincrement())
   conversationId Int
-  conversation   Conversation      @relation(fields:[conversationId], references:[id], onDelete: Cascade)
+  conversation   Conversation      @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sources        MessageSource[]
   role           MessageRole
   content        String
@@ -137,7 +137,7 @@ model Message {
 model MessageSource {
   id          Int     @id @default(autoincrement())
   messageId   Int
-  message     Message @relation(fields:[messageId], references:[id], onDelete: Cascade)
+  message     Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   citation    Int
   title       String
   url         String
@@ -145,7 +145,7 @@ model MessageSource {
   publishedAt String?
 
   @@unique([messageId, citation])
-  @@map("messageSource")
+  @@map("message_source")
 }
 
 enum MessageRole {
@@ -157,7 +157,7 @@ enum MessageRole {
 model WebSearch {
   id              Int               @id @default(autoincrement())
   userId          Int
-  user            User              @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   query           String
   normalizedQuery String
   results         SearchResult[]
@@ -165,28 +165,28 @@ model WebSearch {
 
   @@index([userId, createdAt])
   @@index([normalizedQuery, createdAt])
-  @@map("webSearch")
+  @@map("web_search")
 }
 
 model SearchResult {
   id       Int       @id @default(autoincrement())
   searchId Int
-  search   WebSearch @relation(fields:[searchId], references:[id], onDelete: Cascade)
+  search   WebSearch @relation(fields: [searchId], references: [id], onDelete: Cascade)
   title    String
   url      String
   snippet  String
 
   @@unique([searchId, url])
   @@index([searchId])
-  @@map("searchResult")
+  @@map("search_result")
 }
 
 model ApiUsageLog {
   id           Int               @id @default(autoincrement())
   userId       Int
-  user         User              @relation(fields:[userId], references:[id], onDelete: Cascade)
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   providerId   Int?
-  provider     AiProvider?       @relation(fields:[providerId], references:[id])
+  provider     AiProvider?       @relation(fields: [providerId], references: [id])
   operation    ApiUsageOperation
   status       ApiUsageStatus
   inputTokens  Int               @default(0)
@@ -197,7 +197,7 @@ model ApiUsageLog {
   @@index([userId, createdAt])
   @@index([providerId, createdAt])
   @@index([operation, status, createdAt])
-  @@map("apiUsageLog")
+  @@map("api_usage_log")
 }
 
 enum ApiUsageOperation {

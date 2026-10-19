@@ -18,9 +18,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'438846e6a75ceb4c1298cb6b719307150c872447378e491e5beb597c72705393'>;
+  StorageHashBase<'cea8ec2f6761f83265418f8a3b047f8da06a1b31a368a07771d222c1d901d9ec'>;
 export type ExecutionHash =
-  ExecutionHashBase<'d1e7583ea9c5141354e05127b9e069ddaab92b139f8462389649e668357518be'>;
+  ExecutionHashBase<'6ed8f4cd9e78a8fd93d169e652dfe78197912830aac34732ec7bd2378c881eec'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -434,7 +434,7 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
-    readonly aiProvider: {
+    readonly ai_provider: {
       readonly apiKeyAuthTag: CodecTypes['pg/text@1']['output'];
       readonly apiKeyIv: CodecTypes['pg/text@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -447,7 +447,7 @@ export type StorageColumnTypes = {
       readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly apiUsageLog: {
+    readonly api_usage_log: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly inputTokens: CodecTypes['pg/int4@1']['output'];
@@ -475,7 +475,7 @@ export type StorageColumnTypes = {
       readonly outputTokens: CodecTypes['pg/int4@1']['output'];
       readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
     };
-    readonly messageSource: {
+    readonly message_source: {
       readonly citation: CodecTypes['pg/int4@1']['output'];
       readonly hostname: CodecTypes['pg/text@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -488,7 +488,7 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: 'ADMIN' | 'USER';
     };
-    readonly searchResult: {
+    readonly search_result: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly searchId: CodecTypes['pg/int4@1']['output'];
       readonly snippet: CodecTypes['pg/text@1']['output'];
@@ -523,7 +523,7 @@ export type StorageColumnTypes = {
       readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly webSearch: {
+    readonly web_search: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly normalizedQuery: CodecTypes['pg/text@1']['output'];
@@ -534,7 +534,7 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
-    readonly aiProvider: {
+    readonly ai_provider: {
       readonly apiKeyAuthTag: CodecTypes['pg/text@1']['input'];
       readonly apiKeyIv: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -547,7 +547,7 @@ export type StorageColumnInputTypes = {
       readonly type: 'OPENAI' | 'ANTHROPIC' | 'GEMINI';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
-    readonly apiUsageLog: {
+    readonly api_usage_log: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly inputTokens: CodecTypes['pg/int4@1']['input'];
@@ -575,7 +575,7 @@ export type StorageColumnInputTypes = {
       readonly outputTokens: CodecTypes['pg/int4@1']['input'];
       readonly role: 'SYSTEM' | 'USER' | 'ASSISTANT';
     };
-    readonly messageSource: {
+    readonly message_source: {
       readonly citation: CodecTypes['pg/int4@1']['input'];
       readonly hostname: CodecTypes['pg/text@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -588,7 +588,7 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: 'ADMIN' | 'USER';
     };
-    readonly searchResult: {
+    readonly search_result: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly searchId: CodecTypes['pg/int4@1']['input'];
       readonly snippet: CodecTypes['pg/text@1']['input'];
@@ -623,7 +623,7 @@ export type StorageColumnInputTypes = {
       readonly status: 'ACTIVE' | 'SUSPENDED';
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
-    readonly webSearch: {
+    readonly web_search: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly normalizedQuery: CodecTypes['pg/text@1']['input'];
@@ -800,7 +800,7 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly aiProvider: {
+            readonly ai_provider: {
               columns: {
                 readonly apiKeyAuthTag: {
                   readonly dataType: 'pg/text';
@@ -886,21 +886,21 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'aiProvider_enabled_isDefault_idx_fa0ac46a';
-                  readonly prefix: 'aiProvider_enabled_isDefault_idx';
+                  readonly name: 'ai_provider_enabled_isDefault_idx_fa0ac46a';
+                  readonly prefix: 'ai_provider_enabled_isDefault_idx';
                   readonly columns: readonly ['enabled', 'isDefault'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'aiProvider_type_idx_b6b604ea';
-                  readonly prefix: 'aiProvider_type_idx';
+                  readonly name: 'ai_provider_type_idx_b6b604ea';
+                  readonly prefix: 'ai_provider_type_idx';
                   readonly columns: readonly ['type'];
                   readonly unique: false;
                 },
               ];
               foreignKeys: readonly [];
             };
-            readonly apiUsageLog: {
+            readonly api_usage_log: {
               columns: {
                 readonly createdAt: {
                   readonly dataType: 'pg/timestamptz';
@@ -978,32 +978,32 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'apiUsageLog_operation_status_createdAt_idx_da0bdac7';
-                  readonly prefix: 'apiUsageLog_operation_status_createdAt_idx';
+                  readonly name: 'api_usage_log_operation_status_createdAt_idx_da0bdac7';
+                  readonly prefix: 'api_usage_log_operation_status_createdAt_idx';
                   readonly columns: readonly ['operation', 'status', 'createdAt'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'apiUsageLog_providerId_createdAt_idx_e4279843';
-                  readonly prefix: 'apiUsageLog_providerId_createdAt_idx';
+                  readonly name: 'api_usage_log_providerId_createdAt_idx_e4279843';
+                  readonly prefix: 'api_usage_log_providerId_createdAt_idx';
                   readonly columns: readonly ['providerId', 'createdAt'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'apiUsageLog_providerId_idx_d1904c54';
-                  readonly prefix: 'apiUsageLog_providerId_idx';
+                  readonly name: 'api_usage_log_providerId_idx_d1904c54';
+                  readonly prefix: 'api_usage_log_providerId_idx';
                   readonly columns: readonly ['providerId'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'apiUsageLog_userId_createdAt_idx_f726f04a';
-                  readonly prefix: 'apiUsageLog_userId_createdAt_idx';
+                  readonly name: 'api_usage_log_userId_createdAt_idx_f726f04a';
+                  readonly prefix: 'api_usage_log_userId_createdAt_idx';
                   readonly columns: readonly ['userId', 'createdAt'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'apiUsageLog_userId_idx_a489d58a';
-                  readonly prefix: 'apiUsageLog_userId_idx';
+                  readonly name: 'api_usage_log_userId_idx_a489d58a';
+                  readonly prefix: 'api_usage_log_userId_idx';
                   readonly columns: readonly ['userId'];
                   readonly unique: false;
                 },
@@ -1012,7 +1012,7 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'apiUsageLog';
+                    readonly tableName: 'api_usage_log';
                     readonly columns: readonly ['userId'];
                   };
                   readonly target: {
@@ -1024,12 +1024,12 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'apiUsageLog';
+                    readonly tableName: 'api_usage_log';
                     readonly columns: readonly ['providerId'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'aiProvider';
+                    readonly tableName: 'ai_provider';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1122,7 +1122,7 @@ type ContractBase = Omit<
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'aiProvider';
+                    readonly tableName: 'ai_provider';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1217,7 +1217,7 @@ type ContractBase = Omit<
                 },
               ];
             };
-            readonly messageSource: {
+            readonly message_source: {
               columns: {
                 readonly citation: {
                   readonly dataType: 'pg/int4';
@@ -1270,8 +1270,8 @@ type ContractBase = Omit<
               uniques: readonly [{ readonly columns: readonly ['messageId', 'citation'] }];
               indexes: readonly [
                 {
-                  readonly name: 'messageSource_messageId_idx_3cdded8d';
-                  readonly prefix: 'messageSource_messageId_idx';
+                  readonly name: 'message_source_messageId_idx_3cdded8d';
+                  readonly prefix: 'message_source_messageId_idx';
                   readonly columns: readonly ['messageId'];
                   readonly unique: false;
                 },
@@ -1280,7 +1280,7 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'messageSource';
+                    readonly tableName: 'message_source';
                     readonly columns: readonly ['messageId'];
                   };
                   readonly target: {
@@ -1315,7 +1315,7 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly searchResult: {
+            readonly search_result: {
               columns: {
                 readonly id: {
                   readonly dataType: 'pg/int4';
@@ -1356,8 +1356,8 @@ type ContractBase = Omit<
               uniques: readonly [{ readonly columns: readonly ['searchId', 'url'] }];
               indexes: readonly [
                 {
-                  readonly name: 'searchResult_searchId_idx_fa57cfdf';
-                  readonly prefix: 'searchResult_searchId_idx';
+                  readonly name: 'search_result_searchId_idx_fa57cfdf';
+                  readonly prefix: 'search_result_searchId_idx';
                   readonly columns: readonly ['searchId'];
                   readonly unique: false;
                 },
@@ -1366,12 +1366,12 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'searchResult';
+                    readonly tableName: 'search_result';
                     readonly columns: readonly ['searchId'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'webSearch';
+                    readonly tableName: 'web_search';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1620,7 +1620,7 @@ type ContractBase = Omit<
                 },
               ];
             };
-            readonly webSearch: {
+            readonly web_search: {
               columns: {
                 readonly createdAt: {
                   readonly dataType: 'pg/timestamptz';
@@ -1662,20 +1662,20 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'webSearch_normalizedQuery_createdAt_idx_376dfe66';
-                  readonly prefix: 'webSearch_normalizedQuery_createdAt_idx';
+                  readonly name: 'web_search_normalizedQuery_createdAt_idx_376dfe66';
+                  readonly prefix: 'web_search_normalizedQuery_createdAt_idx';
                   readonly columns: readonly ['normalizedQuery', 'createdAt'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'webSearch_userId_createdAt_idx_f726f04a';
-                  readonly prefix: 'webSearch_userId_createdAt_idx';
+                  readonly name: 'web_search_userId_createdAt_idx_f726f04a';
+                  readonly prefix: 'web_search_userId_createdAt_idx';
                   readonly columns: readonly ['userId', 'createdAt'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'webSearch_userId_idx_a489d58a';
-                  readonly prefix: 'webSearch_userId_idx';
+                  readonly name: 'web_search_userId_idx_a489d58a';
+                  readonly prefix: 'web_search_userId_idx';
                   readonly columns: readonly ['userId'];
                   readonly unique: false;
                 },
@@ -1684,7 +1684,7 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'webSearch';
+                    readonly tableName: 'web_search';
                     readonly columns: readonly ['userId'];
                   };
                   readonly target: {
@@ -1740,11 +1740,11 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly aiProvider: {
+    readonly ai_provider: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'AiProvider';
     };
-    readonly apiUsageLog: {
+    readonly api_usage_log: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ApiUsageLog';
     };
@@ -1753,12 +1753,12 @@ type ContractBase = Omit<
       readonly model: 'Conversation';
     };
     readonly message: { readonly namespace: 'public' & NamespaceId; readonly model: 'Message' };
-    readonly messageSource: {
+    readonly message_source: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'MessageSource';
     };
     readonly role: { readonly namespace: 'public' & NamespaceId; readonly model: 'Role' };
-    readonly searchResult: {
+    readonly search_result: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'SearchResult';
     };
@@ -1768,7 +1768,10 @@ type ContractBase = Omit<
       readonly model: 'Subscription';
     };
     readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-    readonly webSearch: { readonly namespace: 'public' & NamespaceId; readonly model: 'WebSearch' };
+    readonly web_search: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'WebSearch';
+    };
   };
   readonly domain: {
     readonly namespaces: {
@@ -1852,7 +1855,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'aiProvider';
+              readonly table: 'ai_provider';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly apiKeyAuthTag: { readonly column: 'apiKeyAuthTag' };
@@ -1935,7 +1938,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'apiUsageLog';
+              readonly table: 'api_usage_log';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly createdAt: { readonly column: 'createdAt' };
@@ -2149,7 +2152,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'messageSource';
+              readonly table: 'message_source';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly citation: { readonly column: 'citation' };
@@ -2230,7 +2233,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'searchResult';
+              readonly table: 'search_result';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly id: { readonly column: 'id' };
@@ -2546,7 +2549,7 @@ type ContractBase = Omit<
               };
             };
             readonly storage: {
-              readonly table: 'webSearch';
+              readonly table: 'web_search';
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly createdAt: { readonly column: 'createdAt' };
@@ -2693,7 +2696,7 @@ type ContractBase = Omit<
           readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
           readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
           readonly ref: {
-            readonly entry: 'aiProvider';
+            readonly entry: 'ai_provider';
             readonly field: 'updatedAt';
             readonly namespace: 'public';
           };
