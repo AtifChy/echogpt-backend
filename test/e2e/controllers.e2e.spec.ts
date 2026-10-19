@@ -29,7 +29,7 @@ const profile = {
   displayName: null,
   status: "ACTIVE",
   createdAt: timestamp,
-  role: { name: "USER" },
+  role: "USER",
 };
 const conversation = {
   id: 7,
@@ -364,7 +364,7 @@ describe("Controllers (isolated services, no database or network providers)", ()
       .set("Authorization", "Bearer test-user")
       .send({ displayName: "Test" })
       .expect(200);
-    expect(updated.body.role).toEqual({ name: "USER" });
+    expect(updated.body.role).toBe("USER");
     const upgraded = await request(app.getHttpServer())
       .patch("/api/v1/admin/users/1/subscription")
       .set("Authorization", "Bearer test-admin")
@@ -387,11 +387,10 @@ describe("Controllers (isolated services, no database or network providers)", ()
     expect(health.body.status).toBe("ok");
   });
 
-  it("strips nested secrets from profiles and fails closed on invalid service responses", async () => {
+  it("strips private fields from profiles and fails closed on invalid service responses", async () => {
     users.findMe.mockImplementationOnce(() => ({
       ...profile,
       passwordHash: "private-hash",
-      role: { name: "USER", secret: "private-hash" },
     }));
     const response = await request(app.getHttpServer())
       .get("/api/v1/users/me")

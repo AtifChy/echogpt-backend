@@ -6,6 +6,7 @@ import { ChatService } from "../../src/chat/chat.service";
 import { CreateConversationSchema } from "../../src/chat/dto/create-conversation.dto";
 import { UpdateSubscriptionSchema } from "../../src/subscriptions/dto/update-subscription.dto";
 import { SubscriptionsService } from "../../src/subscriptions/subscriptions.service";
+import { ProfileResponseSchema } from "../../src/users/dto/profile-response.dto";
 import { UpdateProfileSchema } from "../../src/users/dto/update-profile.dto";
 import { UserService } from "../../src/users/users.service";
 
@@ -15,37 +16,52 @@ const profile = {
   displayName: null,
   status: "ACTIVE" as const,
   createdAt: "2026-10-17 19:44:26.77117+00",
-  role: { name: "USER" as const },
+  role: "USER" as const,
 };
 
 describe("Service response contracts", () => {
-  it("keeps admin user roles as objects and nullable subscriptions intact", async () => {
-    const rows = [{ ...profile, updatedAt: profile.createdAt, subscriptions: null }];
-    const query = {
-      include: vi.fn(),
-      orderBy: vi.fn(),
-      offset: vi.fn(),
-      limit: vi.fn(),
-      all: vi.fn().mockResolvedValue(rows),
-    };
-    for (const method of [query.include, query.orderBy, query.offset, query.limit]) {
-      method.mockReturnValue(query);
-    }
-    const prisma = { db: { orm: { public: { User: { select: vi.fn(() => query) } } } } };
-    const result = await new AdminService(prisma as never).users({ page: 2, limit: 25 });
-    expect(result).toEqual(rows);
-    expect(AdminUsersResponseDto.schema.parse(result)).toEqual(rows);
-    expect(query.offset).toHaveBeenCalledWith(25);
-    expect(query.limit).toHaveBeenCalledWith(25);
-  });
+  it.each(["USER", "ADMIN"] as const)(
+    "maps admin user role %s to a string and preserves nullable subscriptions",
+    async (role) => {
+      const rows = [
+        { ...profile, role: { name: role }, updatedAt: profile.createdAt, subscriptions: null },
+      ];
+      const expected = [{ ...profile, role, updatedAt: profile.createdAt, subscriptions: null }];
+      const query = {
+        include: vi.fn(),
+        orderBy: vi.fn(),
+        offset: vi.fn(),
+        limit: vi.fn(),
+        all: vi.fn().mockResolvedValue(rows),
+      };
+      for (const method of [query.include, query.orderBy, query.offset, query.limit]) {
+        method.mockReturnValue(query);
+      }
+      const prisma = { db: { orm: { public: { User: { select: vi.fn(() => query) } } } } };
+      const result = await new AdminService(prisma as never).users({ page: 2, limit: 25 });
+      expect(result).toEqual(expected);
+      expect(AdminUsersResponseDto.schema.parse(result)).toEqual(expected);
+      expect(query.offset).toHaveBeenCalledWith(25);
+      expect(query.limit).toHaveBeenCalledWith(25);
+    },
+  );
 
-  it("keeps profile roles as objects without a controller mock hiding the service output", async () => {
-    const query = { select: vi.fn(), include: vi.fn(), first: vi.fn().mockResolvedValue(profile) };
-    query.select.mockReturnValue(query);
-    query.include.mockReturnValue(query);
-    const prisma = { db: { orm: { public: { User: { where: vi.fn(() => query) } } } } };
-    expect(await new UserService(prisma as never).findMe(1)).toEqual(profile);
-  });
+  it.each(["USER", "ADMIN"] as const)(
+    "maps profile role %s to a string without a controller mock",
+    async (role) => {
+      const query = {
+        select: vi.fn(),
+        include: vi.fn(),
+        first: vi.fn().mockResolvedValue({ ...profile, role: { name: role } }),
+      };
+      query.select.mockReturnValue(query);
+      query.include.mockReturnValue(query);
+      const prisma = { db: { orm: { public: { User: { where: vi.fn(() => query) } } } } };
+      const result = await new UserService(prisma as never).findMe(1);
+      expect(result).toEqual({ ...profile, role });
+      expect(ProfileResponseSchema.parse(result)).toEqual({ ...profile, role });
+    },
+  );
 
   it.each([{}, { displayName: null }])("preserves profile clearing for %j", async (dto) => {
     const update = vi.fn().mockResolvedValue(undefined);

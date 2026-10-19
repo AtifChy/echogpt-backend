@@ -56,7 +56,7 @@ export class AdminService {
 
       return {
         ...user,
-        role: user.role,
+        role: user.role.name,
       };
     });
   }

@@ -110,6 +110,7 @@ describe("EchoGPT API", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200);
     expect(profile.body.email).toBe(email);
+    expect(profile.body.role).toBe("USER");
     expect(usage.body).toMatchObject({ plan: "FREE", limit: 100, used: 0, remaining: 100 });
   });
 
@@ -120,6 +121,7 @@ describe("EchoGPT API", () => {
       .send({ displayName: "Updated E2E User" })
       .expect(200);
     expect(response.body.displayName).toBe("Updated E2E User");
+    expect(response.body.role).toBe("USER");
   });
 
   it("rotates refresh tokens and rejects reuse", async () => {
@@ -175,6 +177,9 @@ describe("EchoGPT API", () => {
       .expect(200);
     expect(response.body).toEqual(expect.any(Array));
     expect(response.body.some((user: { email: string }) => user.email === email)).toBe(true);
+    expect(response.body.find((user: { email: string }) => user.email === email).role).toBe(
+      "ADMIN",
+    );
     expect(JSON.stringify(response.body)).not.toContain("passwordHash");
   });
 

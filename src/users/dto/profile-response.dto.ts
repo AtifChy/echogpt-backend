@@ -10,7 +10,7 @@ export const ProfileResponseSchema = z.object({
   displayName: z.string().nullable(),
   status: UserStatusSchema,
   createdAt: TimestampSchema,
-  role: z.object({ name: RoleSchema }),
+  role: RoleSchema,
 });
 
 export class ProfileResponseDto extends createZodDto(ProfileResponseSchema) {}

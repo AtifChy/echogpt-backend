@@ -220,19 +220,40 @@ describe("Zod public response contracts", () => {
     expect(JSON.stringify(result)).not.toContain("private");
   });
 
-  it("keeps profile roles as objects and strips their internal fields", () => {
-    const result = ProfileResponseSchema.parse({
-      id: 1,
-      email: "user@example.com",
-      displayName: null,
-      status: "ACTIVE",
-      createdAt: timestamp,
-      role: { name: "USER", internal: "private" },
-      passwordHash: "private",
-    });
-    expect(result.role).toEqual({ name: "USER" });
-    expect(JSON.stringify(result)).not.toContain("private");
-  });
+  it.each(["USER", "ADMIN"] as const)(
+    "keeps profile role %s as a string and strips private fields",
+    (role) => {
+      const result = ProfileResponseSchema.safeParse({
+        id: 1,
+        email: "user@example.com",
+        displayName: null,
+        status: "ACTIVE",
+        createdAt: timestamp,
+        role,
+        passwordHash: "private",
+      });
+      expect(result).toMatchObject({ success: true, data: { role } });
+      expect(JSON.stringify(result)).not.toContain("private");
+    },
+  );
+
+  it.each([{ name: "USER" }, "OWNER", null, undefined])(
+    "rejects invalid profile role %j",
+    (role) => {
+      const result = ProfileResponseSchema.safeParse({
+        id: 1,
+        email: "user@example.com",
+        displayName: null,
+        status: "ACTIVE",
+        createdAt: timestamp,
+        role,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0]?.path).toEqual(["role"]);
+      }
+    },
+  );
 
   it("excludes all provider key fields", () => {
     const result = ProviderResponseSchema.parse({

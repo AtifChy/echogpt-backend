@@ -25,7 +25,7 @@ export class UserService {
 
     if (!user.role) throw new InternalServerErrorException("User role not found");
 
-    return { ...user, role: user.role };
+    return { ...user, role: user.role.name };
   }
 
   async updateProfile(userId: number, dto: UpdateProfileDto): Promise<ProfileResponseDto> {
